@@ -8,5 +8,28 @@
     <artifactId>dJBox-client</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+<dependencies>
+    <!--OPENJFX - JAVAFX-->
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-base</artifactId>
+        <version>13.0.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-controls</artifactId>
+        <version>13.0.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-graphics</artifactId>
+        <version>13.0.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-media</artifactId>
+        <version>13.0.1</version>
+    </dependency>
+</dependencies>
 
 </project>

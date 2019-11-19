@@ -41,7 +41,32 @@ public class HTTPControllerJavaNet implements HTTPControllerService
     @Override
     public String sendGetRequest(String requestURI)
     {
-        return "";
+            return "";
+
+    }
+
+    public String sendGetRequestWithToken(String requestURI, String token) {
+        request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("token",token).GET().build();
+
+        try
+        {
+
+            response = client.send(request,BodyHandlers.ofString());
+            int responseStatusCode = response.statusCode();
+
+            if(responseStatusCode == 200)
+                return response.body();
+            else
+                throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
+
+        }catch(Exception e){
+            System.out.println("Exception in Get Request:");
+            System.out.println(e.getMessage());
+
+        }
+
+        return "Fail on sendGetRequestWithToken";
+
     }
 
     @Override

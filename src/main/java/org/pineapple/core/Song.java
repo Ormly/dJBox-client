@@ -1,58 +1,87 @@
 package org.pineapple.core;
 
-public class Song
-{
+public class Song {
     private int id;
     private String title;
     private String artist;
     private String album;
-    private int year;
     private String genre;
-    private String pathToFile;
+    private int year;
+    private int duration;
+    private String location;
 
-    public Song(int id, int year, String title, String artist, String album, String genre, String pathToFile)
-    {
+    public Song(int id, String title, String artist, String album, String genre, int year, int duration, String location) {
         this.id = id;
-        this.year = year;
         this.title = title;
         this.artist = artist;
         this.album = album;
         this.genre = genre;
-        this.pathToFile = pathToFile;
+        this.year = year;
+        this.duration = duration;
+        this.location = location;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
-    public int getYear()
-    {
-        return year;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public String getArtist()
-    {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getArtist() {
         return artist;
     }
 
-    public String getAlbum()
-    {
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getAlbum() {
         return album;
     }
 
-    public String getGenre()
-    {
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public String getGenre() {
         return genre;
     }
 
-    public String getPathToFile()
-    {
-        return pathToFile;
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

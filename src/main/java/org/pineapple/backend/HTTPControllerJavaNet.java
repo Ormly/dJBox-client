@@ -64,10 +64,12 @@ public class HTTPControllerJavaNet implements HTTPControllerService
             else
                 throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
 
-        } catch(Exception e)
+        } catch(Exception e) // To handle the exception from send()
         {
-            System.out.println("Exception in Get Request:");
+            System.out.println("----------------------");
+            System.out.println("Exception in sendGetRequestWithToken:");
             System.out.println(e.getMessage());
+            System.out.println("----------------------");
 
         }
 

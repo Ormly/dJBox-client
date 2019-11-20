@@ -21,7 +21,8 @@ public class Main extends Application
         System.out.println("Token returned from Server: " + test.getTokenTest());
 
         // Get List
-        System.out.println("List:");
+        System.out.println("----------------------");
+        System.out.println("Test to get queue:");
 
         String token = test.getUserData().getSecurityToken();
         List<Song> queue = test.doGetQueue(token);

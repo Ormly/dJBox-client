@@ -54,7 +54,10 @@ public class ServerController extends ServerControllerService
 
         } catch(Exception e)
         {
+            System.out.println("----------------------");
+            System.out.println("Exception from getServerQueueWithToken: ");
             System.out.println(e.getMessage());
+            System.out.println("----------------------");
         }
 
         // Process json string

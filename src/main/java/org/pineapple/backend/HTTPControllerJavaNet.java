@@ -1,6 +1,7 @@
 package org.pineapple.backend;
 
 import org.pineapple.backend.interfaces.HTTPControllerService;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -23,11 +24,13 @@ public class HTTPControllerJavaNet implements HTTPControllerService
     }
 
     @Override
-    public String sendPostRequest(String requestURI, String requestBody) throws InterruptedException, IOException, AuthenticationFailedException
+    public String sendPostRequest(String requestURI, String requestBody)
+    throws InterruptedException, IOException, AuthenticationFailedException
     {
         //TODO: fix exception handling
 
-        request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type","application/json").POST(BodyPublishers.ofString(requestBody)).build();
+        request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type", "application/json").POST(
+                BodyPublishers.ofString(requestBody)).build();
         response = client.send(request, BodyHandlers.ofString());
         int responseStatusCode = response.statusCode();
 
@@ -41,17 +44,19 @@ public class HTTPControllerJavaNet implements HTTPControllerService
     @Override
     public String sendGetRequest(String requestURI)
     {
-            return "";
+        return "";
 
     }
 
-    public String sendGetRequestWithToken(String requestURI, String token) {
-        request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("token",token).GET().build();
+    @Override
+    public String sendGetRequestWithToken(String requestURI, String token)
+    {
+        request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("token", token).GET().build();
 
         try
         {
 
-            response = client.send(request,BodyHandlers.ofString());
+            response = client.send(request, BodyHandlers.ofString());
             int responseStatusCode = response.statusCode();
 
             if(responseStatusCode == 200)
@@ -59,7 +64,8 @@ public class HTTPControllerJavaNet implements HTTPControllerService
             else
                 throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
 
-        }catch(Exception e){
+        } catch(Exception e)
+        {
             System.out.println("Exception in Get Request:");
             System.out.println(e.getMessage());
 

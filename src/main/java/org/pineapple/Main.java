@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
+import org.pineapple.core.Song;
+
+import java.util.List;
 
 public class Main extends Application
 {
@@ -12,8 +15,20 @@ public class Main extends Application
 
     public static void main(String[] args)
     {
-        JukeBoxClient authTest = new JukeBoxClient();
-        System.out.println("Token returned from Server: " + authTest.getTokenTest());
+        JukeBoxClient test = new JukeBoxClient();
+
+        // Get Token
+        System.out.println("Token returned from Server: " + test.getTokenTest());
+
+        // Get List
+        System.out.println("List:");
+
+        String token = test.getUserData().getSecurityToken();
+        List<Song> queue = test.doGetQueue(token);
+
+        for(Song song : queue) {
+            System.out.println(song.getTitle());
+        }
         //launch();
     }
 

@@ -4,13 +4,22 @@ import org.pineapple.backend.ServerController;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 
+import java.util.List;
+
 public class JukeBoxClient
 {
     private ServerControllerService serverController;
 
     private IMediaList library;
     private IMediaList queue;
+//    private SongList library;
+//    private SongList queue;
     private UserData userData;
+
+    public UserData getUserData()
+    {
+        return userData;
+    }
 
     public JukeBoxClient()
     {
@@ -18,13 +27,13 @@ public class JukeBoxClient
         serverController = new ServerController();
         String testUser = "ioncicala";
         String testPassword = "1234";
-        userData = new UserData(testUser,doAuthentication(testUser,testPassword));
+        userData = new UserData(testUser, doAuthentication(testUser, testPassword));
     }
 
     public String doAuthentication(String userEmail, String userPassword)
     {
         //TESTING
-        String securityToken = serverController.authenticate(userEmail,userPassword);
+        String securityToken = serverController.authenticate(userEmail, userPassword);
         return securityToken;
     }
 
@@ -35,4 +44,13 @@ public class JukeBoxClient
     }
 
     //TODO: functions serving the UI
+
+    public List<Song> doGetQueue(String token)
+    {
+        queue = new SongList();
+        queue.setSongList(serverController.getServerQueueWithToken(token));
+    return queue.getAllMedia();
+    }
+
+
 }

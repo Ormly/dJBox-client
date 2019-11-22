@@ -98,6 +98,16 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>3.0.0-M3</version>
         </plugin>
+
+        <plugin>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>0.0.3</version>
+            <configuration>
+                <mainClass>org.pineapple.Main</mainClass>
+            </configuration>
+        </plugin>
+
     </plugins>
 </build>
 

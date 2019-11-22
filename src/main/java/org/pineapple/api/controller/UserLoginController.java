@@ -10,6 +10,7 @@ public class UserLoginController {
 
     public UserLoginController(Stage stage) {this.stage = stage;}
 
+    //Button handlers
     public void loginButtonHandle() {
         stage.setScene(Main.getScenes().get(SceneName.QUEUESCENE));
         stage.setTitle("dJBox - Queue");

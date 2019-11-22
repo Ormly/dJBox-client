@@ -20,8 +20,10 @@ public class UserLoginScene implements SceneMaker {
 
     @Override
     public Scene getScene(){
+        // Controller for button handling
         UserLoginController controller = new UserLoginController(stage);
 
+        // dJBox logo
         Image image = new Image("PlaceHolder.png");
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(50);
@@ -36,14 +38,17 @@ public class UserLoginScene implements SceneMaker {
         TextField textField = new TextField();
         PasswordField passwordField = new PasswordField();
 
+        // left to right, Username:, textfield for username
         HBox hBox1 = new HBox(20);
         hBox1.setAlignment(Pos.CENTER);
         hBox1.getChildren().addAll(label1,textField);
 
+        // left to right Password, passwordfield for password
         HBox hBox2 = new HBox(20);
         hBox2.setAlignment(Pos.CENTER);
         hBox2.getChildren().addAll(label2,passwordField);
 
+        // top to bottom, dJBox logo, username and field, password and field, button
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(imageView,hBox1,hBox2,button);

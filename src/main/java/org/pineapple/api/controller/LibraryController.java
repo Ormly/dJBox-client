@@ -10,6 +10,7 @@ public class LibraryController {
 
     public LibraryController(Stage stage) { this.stage = stage; }
 
+    //Button handlers
     public void logoutButtonHandle() {
         stage.setScene(Main.getScenes().get(SceneName.USERLOGINSCENE));
         stage.setTitle("dJBox - Login");

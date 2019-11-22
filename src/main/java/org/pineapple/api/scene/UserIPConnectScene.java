@@ -20,11 +20,14 @@ public class UserIPConnectScene implements SceneMaker {
 
     @Override
     public Scene getScene(){
+        // Button handler
         UserIPConnectController controller = new UserIPConnectController(stage);
 
+        // Connect to IP button
         Button button = new Button("Connect");
         button.setOnAction(e -> controller.connectButtonHandle());
 
+        // Image for dJBox logo
         Image image = new Image("PlaceHolder.png");
         ImageView imageView = new ImageView(image);
         imageView.setFitHeight(50);
@@ -35,10 +38,12 @@ public class UserIPConnectScene implements SceneMaker {
         TextField textField = new TextField();
         textField.setText("127.0.0.1");
 
+        // left to right JukeBox IP address, input field for IP address
         HBox hBox = new HBox(20);
         hBox.setAlignment(Pos.CENTER);
         hBox.getChildren().addAll(label,textField);
 
+        // top to bottom, logo, label and input field, button
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(imageView,hBox,button);

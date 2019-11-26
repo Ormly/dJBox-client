@@ -24,29 +24,29 @@ public class UserIPConnectScene implements SceneMaker {
         UserIPConnectController controller = new UserIPConnectController(stage);
 
         // Connect to IP button
-        Button button = new Button("Connect");
-        button.setOnAction(e -> controller.connectButtonHandle());
+        Button connectButton = new Button("Connect");
+        connectButton.setOnAction(e -> controller.connectButtonHandle());
 
         // Image for dJBox logo
-        Image image = new Image("PlaceHolder.png");
-        ImageView imageView = new ImageView(image);
-        imageView.setFitHeight(50);
-        imageView.setFitWidth(50);
+        Image logoImage = new Image("ananas_color.png");
+        ImageView logoImageView = new ImageView(logoImage);
+        logoImageView.setFitHeight(100);
+        logoImageView.setPreserveRatio(true);
 
-        Label label = new Label("Jukebox IP address:");
+        Label ipAddressLabel = new Label("Jukebox IP address:");
 
-        TextField textField = new TextField();
-        textField.setText("127.0.0.1");
+        TextField ipAddressTextField = new TextField();
+        ipAddressTextField.setText("127.0.0.1");
 
         // left to right JukeBox IP address, input field for IP address
-        HBox hBox = new HBox(20);
-        hBox.setAlignment(Pos.CENTER);
-        hBox.getChildren().addAll(label,textField);
+        HBox ipAddressHBox = new HBox(20);
+        ipAddressHBox.setAlignment(Pos.CENTER);
+        ipAddressHBox.getChildren().addAll(ipAddressLabel,ipAddressTextField);
 
         // top to bottom, logo, label and input field, button
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(imageView,hBox,button);
+        root.getChildren().addAll(logoImageView,ipAddressHBox,connectButton);
 
         Scene scene = new Scene(root,800,600);
         return scene;

@@ -2,6 +2,7 @@ package org.pineapple;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.pineapple.api.scene.*;
@@ -37,6 +38,7 @@ public class Main extends Application
         AnchorPane rootNode = new AnchorPane();
 
         // Initial scene is Connect IP
+        stage.getIcons().add(new Image("ananas_color.png"));
         stage.setScene(scenes.get(SceneName.USERIPCONNECTSCENE));
         stage.setTitle("dJBox - IP connect");
         stage.centerOnScreen();

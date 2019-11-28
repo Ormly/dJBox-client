@@ -5,6 +5,7 @@ import org.pineapple.backend.interfaces.HTTPControllerService;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
+import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
@@ -24,7 +25,7 @@ public class HTTPControllerJavaNet implements HTTPControllerService
     }
 
     @Override
-    public String sendPostRequest(String requestURI, String requestBody)
+    public HttpHeaders sendPostRequest(String requestURI, String requestBody)
     throws InterruptedException, IOException, AuthenticationFailedException
     {
         //TODO: fix exception handling
@@ -36,7 +37,9 @@ public class HTTPControllerJavaNet implements HTTPControllerService
 
         //TODO: make this not suck
         if(responseStatusCode == 200)
-            return response.body();
+//            return response.body();
+            return response.headers();
+
         else
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
     }
@@ -67,7 +70,7 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         } catch(Exception e) // To handle the exception from send()
         {
             System.out.println("----------------------");
-            System.out.println("Exception in sendGetRequestWithToken:");
+            System.out.println("Exception in HTTPControllerJavaNet --> sendGetRequestWithToken:");
             System.out.println(e.getMessage());
             System.out.println("----------------------");
 

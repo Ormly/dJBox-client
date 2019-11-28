@@ -55,7 +55,7 @@ public class ServerController extends ServerControllerService
         } catch(Exception e)
         {
             System.out.println("----------------------");
-            System.out.println("Exception from getServerQueueWithToken: ");
+            System.out.println("Exception from ServerController--->  getServerQueueWithToken: ");
             System.out.println(e.getMessage());
             System.out.println("----------------------");
         }
@@ -92,7 +92,7 @@ public class ServerController extends ServerControllerService
 
         try
         {
-            authResponse.append(httpController.sendPostRequest(requestURI, requestBody));
+            authResponse.append(httpController.sendPostRequest(requestURI, requestBody).allValues("token"));
         } catch(InterruptedException ex)
         {
             //TODO: handle these properly
@@ -101,6 +101,6 @@ public class ServerController extends ServerControllerService
 
         }
 
-        return authResponse.toString();
+        return authResponse.substring(1,authResponse.length()-1);
     }
 }

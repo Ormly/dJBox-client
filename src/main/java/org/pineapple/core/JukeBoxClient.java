@@ -25,8 +25,8 @@ public class JukeBoxClient
     {
         //TESTING
         serverController = new ServerController();
-        String testUser = "ioncicala";
-        String testPassword = "1234";
+        String testUser = "testperson@gmail.com";
+        String testPassword = "password";
         userData = new UserData(testUser, doAuthentication(testUser, testPassword));
     }
 
@@ -45,10 +45,10 @@ public class JukeBoxClient
 
     //TODO: functions serving the UI
 
-    public List<Song> doGetQueue(String token)
+    public List<Song> doGetQueue()
     {
         queue = new SongList();
-        queue.setSongList(serverController.getServerQueueWithToken(token));
+        queue.setSongList(serverController.getServerQueueWithToken(userData.getSecurityToken()));
     return queue.getAllMedia();
     }
 

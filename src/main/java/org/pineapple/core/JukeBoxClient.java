@@ -12,18 +12,27 @@ import java.util.List;
 public class JukeBoxClient
 {
     private ServerControllerService serverController;
+    private static JukeBoxClient jukeBoxClientInstance;
 
     private IMediaList library;
     private IMediaList queue;
     private UserData userData;
 
-    public JukeBoxClient()
+    private JukeBoxClient()
     {
         //TESTING
         serverController = new ServerController();
         String testUser = "testperson@gmail.com";
         String testPassword = "password";
         userData = new UserData(testUser, doAuthentication(testUser, testPassword));
+    }
+
+    public static JukeBoxClient getJukeBoxClientInstance()
+    {
+        if(jukeBoxClientInstance == null)
+                jukeBoxClientInstance = new JukeBoxClient();
+
+        return jukeBoxClientInstance;
     }
 
     public String doAuthentication(String userEmail, String userPassword)

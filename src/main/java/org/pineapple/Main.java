@@ -11,11 +11,10 @@ import java.util.List;
 
 public class Main extends Application
 {
-    //TODO: do this for real
 
     public static void main(String[] args)
     {
-        JukeBoxClient test = new JukeBoxClient();
+        JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();
         test.doGetQueue();
         //launch();
     }

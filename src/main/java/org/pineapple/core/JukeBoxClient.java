@@ -33,7 +33,7 @@ public class JukeBoxClient
     public String doAuthentication(String userEmail, String userPassword)
     {
         //TESTING
-        String securityToken = serverController.authenticate(userEmail, userPassword);
+        String securityToken = serverController.authenticateUser(userEmail, userPassword);
         return securityToken;
     }
 

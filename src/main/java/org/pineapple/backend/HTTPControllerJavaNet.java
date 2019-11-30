@@ -16,8 +16,6 @@ import java.time.Duration;
 public class HTTPControllerJavaNet implements HTTPControllerService
 {
     HttpClient client;
-    HttpRequest request;
-    HttpResponse<String> response;
 
     public HTTPControllerJavaNet()
     {
@@ -30,9 +28,9 @@ public class HTTPControllerJavaNet implements HTTPControllerService
     {
         //TODO: fix exception handling
 
-        request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type", "application/json").POST(
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type", "application/json").POST(
                 BodyPublishers.ofString(requestBody)).build();
-        response = client.send(request, BodyHandlers.ofString());
+        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
         int responseStatusCode = response.statusCode();
 
         //TODO: make this not suck
@@ -54,14 +52,14 @@ public class HTTPControllerJavaNet implements HTTPControllerService
     @Override
     public String sendGetRequestWithToken(String requestURI, String token)
     {
-        request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("token", token).GET().build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("token", token).GET().build();
 
         try
         {
 
-            response = client.send(request, BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             int responseStatusCode = response.statusCode();
-
+            System.out.println(response.toString());
             if(responseStatusCode == 200)
                 return response.body();
             else

@@ -10,16 +10,14 @@ public abstract class ServerControllerService
     protected HTTPControllerService httpController;
 
     //TODO: return type in case of success/failure? Parse and compare http status code?
-    public abstract boolean addSongToServerQueue(int songID);
+    public abstract void addSongToServerQueue(int songID, String securityToken);
 
-    public abstract List<Song> getServerQueue();
+    public abstract void logoutUser(String securityToken);
 
     public abstract List<Song> getServerQueueWithToken(String securityToken);
 
-    public abstract List<Song> getServerLibrary();
-
     public abstract List<Song> getServerLibraryWithToken(String securityToken);
 
-    public abstract String authenticate(String userEmail, String userPassword)
+    public abstract String authenticateUser(String userEmail, String userPassword)
     throws AuthenticationFailedException;
 }

@@ -13,7 +13,7 @@ import java.util.List;
 public class ServerController extends ServerControllerService
 {
     //localhost for testing purposes
-    private String requestURI = "http://localhost:8080";
+    final private String requestURI = "http://localhost:8080";
 
     public ServerController()
     {
@@ -21,30 +21,25 @@ public class ServerController extends ServerControllerService
     }
 
     @Override
-    public boolean addSongToServerQueue(int songID)
+    public void addSongToServerQueue(int songID, String securityToken)
     {
-        return false;
-    }
 
-    @Override
-    public List<Song> getServerQueue()
-    {
-        return null;
     }
 
     @Override
     public List<Song> getServerQueueWithToken(String securityToken)
     {
         List<Song> queue = new ArrayList<>();
-        requestURI += "/queue";
+        String request = requestURI + "/queue";
+
         ObjectMapper mapper = new ObjectMapper();
 
         StringBuilder authResponse = new StringBuilder();
-        String json = "";
+        String json;
+
         try
         {
-
-            authResponse.append(httpController.sendGetRequestWithToken(requestURI, securityToken));
+            authResponse.append(httpController.sendGetRequestWithToken(request, securityToken));
             json = authResponse.toString();
 
             // https://www.mkyong.com/java/jackson-convert-json-array-string-to-list/
@@ -66,33 +61,27 @@ public class ServerController extends ServerControllerService
     }
 
     @Override
-    public List<Song> getServerLibrary()
+    public List<Song> getServerLibraryWithToken(String securityToken)
     {
         List<Song> library = new ArrayList<>();
-        requestURI += "/library";
+        String request = requestURI + "/library";
 
         return library;
     }
 
     @Override
-    public List<Song> getServerLibraryWithToken(String securityToken)
-    {
-        return null;
-    }
-
-    @Override
-    public String authenticate(String userEmail, String userPassword)
+    public String authenticateUser(String userEmail, String userPassword)
     throws AuthenticationFailedException
     {
         StringBuilder authResponse = new StringBuilder();
-        requestURI += "/auth";
+        String request = requestURI + "/auth";
 
         //TODO: check if this can be done better with jackson, and change "userName" to "userEmail" once server-side got their shit together
         String requestBody = "{ \"" + "userName" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
 
         try
         {
-            authResponse.append(httpController.sendPostRequest(requestURI, requestBody).allValues("token"));
+            authResponse.append(httpController.sendPostRequest(request, requestBody).allValues("token"));
         } catch(InterruptedException ex)
         {
             //TODO: handle these properly
@@ -102,5 +91,11 @@ public class ServerController extends ServerControllerService
         }
 
         return authResponse.substring(1,authResponse.length()-1);
+    }
+
+    @Override
+    public void logoutUser(String securityToken)
+    {
+
     }
 }

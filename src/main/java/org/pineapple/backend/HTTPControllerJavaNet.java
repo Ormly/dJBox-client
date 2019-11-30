@@ -24,20 +24,14 @@ public class HTTPControllerJavaNet implements HTTPControllerService
 
     @Override
     public HttpHeaders sendPostRequest(String requestURI, String requestBody)
-    throws InterruptedException, IOException, AuthenticationFailedException
+    throws IOException, InterruptedException
     {
-        //TODO: fix exception handling
-
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type", "application/json").POST(
-                BodyPublishers.ofString(requestBody)).build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type", "application/json").POST(BodyPublishers.ofString(requestBody)).build();
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
+
         int responseStatusCode = response.statusCode();
-
-        //TODO: make this not suck
         if(responseStatusCode == 200)
-//            return response.body();
             return response.headers();
-
         else
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
     }
@@ -51,31 +45,16 @@ public class HTTPControllerJavaNet implements HTTPControllerService
 
     @Override
     public String sendGetRequestWithToken(String requestURI, String token)
+    throws IOException, InterruptedException
     {
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("token", token).GET().build();
+        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
-        try
-        {
-
-            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-            int responseStatusCode = response.statusCode();
-            System.out.println(response.toString());
-            if(responseStatusCode == 200)
-                return response.body();
-            else
-                throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
-
-        } catch(Exception e) // To handle the exception from send()
-        {
-            System.out.println("----------------------");
-            System.out.println("Exception in HTTPControllerJavaNet --> sendGetRequestWithToken:");
-            System.out.println(e.getMessage());
-            System.out.println("----------------------");
-
-        }
-
-        return "Fail on sendGetRequestWithToken";
-
+        int responseStatusCode = response.statusCode();
+        if(responseStatusCode == 200)
+            return response.body();
+        else
+            throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
     }
 
     @Override

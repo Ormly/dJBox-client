@@ -1,25 +1,21 @@
 package org.pineapple.core;
 
+import org.pineapple.backend.AuthenticationFailedException;
 import org.pineapple.backend.ServerController;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 
+import java.io.IOException;
 import java.util.List;
 
+//TODO: proper exception handling, prepare ui functionality
 public class JukeBoxClient
 {
     private ServerControllerService serverController;
 
     private IMediaList library;
     private IMediaList queue;
-//    private SongList library;
-//    private SongList queue;
     private UserData userData;
-
-    public UserData getUserData()
-    {
-        return userData;
-    }
 
     public JukeBoxClient()
     {
@@ -32,25 +28,48 @@ public class JukeBoxClient
 
     public String doAuthentication(String userEmail, String userPassword)
     {
-        //TESTING
-        String securityToken = serverController.authenticateUser(userEmail, userPassword);
-        return securityToken;
-    }
+        StringBuilder securityToken = new StringBuilder();
 
-    //TESTING
-    public String getTokenTest()
-    {
-        return userData.getSecurityToken();
-    }
+        try
+        {
+            securityToken.append(serverController.authenticateUser(userEmail, userPassword));
+        } catch(IOException io)
+        {
 
-    //TODO: functions serving the UI
+        } catch(InterruptedException ie)
+        {
+
+        } catch(AuthenticationFailedException af)
+        {
+
+        }
+
+        return securityToken.toString();
+    }
 
     public List<Song> doGetQueue()
     {
         queue = new SongList();
-        queue.setSongList(serverController.getServerQueueWithToken(userData.getSecurityToken()));
-    return queue.getAllMedia();
+
+        try
+        {
+            queue.setSongList(serverController.getServerQueueWithToken(userData.getSecurityToken()));
+        } catch(IOException io)
+        {
+
+        } catch(InterruptedException ie)
+        {
+
+        } catch(AuthenticationFailedException af)
+        {
+
+        }
+
+        return queue.getAllMedia();
     }
 
-
+    public UserData getUserData()
+    {
+        return userData;
+    }
 }

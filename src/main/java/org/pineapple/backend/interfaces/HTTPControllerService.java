@@ -13,5 +13,6 @@ public interface HTTPControllerService
 
     public abstract String sendHeadRequest(String requestURI);
 
-    public abstract String sendGetRequestWithToken(String requestURI, String token);
+    public abstract String sendGetRequestWithToken(String requestURI, String token)
+    throws IOException, InterruptedException;
 }

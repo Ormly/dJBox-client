@@ -11,17 +11,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.pineapple.core.JukeBoxClient;
 import org.pineapple.ui.controller.QueueController;
 
-public class QueueScene implements SceneMaker {
-    private Stage stage;
+public class QueueScene extends SceneMaker {
 
-    public QueueScene(Stage stage){this.stage=stage;}
+    public QueueScene(Stage stage, JukeBoxClient jukeBoxClient) {
+        super(stage, jukeBoxClient);
+    }
 
     @Override
     public Scene getScene(){
         // Uses controller for button handling
-        QueueController controller = new QueueController(stage);
+        QueueController controller = new QueueController(stage, jukeBoxClient);
 
         // Search bar
         TextField searchTextField = new TextField();

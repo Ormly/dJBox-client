@@ -1,15 +1,11 @@
 package org.pineapple;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.pineapple.ui.scene.*;
 import org.pineapple.core.JukeBoxClient;
-import org.pineapple.core.Song;
-
-import java.util.List;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +14,12 @@ public class Main extends Application
 {
 
     // Scenes are mapped to a scene enum into a HashMap
-    private static Map<SceneName, Scene> scenes = new HashMap<>();
+    private static Map<Scene, javafx.scene.Scene> scenes = new HashMap<>();
+    private static JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();;
 
     public static void main(String[] args)
     {
-        JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();
+        //JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();
         test.doGetQueue();
         launch();
     }
@@ -31,22 +28,22 @@ public class Main extends Application
     throws Exception
     {
         // Scenes are created and stored in the HashMap
-        scenes.put(SceneName.USERIPCONNECTSCENE, new UserIPConnectScene(stage).getScene());
-        scenes.put(SceneName.USERLOGINSCENE, new UserLoginScene(stage).getScene());
-        scenes.put(SceneName.QUEUESCENE, new QueueScene(stage).getScene());
-        scenes.put(SceneName.LIBRARYSCENE, new LibraryScene(stage).getScene());
+        scenes.put(Scene.USERIPCONNECTSCENE, new UserIPConnectScene(stage, test).getScene());
+        scenes.put(Scene.USERLOGINSCENE, new UserLoginScene(stage, test).getScene());
+        scenes.put(Scene.QUEUESCENE, new QueueScene(stage, test).getScene());
+        scenes.put(Scene.LIBRARYSCENE, new LibraryScene(stage, test).getScene());
 
 
         AnchorPane rootNode = new AnchorPane();
 
         // Initial scene is Connect IP
         stage.getIcons().add(new Image("ananas_color.png"));
-        stage.setScene(scenes.get(SceneName.USERIPCONNECTSCENE));
+        stage.setScene(scenes.get(Scene.USERIPCONNECTSCENE));
         stage.setTitle("dJBox - IP connect");
         stage.centerOnScreen();
         stage.show();
     }
 
     // Returns scene by name
-    public static Map<SceneName, Scene> getScenes() {return scenes;}
+    public static Map<Scene, javafx.scene.Scene> getScenes() {return scenes;}
 }

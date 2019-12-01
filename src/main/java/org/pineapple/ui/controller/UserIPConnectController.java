@@ -1,8 +1,8 @@
-package org.pineapple.api.controller;
+package org.pineapple.ui.controller;
 
 import javafx.stage.Stage;
 import org.pineapple.Main;
-import org.pineapple.api.scene.SceneName;
+import org.pineapple.ui.scene.SceneName;
 
 public class UserIPConnectController {
 

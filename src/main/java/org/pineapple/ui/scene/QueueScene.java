@@ -1,4 +1,4 @@
-package org.pineapple.api.scene;
+package org.pineapple.ui.scene;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,9 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.pineapple.api.controller.QueueController;
-
-import javax.tools.Tool;
+import org.pineapple.ui.controller.QueueController;
 
 public class QueueScene implements SceneMaker {
     private Stage stage;

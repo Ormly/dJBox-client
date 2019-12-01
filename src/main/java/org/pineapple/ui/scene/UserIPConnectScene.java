@@ -1,4 +1,4 @@
-package org.pineapple.api.scene;
+package org.pineapple.ui.scene;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,7 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.pineapple.api.controller.UserIPConnectController;
+import org.pineapple.ui.controller.UserIPConnectController;
 
 public class UserIPConnectScene implements SceneMaker {
 

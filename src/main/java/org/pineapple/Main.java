@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.pineapple.api.scene.*;
+import org.pineapple.ui.scene.*;
 import org.pineapple.core.JukeBoxClient;
 
 import java.util.HashMap;

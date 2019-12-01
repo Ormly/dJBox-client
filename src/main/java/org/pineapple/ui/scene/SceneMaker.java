@@ -1,4 +1,4 @@
-package org.pineapple.api.scene;
+package org.pineapple.ui.scene;
 
 import javafx.scene.Scene;
 

@@ -2,17 +2,18 @@ package org.pineapple.ui.controller;
 
 import javafx.stage.Stage;
 import org.pineapple.Main;
-import org.pineapple.ui.scene.SceneName;
+import org.pineapple.core.JukeBoxClient;
+import org.pineapple.ui.scene.Scene;
 
-public class UserIPConnectController {
+public class UserIPConnectController extends Controller {
 
-    private Stage stage;
-
-    public UserIPConnectController(Stage stage) {this.stage = stage;}
+    public UserIPConnectController(Stage stage, JukeBoxClient jukeBoxClient) {
+        super(stage, jukeBoxClient);
+    }
 
     // Button handlers
     public void connectButtonHandle() {
-        stage.setScene(Main.getScenes().get(SceneName.USERLOGINSCENE));
+        stage.setScene(Main.getScenes().get(Scene.USERLOGINSCENE));
         stage.setTitle("dJBox - Login");
     }
 

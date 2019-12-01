@@ -11,17 +11,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.pineapple.core.JukeBoxClient;
 import org.pineapple.ui.controller.UserLoginController;
 
-public class UserLoginScene implements SceneMaker {
-    private Stage stage;
+public class UserLoginScene extends SceneMaker {
 
-    public UserLoginScene(Stage stage) {this.stage = stage;}
+    public UserLoginScene(Stage stage, JukeBoxClient jukeBoxClient) {
+        super(stage, jukeBoxClient);
+    }
 
     @Override
     public Scene getScene(){
         // Controller for button handling
-        UserLoginController controller = new UserLoginController(stage);
+        UserLoginController controller = new UserLoginController(stage, jukeBoxClient);
 
         // dJBox logo
         Image logoImage = new Image("ananas_color.png");

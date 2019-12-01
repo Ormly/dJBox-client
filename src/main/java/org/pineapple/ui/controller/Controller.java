@@ -1,18 +1,15 @@
-package org.pineapple.ui.scene;
+package org.pineapple.ui.controller;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
 
-public abstract class SceneMaker {
+public abstract class Controller {
 
     protected Stage stage;
     protected JukeBoxClient jukeBoxClient;
 
-    public SceneMaker(Stage stage, JukeBoxClient jukeBoxClient){
+    Controller(Stage stage, JukeBoxClient jukeBoxClient) {
         this.stage = stage;
         this.jukeBoxClient = jukeBoxClient;
     }
-
-    abstract Scene getScene();
 }

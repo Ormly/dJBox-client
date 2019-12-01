@@ -2,17 +2,18 @@ package org.pineapple.ui.controller;
 
 import javafx.stage.Stage;
 import org.pineapple.Main;
-import org.pineapple.ui.scene.SceneName;
+import org.pineapple.core.JukeBoxClient;
+import org.pineapple.ui.scene.Scene;
 
-public class UserLoginController {
+public class UserLoginController extends Controller {
 
-    private Stage stage;
-
-    public UserLoginController(Stage stage) {this.stage = stage;}
+    public UserLoginController(Stage stage, JukeBoxClient jukeBoxClient) {
+        super(stage, jukeBoxClient);
+    }
 
     //Button handlers
     public void loginButtonHandle() {
-        stage.setScene(Main.getScenes().get(SceneName.QUEUESCENE));
+        stage.setScene(Main.getScenes().get(Scene.QUEUESCENE));
         stage.setTitle("dJBox - Queue");
     }
 }

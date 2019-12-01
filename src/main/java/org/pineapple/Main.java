@@ -7,21 +7,23 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.pineapple.ui.scene.*;
 import org.pineapple.core.JukeBoxClient;
+import org.pineapple.core.Song;
+
+import java.util.List;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Main extends Application
 {
-    //TODO: do this for real
 
     // Scenes are mapped to a scene enum into a HashMap
     private static Map<SceneName, Scene> scenes = new HashMap<>();
 
     public static void main(String[] args)
     {
-        JukeBoxClient authTest = new JukeBoxClient();
-        System.out.println("Token returned from Server: " + authTest.getTokenTest());
+        JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();
+        test.doGetQueue();
         launch();
     }
 

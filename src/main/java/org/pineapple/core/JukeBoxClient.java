@@ -1,38 +1,84 @@
 package org.pineapple.core;
 
+import org.pineapple.backend.AuthenticationFailedException;
 import org.pineapple.backend.ServerController;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 
+import java.io.IOException;
+import java.util.List;
+
+//TODO: proper exception handling, prepare ui functionality
 public class JukeBoxClient
 {
     private ServerControllerService serverController;
+    private static JukeBoxClient jukeBoxClientInstance;
 
     private IMediaList library;
     private IMediaList queue;
     private UserData userData;
 
-    public JukeBoxClient()
+    private JukeBoxClient()
     {
         //TESTING
         serverController = new ServerController();
-        String testUser = "ioncicala";
-        String testPassword = "1234";
-        userData = new UserData(testUser,doAuthentication(testUser,testPassword));
+        String testUser = "testperson@gmail.com";
+        String testPassword = "password";
+        userData = new UserData(testUser, doAuthentication(testUser, testPassword));
+    }
+
+    public static JukeBoxClient getJukeBoxClientInstance()
+    {
+        if(jukeBoxClientInstance == null)
+                jukeBoxClientInstance = new JukeBoxClient();
+
+        return jukeBoxClientInstance;
     }
 
     public String doAuthentication(String userEmail, String userPassword)
     {
-        //TESTING
-        String securityToken = serverController.authenticate(userEmail,userPassword);
-        return securityToken;
+        StringBuilder securityToken = new StringBuilder();
+
+        try
+        {
+            securityToken.append(serverController.authenticateUser(userEmail, userPassword));
+        } catch(IOException io)
+        {
+
+        } catch(InterruptedException ie)
+        {
+
+        } catch(AuthenticationFailedException af)
+        {
+
+        }
+
+        return securityToken.toString();
     }
 
-    //TESTING
-    public String getTokenTest()
+    public List<Song> doGetQueue()
     {
-        return userData.getSecurityToken();
+        queue = new SongList();
+
+        try
+        {
+            queue.setSongList(serverController.getServerQueueWithToken(userData.getSecurityToken()));
+        } catch(IOException io)
+        {
+
+        } catch(InterruptedException ie)
+        {
+
+        } catch(AuthenticationFailedException af)
+        {
+
+        }
+
+        return queue.getAllMedia();
     }
 
-    //TODO: functions serving the UI
+    public UserData getUserData()
+    {
+        return userData;
+    }
 }

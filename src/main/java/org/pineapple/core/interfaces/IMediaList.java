@@ -8,4 +8,5 @@ public interface IMediaList<T>
 {
     public List<T> getAllMedia();
     public Optional<T> getMedia(int mediaID);
+    public void setSongList(List<T> list);
 }

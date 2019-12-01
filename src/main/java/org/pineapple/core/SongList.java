@@ -32,6 +32,7 @@ public class SongList implements IMediaList<Song>
         return Optional.empty();
     }
 
+    @Override
     public void setSongList(List<Song> list)
     {
         songList.clear();

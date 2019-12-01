@@ -1,17 +1,20 @@
 package org.pineapple.backend;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.pineapple.backend.interfaces.HTTPControllerService;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.Song;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ServerController extends ServerControllerService
 {
     //localhost for testing purposes
-    private String requestURI = "http://localhost:8080";
+    final private String requestURI = "http://localhost:8080";
 
     public ServerController()
     {
@@ -19,49 +22,56 @@ public class ServerController extends ServerControllerService
     }
 
     @Override
-    public boolean addSongToServerQueue(int songID)
+    public void addSongToServerQueue(int songID, String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException
     {
-        return false;
+
     }
 
     @Override
-    public List<Song> getServerQueue()
+    public List<Song> getServerQueueWithToken(String securityToken)
+    throws IOException, InterruptedException, AuthenticationFailedException
     {
-        List<Song> queue = new ArrayList<>();
-        requestURI += "/queue";
+        List<Song> queue;
+        String request = requestURI + "/queue";
+        ObjectMapper mapper = new ObjectMapper();
+        StringBuilder authResponse = new StringBuilder();
+
+        authResponse.append(httpController.sendGetRequestWithToken(request, securityToken));
+        queue = Arrays.asList(mapper.readValue(authResponse.toString(), Song[].class));
 
         return queue;
     }
 
     @Override
-    public List<Song> getServerLibrary()
+    public List<Song> getServerLibraryWithToken(String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException
     {
         List<Song> library = new ArrayList<>();
-        requestURI += "/library";
+        String request = requestURI + "/library";
 
         return library;
     }
 
     @Override
-    public String authenticate(String userEmail, String userPassword) throws AuthenticationFailedException
+    public String authenticateUser(String userEmail, String userPassword)
+    throws IOException, InterruptedException, AuthenticationFailedException
     {
         StringBuilder authResponse = new StringBuilder();
-        requestURI += "/auth";
+        String request = requestURI + "/auth";
+        //TODO: reconsider this bullshit
+        String requestBody = "{ \"" + "userName" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
 
-        //TODO: check if this can be done better with jackson, and change "userName" to "userEmail" once server-side got their shit together
-        String requestBody = "{ \""+"userName"+"\""+" : "+"\""+userEmail+"\""+", "+"\""+"password"+"\""+" : "+"\""+userPassword+"\" }";
+        authResponse.append(httpController.sendPostRequest(request, requestBody).allValues("token"));
 
-        try
-        {
-            authResponse.append(httpController.sendPostRequest(requestURI, requestBody));
-        } catch(InterruptedException ex)
-        {
-            //TODO: handle these properly
-        } catch(IOException ex)
-        {
+        //TODO: have server-side fix this
+        return authResponse.substring(1,authResponse.length()-1);
+    }
 
-        }
+    @Override
+    public void logoutUser(String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException
+    {
 
-        return authResponse.toString();
     }
 }

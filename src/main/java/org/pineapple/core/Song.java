@@ -17,7 +17,7 @@ public class Song {
         this.album = album;
         this.genre = genre;
         this.year = year;
-        this.duration = duration;
+//        this.duration = duration;
         this.location = location;
     }
 

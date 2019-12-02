@@ -13,6 +13,7 @@ public class UserLoginController extends Controller {
 
     //Button handlers
     public void loginButtonHandle(String email, String password) {
+        //TODO: doAuthentication returns string, what to do with string?
         jukeBoxClient.doAuthentication(email, password);
         stage.setScene(Main.getScenes().get(Scene.QUEUESCENE));
         stage.setTitle("dJBox - Queue");

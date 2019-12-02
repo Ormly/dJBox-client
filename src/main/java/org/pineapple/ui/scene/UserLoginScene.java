@@ -48,7 +48,11 @@ public class UserLoginScene extends SceneMaker {
         passwordHBox.getChildren().addAll(passwordLabel,passwordPasswordField);
 
         Button loginButton = new Button("Login");
-        loginButton.setOnAction(e -> controller.loginButtonHandle(usernameTextField.getText(),passwordPasswordField.getText()));
+        loginButton.setOnAction(e -> {
+            controller.loginButtonHandle(usernameTextField.getText(), passwordPasswordField.getText());
+            usernameTextField.setText(null);
+            passwordPasswordField.setText(null);
+        });
 
         // top to bottom, dJBox logo, username and field, password and field, button
         VBox root = new VBox(20);

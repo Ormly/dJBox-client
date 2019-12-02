@@ -31,9 +31,6 @@ public class UserLoginScene extends SceneMaker {
         logoImageView.setFitHeight(100);
         logoImageView.setPreserveRatio(true);
 
-        Button loginButton = new Button("Login");
-        loginButton.setOnAction(e -> controller.loginButtonHandle());
-
         Label usernameLabel = new Label("Username:");
         Label passwordLabel = new Label("Password:");
 
@@ -49,6 +46,9 @@ public class UserLoginScene extends SceneMaker {
         HBox passwordHBox = new HBox(20);
         passwordHBox.setAlignment(Pos.CENTER);
         passwordHBox.getChildren().addAll(passwordLabel,passwordPasswordField);
+
+        Button loginButton = new Button("Login");
+        loginButton.setOnAction(e -> controller.loginButtonHandle(usernameTextField.getText(),passwordPasswordField.getText()));
 
         // top to bottom, dJBox logo, username and field, password and field, button
         VBox root = new VBox(20);

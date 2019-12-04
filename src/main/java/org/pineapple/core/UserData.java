@@ -5,21 +5,30 @@ public class UserData
     private String emailAddress;
     private String securityToken;
 
-    //TODO: token needs to be generated in a modular way through Authentication service
-
-    public UserData(String emailAddress, String securityToken)
+    public void setEmailAddress(String emailAddress)
     {
         this.emailAddress = emailAddress;
+    }
+
+    public void setSecurityToken(String securityToken)
+    {
         this.securityToken = securityToken;
     }
 
     public String getEmailAddress()
     {
-        return emailAddress;
+        //TODO think about smarter return in case of null
+        if(emailAddress == null)
+            return "";
+        else
+            return emailAddress;
     }
 
     public String getSecurityToken()
     {
-        return securityToken;
+        if(securityToken == null)
+            return "";
+        else
+            return securityToken;
     }
 }

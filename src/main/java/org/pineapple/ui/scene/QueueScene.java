@@ -1,5 +1,8 @@
 package org.pineapple.ui.scene;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
+import org.pineapple.core.Song;
 import org.pineapple.ui.controller.QueueController;
 
 public class QueueScene extends SceneMaker {
@@ -25,20 +29,52 @@ public class QueueScene extends SceneMaker {
         // Uses controller for button handling
         QueueController controller = new QueueController(stage, jukeBoxClient);
 
+        // Lists songs in the queue
+        TableView<Song> tableView = new TableView<Song>();
+        TableColumn<Song, String> titleColumn = new TableColumn<Song, String>("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("title"));
+        titleColumn.setSortable(false);
+        TableColumn<Song, String> artistColumn = new TableColumn<Song, String>("Artist");
+        artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("artist"));
+        artistColumn.setSortable(false);
+        TableColumn<Song, String> albumColumn = new TableColumn<Song, String>("Album");
+        albumColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("album"));
+        albumColumn.setSortable(false);
+        tableView.getColumns().add(titleColumn);
+        tableView.getColumns().add(artistColumn);
+        tableView.getColumns().add(albumColumn);
+        tableView.setPlaceholder(new Label("No songs are in the queue please add a song"));
+        ObservableList<Song> observableSongList = FXCollections.observableArrayList(jukeBoxClient.doGetQueue());
+        observableSongList.add(new Song(1,"Aerodynamic","Daft Punk","Discovery","Electronic / Pop / Disco / Funk",2001,100,"C:\\Users\\Public\\Music\\Aerodynamic.mp3"));
+        observableSongList.add(new Song(2,"Crescendolls","Daft Punk","Discovery","Electronic / Pop / Disco / Funk",2001,100,"C:\\Users\\Public\\Music\\crescendolls.mp3"));
+        observableSongList.add(new Song(3,"Beat it","Michael Jackson","Thriller","Pop",1982,100,"test location"));
+        observableSongList.add(new Song(4,"Smooth Criminal","Michael Jackson","Bad","Pop",1988,100,"test location"));
+
+        // Wrap observableList in FilteredList (Showing all data initially)
+        FilteredList<Song> filteredList = new FilteredList<>(observableSongList, p -> true);
+
         // Search bar
         TextField searchTextField = new TextField();
-        searchTextField.setPromptText("search");
+        searchTextField.setPromptText("Search for a song");
+        searchTextField.textProperty().addListener((observable, oldValue, newValue)-> {
+            filteredList.setPredicate(song -> {
+                // Empty displays all
+                if (newValue == null || newValue.isEmpty())
+                    return true;
 
-        // Lists songs in the queue
-        TableView tableView = new TableView();
-        TableColumn<String, String> songColumn = new TableColumn<>("Song");
-        songColumn.setCellValueFactory(new PropertyValueFactory<>("song"));
-        TableColumn<String, String> artistColumn = new TableColumn<>("Artist");
-        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        TableColumn<String, String> albumColumn = new TableColumn<>("Album");
-        albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
-        tableView.getColumns().addAll(songColumn,artistColumn,albumColumn);
-        tableView.setPlaceholder(new Label("No songs are in the queue please add a song"));
+                // Compare song title, album and artist with search bar
+                String lowerCaseFilter = newValue.toLowerCase();
+                if (song.getTitle().toLowerCase().contains(lowerCaseFilter))
+                    return true;
+                else if (song.getArtist().toLowerCase().contains(lowerCaseFilter))
+                    return true;
+                else if (song.getAlbum().toLowerCase().contains(lowerCaseFilter))
+                    return true;
+                return false;
+            });
+        });
+
+        tableView.setItems(filteredList);
 
         // Search bar on top of song list
         VBox leftVBox = new VBox(searchTextField,tableView);

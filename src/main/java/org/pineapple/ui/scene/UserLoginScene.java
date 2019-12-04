@@ -10,6 +10,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
 import org.pineapple.ui.controller.UserLoginController;
@@ -48,16 +50,18 @@ public class UserLoginScene extends SceneMaker {
         passwordHBox.getChildren().addAll(passwordLabel,passwordPasswordField);
 
         Button loginButton = new Button("Login");
+
+        Label response = new Label("");
+        response.setTextFill(Color.RED);
+
         loginButton.setOnAction(e -> {
-            controller.loginButtonHandle(usernameTextField.getText(), passwordPasswordField.getText());
-            usernameTextField.setText(null);
-            passwordPasswordField.setText(null);
+            controller.loginButtonHandle(usernameTextField, passwordPasswordField, response);
         });
 
-        // top to bottom, dJBox logo, username and field, password and field, button
+        // top to bottom, dJBox logo, username and field, password and field, button, response state
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(logoImageView,usernameHBox,passwordHBox,loginButton);
+        root.getChildren().addAll(logoImageView,usernameHBox,passwordHBox,loginButton, response);
 
         Scene scene = new Scene(root,800,600);
 

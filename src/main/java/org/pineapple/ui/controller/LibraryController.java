@@ -11,17 +11,6 @@ public class LibraryController extends Controller {
         super(stage, jukeBoxClient);
     }
 
-    //Button handlers
-    public void logoutButtonHandle() {
-        stage.setScene(Main.getScenes().get(Scene.USERLOGINSCENE));
-        stage.setTitle("dJBox - Login");
-    }
-
-    public void queueButtonHandle() {
-        stage.setScene(Main.getScenes().get(Scene.QUEUESCENE));
-        stage.setTitle("dJBox - Queue");
-    }
-
     public void addToQueueButtonHandle() {
         System.out.println("Song added to queue");
     }

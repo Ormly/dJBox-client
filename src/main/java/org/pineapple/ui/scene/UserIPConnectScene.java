@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
-import org.pineapple.ui.controller.UserIPConnectController;
+import org.pineapple.ui.controller.Controller;
 
 public class UserIPConnectScene extends SceneMaker {
 
@@ -22,7 +22,7 @@ public class UserIPConnectScene extends SceneMaker {
     @Override
     public Scene getScene(){
         // Button handler
-        UserIPConnectController controller = new UserIPConnectController(stage, jukeBoxClient);
+        Controller controller = new Controller(stage, jukeBoxClient);
 
         // Connect to IP button
         Button connectButton = new Button("Connect");
@@ -49,7 +49,6 @@ public class UserIPConnectScene extends SceneMaker {
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(logoImageView,ipAddressHBox,connectButton);
 
-        Scene scene = new Scene(root,800,600);
-        return scene;
+        return new Scene(root, 800, 600);
     }
 }

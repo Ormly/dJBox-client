@@ -1,5 +1,7 @@
 package org.pineapple.ui.scene;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -14,11 +16,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.pineapple.core.JukeBoxClient;
 import org.pineapple.core.Song;
 import org.pineapple.ui.controller.QueueController;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class QueueScene extends SceneMaker {
+
+    private  Timeline timeline = null;
 
     public QueueScene(Stage stage, JukeBoxClient jukeBoxClient) {
         super(stage, jukeBoxClient);
@@ -44,11 +51,13 @@ public class QueueScene extends SceneMaker {
         tableView.getColumns().add(artistColumn);
         tableView.getColumns().add(albumColumn);
         tableView.setPlaceholder(new Label("No songs are in the queue please add a song"));
-        ObservableList<Song> observableSongList = FXCollections.observableArrayList(jukeBoxClient.doGetQueue());
-        observableSongList.add(new Song(1,"Aerodynamic","Daft Punk","Discovery","Electronic / Pop / Disco / Funk",2001,100,"C:\\Users\\Public\\Music\\Aerodynamic.mp3"));
-        observableSongList.add(new Song(2,"Crescendolls","Daft Punk","Discovery","Electronic / Pop / Disco / Funk",2001,100,"C:\\Users\\Public\\Music\\crescendolls.mp3"));
-        observableSongList.add(new Song(3,"Beat it","Michael Jackson","Thriller","Pop",1982,100,"test location"));
-        observableSongList.add(new Song(4,"Smooth Criminal","Michael Jackson","Bad","Pop",1988,100,"test location"));
+        ObservableList<Song> observableSongList = FXCollections.observableArrayList();
+        timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+            observableSongList.clear();
+            observableSongList.addAll(controller.doGetQueue());
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         // Wrap observableList in FilteredList (Showing all data initially)
         FilteredList<Song> filteredList = new FilteredList<>(observableSongList, p -> true);

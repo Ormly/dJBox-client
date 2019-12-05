@@ -48,11 +48,11 @@ public class JukeBoxClient
 
         try
         {
-            String token = serverController.authenticateUser(userEmail, userPassword);
-            userData.setSecurityToken(token);
-//            userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
+
+            userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
+
             userData.setEmailAddress(userEmail);
-            System.out.println("token:" + userData.getSecurityToken());
+
         } catch(IOException io)
         {
             System.out.println("IOException");
@@ -135,6 +135,7 @@ public class JukeBoxClient
             return ResponseState.AUTHFAIL;
         }
 
+        System.out.println("Logout is successful");
         return ResponseState.SUCCESS;
     }
 }

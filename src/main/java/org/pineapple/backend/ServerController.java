@@ -75,7 +75,7 @@ public class ServerController extends ServerControllerService
     public void logoutUser(String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
     {
-        String request = requestURI + "auth/logout";
+        String request = requestURI + "/auth/logout";
 
         httpController.sendGetRequestWithToken(request, securityToken);
     }

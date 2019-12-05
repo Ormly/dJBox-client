@@ -30,9 +30,13 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         int responseStatusCode = response.statusCode();
+
+        System.out.println("Post request -> status code: " + responseStatusCode);
+
         if(responseStatusCode == 200)
             return response.headers();
         else
+
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
     }
 
@@ -51,6 +55,9 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         int responseStatusCode = response.statusCode();
+
+        System.out.println("Get request -> status code: " + responseStatusCode);
+
         if(responseStatusCode == 200)
             return response.body();
         else

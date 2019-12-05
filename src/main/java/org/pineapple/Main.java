@@ -20,7 +20,8 @@ public class Main extends Application
     public static void main(String[] args)
     {
         //JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();
-        test.doGetQueue();
+//        test.doAuthentication("testperson@gmail.com","password");
+
         launch();
     }
 

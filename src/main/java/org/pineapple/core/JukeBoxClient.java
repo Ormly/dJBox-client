@@ -29,10 +29,9 @@ public class JukeBoxClient
 
         //TESTING
         serverController = new ServerController();
-//        String testUser = "testperson@gmail.com";
-//        String testPassword = "password";
+
         userData = new UserData();
-//        doAuthentication(testUser,testPassword);
+
     }
 
     public static JukeBoxClient getJukeBoxClientInstance()

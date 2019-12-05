@@ -52,6 +52,10 @@ public class JukeBoxClient
 
             userData.setEmailAddress(userEmail);
 
+            // For testing get library
+//            getLibraryResponseState();
+//            doGetLibrary();
+
         } catch(IOException io)
         {
             System.out.println("IOException");
@@ -73,6 +77,7 @@ public class JukeBoxClient
         try
         {
             queue.setSongList(serverController.getServerQueueWithToken(userData.getSecurityToken()));
+
         } catch(IOException io)
         {
             return ResponseState.FATAL;
@@ -91,6 +96,13 @@ public class JukeBoxClient
     //TODO: think about returning Optional instead
     public List<Song> doGetQueue()
     {
+        List<Song> songs = queue.getAllMedia();
+
+        for(Song song : songs)
+        {
+            System.out.println(song.getTitle());
+        }
+
         return queue.getAllMedia();
     }
 
@@ -104,7 +116,7 @@ public class JukeBoxClient
             return ResponseState.FATAL;
         } catch(InterruptedException ie)
         {
-            //???
+            System.out.println("InterruptedException in getLibraryresponseState");
         } catch(AuthenticationFailedException af)
         {
             return ResponseState.AUTHFAIL;
@@ -115,6 +127,7 @@ public class JukeBoxClient
 
     public List<Song> doGetLibrary()
     {
+
         return library.getAllMedia();
     }
 

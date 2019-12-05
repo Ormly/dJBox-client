@@ -1,16 +1,14 @@
 package org.pineapple.backend;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.pineapple.backend.interfaces.HTTPControllerService;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.Song;
-
 import java.io.IOException;
 import java.net.http.HttpHeaders;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 public class ServerController extends ServerControllerService
 {
@@ -39,6 +37,7 @@ public class ServerController extends ServerControllerService
         StringBuilder authResponse = new StringBuilder();
 
         authResponse.append(httpController.sendGetRequestWithToken(request, securityToken));
+
         queue = Arrays.asList(mapper.readValue(authResponse.toString(), Song[].class));
 
         return queue;
@@ -48,8 +47,18 @@ public class ServerController extends ServerControllerService
     public List<Song> getServerLibraryWithToken(String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
     {
-        List<Song> library = new ArrayList<>();
+        List<Song> library;
         String request = requestURI + "/library";
+
+        ObjectMapper mapper = new ObjectMapper();
+        StringBuilder authResponse = new StringBuilder();
+
+        authResponse.append(httpController.sendGetRequestWithToken(request, securityToken));
+
+        library = Arrays.asList(mapper.readValue(authResponse.toString(), Song[].class));
+
+        // Testing: print out title of songs in library
+//        library.forEach((n) -> System.out.println(n.getTitle()));
 
         return library;
     }

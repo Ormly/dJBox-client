@@ -29,34 +29,40 @@ public class JukeBoxClient
 
         //TESTING
         serverController = new ServerController();
-        String testUser = "testperson@gmail.com";
-        String testPassword = "password";
+//        String testUser = "testperson@gmail.com";
+//        String testPassword = "password";
         userData = new UserData();
-        doAuthentication(testUser,testPassword);
+//        doAuthentication(testUser,testPassword);
     }
 
     public static JukeBoxClient getJukeBoxClientInstance()
     {
         if(jukeBoxClientInstance == null)
-                jukeBoxClientInstance = new JukeBoxClient();
+            jukeBoxClientInstance = new JukeBoxClient();
 
         return jukeBoxClientInstance;
     }
 
     public ResponseState doAuthentication(String userEmail, String userPassword)
     {
+
         try
         {
-            userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
+            String token = serverController.authenticateUser(userEmail, userPassword);
+            userData.setSecurityToken(token);
+//            userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
             userData.setEmailAddress(userEmail);
+            System.out.println("token:" + userData.getSecurityToken());
         } catch(IOException io)
         {
-            return ResponseState.FATAL;
+            System.out.println("IOException");
         } catch(InterruptedException ie)
         {
             //TODO: think about this bullshit
+            System.out.println("InterruptedException");
         } catch(AuthenticationFailedException af)
         {
+            System.out.println("AUTHFAIL");
             return ResponseState.AUTHFAIL;
         }
 
@@ -76,6 +82,7 @@ public class JukeBoxClient
             //???
         } catch(AuthenticationFailedException af)
         {
+
             return ResponseState.AUTHFAIL;
         }
 
@@ -111,4 +118,25 @@ public class JukeBoxClient
     {
         return library.getAllMedia();
     }
+
+    public ResponseState doLogout()
+    {
+        try
+        {
+            serverController.logoutUser(userData.getSecurityToken());
+        } catch(IOException io)
+        {
+            return ResponseState.FATAL;
+        } catch(InterruptedException ie)
+        {
+            System.out.println("InterruptedException");
+        } catch(AuthenticationFailedException af)
+        {
+            return ResponseState.AUTHFAIL;
+        }
+
+        return ResponseState.SUCCESS;
+    }
 }
+
+

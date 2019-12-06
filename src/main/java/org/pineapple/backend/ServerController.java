@@ -7,6 +7,7 @@ import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.Song;
 
 import java.io.IOException;
+import java.net.http.HttpHeaders;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +63,9 @@ public class ServerController extends ServerControllerService
         //TODO: reconsider this bullshit
         String requestBody = "{ \"" + "userName" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
 
-        authResponse.append(httpController.sendPostRequest(request, requestBody).allValues("token"));
+        HttpHeaders headers = httpController.sendPostRequest(request, requestBody);
+
+        authResponse.append(headers.allValues("token"));
 
         //TODO: have server-side fix this
         return authResponse.substring(1,authResponse.length()-1);
@@ -72,6 +75,8 @@ public class ServerController extends ServerControllerService
     public void logoutUser(String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
     {
+        String request = requestURI + "/auth/logout";
 
+        httpController.sendGetRequestWithToken(request, securityToken);
     }
 }

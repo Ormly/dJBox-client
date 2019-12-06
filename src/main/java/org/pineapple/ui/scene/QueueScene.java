@@ -23,14 +23,10 @@ import org.pineapple.ui.controller.Controller;
 
 public class QueueScene extends SceneMaker {
 
-    private  Timeline timeline = null;
+    private  Timeline timeline;
 
     public QueueScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient);
-    }
-
-    @Override
-    public Scene getScene(){
+        super(stage, jukeBoxClient,800,600);
         // Uses controller for button handling
         Controller controller = new Controller(stage, jukeBoxClient);
 
@@ -163,6 +159,6 @@ public class QueueScene extends SceneMaker {
         rightBorderPane.prefWidthProperty().bind(root.widthProperty());
         leftVBox.prefWidthProperty().bind(root.widthProperty());
 
-        return new Scene(root, 800, 600);
+        this.setRoot(root);
     }
 }

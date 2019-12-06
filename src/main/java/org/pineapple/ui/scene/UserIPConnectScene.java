@@ -16,11 +16,7 @@ import org.pineapple.ui.controller.Controller;
 public class UserIPConnectScene extends SceneMaker {
 
     public UserIPConnectScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient);
-    }
-
-    @Override
-    public Scene getScene(){
+        super(stage, jukeBoxClient,800,600);
         // Button handler
         Controller controller = new Controller(stage, jukeBoxClient);
 
@@ -49,6 +45,6 @@ public class UserIPConnectScene extends SceneMaker {
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(logoImageView,ipAddressHBox,connectButton);
 
-        return new Scene(root, 800, 600);
+        this.setRoot(root);
     }
 }

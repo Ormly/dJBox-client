@@ -18,11 +18,7 @@ import org.pineapple.ui.controller.Controller;
 public class UserLoginScene extends SceneMaker {
 
     public UserLoginScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient);
-    }
-
-    @Override
-    public Scene getScene(){
+        super(stage, jukeBoxClient,800,600);
         // Controller for button handling
         Controller controller = new Controller(stage, jukeBoxClient);
 
@@ -60,6 +56,6 @@ public class UserLoginScene extends SceneMaker {
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(logoImageView,usernameHBox,passwordHBox,loginButton, response);
 
-        return new Scene(root, 800, 600);
+        this.setRoot(root);
     }
 }

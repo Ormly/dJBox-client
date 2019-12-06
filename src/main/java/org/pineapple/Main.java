@@ -1,6 +1,7 @@
 package org.pineapple;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -14,8 +15,8 @@ public class Main extends Application
 {
 
     // Scenes are mapped to a scene enum into a HashMap
-    private static Map<Scene, javafx.scene.Scene> scenes = new HashMap<>();
-    private static JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();;
+    private static Map<SceneEnum, javafx.scene.Scene> scenes = new HashMap<>();
+    private static JukeBoxClient test = JukeBoxClient.getJukeBoxClientInstance();
 
     public static void main(String[] args)
     {
@@ -25,25 +26,23 @@ public class Main extends Application
     }
 
     public void start(Stage stage)
-    throws Exception
     {
         // Scenes are created and stored in the HashMap
-        scenes.put(Scene.USERIPCONNECTSCENE, new UserIPConnectScene(stage, test).getScene());
-        scenes.put(Scene.USERLOGINSCENE, new UserLoginScene(stage, test).getScene());
-        scenes.put(Scene.QUEUESCENE, new QueueScene(stage, test).getScene());
-        scenes.put(Scene.LIBRARYSCENE, new LibraryScene(stage, test).getScene());
-
+        scenes.put(SceneEnum.USERIPCONNECTSCENE, new UserIPConnectScene(stage, test));
+        scenes.put(SceneEnum.USERLOGINSCENE, new UserLoginScene(stage, test));
+        scenes.put(SceneEnum.QUEUESCENE, new QueueScene(stage, test));
+        scenes.put(SceneEnum.LIBRARYSCENE, new LibraryScene(stage, test));
 
         AnchorPane rootNode = new AnchorPane();
 
         // Initial scene is Connect IP
         stage.getIcons().add(new Image("ananas_color.png"));
-        stage.setScene(scenes.get(Scene.USERIPCONNECTSCENE));
+        stage.setScene(scenes.get(SceneEnum.USERIPCONNECTSCENE));
         stage.setTitle("dJBox - IP connect");
         stage.centerOnScreen();
         stage.show();
     }
 
     // Returns scene by name
-    public static Map<Scene, javafx.scene.Scene> getScenes() {return scenes;}
+    public static Map<SceneEnum, javafx.scene.Scene> getScenes() {return scenes;}
 }

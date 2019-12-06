@@ -17,11 +17,7 @@ import org.pineapple.ui.controller.Controller;
 public class LibraryScene extends SceneMaker {
 
     public LibraryScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient);
-    }
-
-    @Override
-    public Scene getScene() {
+        super(stage, jukeBoxClient,500,400);
         // Uses controller for button handling
         Controller controller = new Controller(stage, jukeBoxClient);
 
@@ -74,6 +70,6 @@ public class LibraryScene extends SceneMaker {
         rightVBox.prefWidthProperty().bind(root.widthProperty());
         leftVBox.prefWidthProperty().bind(root.widthProperty());
 
-        return new Scene(root, 500, 400);
+        this.setRoot(root);
     }
 }

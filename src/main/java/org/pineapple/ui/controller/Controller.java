@@ -10,7 +10,7 @@ import org.pineapple.Main;
 import org.pineapple.core.JukeBoxClient;
 import org.pineapple.core.ResponseState;
 import org.pineapple.core.Song;
-import org.pineapple.ui.scene.Scene;
+import org.pineapple.ui.scene.SceneEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +30,13 @@ public class Controller {
     }
 
     public void logoutButtonHandle() {
-        stage.setScene(Main.getScenes().get(Scene.USERLOGINSCENE));
+        stage.setScene(Main.getScenes().get(SceneEnum.USERLOGINSCENE));
         stage.setTitle("dJBox - Login");
     }
 
     public void libraryButtonHandle() {
         Stage dialog = new Stage();
-        dialog.setScene(Main.getScenes().get(Scene.LIBRARYSCENE));
+        dialog.setScene(Main.getScenes().get(SceneEnum.LIBRARYSCENE));
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - Library");
@@ -63,7 +63,7 @@ public class Controller {
     }
 
     public void connectButtonHandle() {
-        stage.setScene(Main.getScenes().get(Scene.USERLOGINSCENE));
+        stage.setScene(Main.getScenes().get(SceneEnum.USERLOGINSCENE));
         stage.setTitle("dJBox - Login");
     }
 
@@ -71,7 +71,7 @@ public class Controller {
         ResponseState responseState = jukeBoxClient.doAuthentication(user.getText(), password.getText());
         switch(responseState){
             case SUCCESS:
-                stage.setScene(Main.getScenes().get(Scene.QUEUESCENE));
+                stage.setScene(Main.getScenes().get(SceneEnum.QUEUESCENE));
                 stage.setTitle("dJBox - Queue");
                 user.setText("");
                 password.setText("");

@@ -44,6 +44,11 @@ public class Main extends Application
         stage.show();
     }
 
+    public void stop() {
+        // TODO: what to do with responsestate
+        test.doLogout();
+    }
+
     // Returns scene by name
     public static Map<SceneEnum, javafx.scene.Scene> getScenes() {return scenes;}
 }

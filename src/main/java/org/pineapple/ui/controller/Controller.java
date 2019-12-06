@@ -30,6 +30,8 @@ public class Controller {
     }
 
     public void logoutButtonHandle() {
+        //TODO: What to do with responsestate
+        jukeBoxClient.doLogout();
         stage.setScene(Main.getScenes().get(SceneEnum.USERLOGINSCENE));
         stage.setTitle("dJBox - Login");
     }

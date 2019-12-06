@@ -53,19 +53,17 @@ public class JukeBoxClient
             userData.setEmailAddress(userEmail);
 
             // For testing get library
-//            getLibraryResponseState();
-//            doGetLibrary();
+            getLibraryResponseState();
+            doGetLibrary();
 
         } catch(IOException io)
         {
-            System.out.println("IOException");
         } catch(InterruptedException ie)
         {
             //TODO: think about this bullshit
             System.out.println("InterruptedException");
         } catch(AuthenticationFailedException af)
         {
-            System.out.println("AUTHFAIL");
             return ResponseState.AUTHFAIL;
         }
 
@@ -147,7 +145,6 @@ public class JukeBoxClient
             return ResponseState.AUTHFAIL;
         }
 
-        System.out.println("Logout is successful");
         return ResponseState.SUCCESS;
     }
 }

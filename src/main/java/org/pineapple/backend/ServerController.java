@@ -4,6 +4,7 @@ package org.pineapple.backend;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.Song;
+
 import java.io.IOException;
 import java.net.http.HttpHeaders;
 import java.util.Arrays;
@@ -57,9 +58,6 @@ public class ServerController extends ServerControllerService
 
         library = Arrays.asList(mapper.readValue(authResponse.toString(), Song[].class));
 
-        // Testing: print out title of songs in library
-//        library.forEach((n) -> System.out.println(n.getTitle()));
-
         return library;
     }
 
@@ -77,7 +75,7 @@ public class ServerController extends ServerControllerService
         authResponse.append(headers.allValues("token"));
 
         //TODO: have server-side fix this
-        return authResponse.substring(1,authResponse.length()-1);
+        return authResponse.substring(1, authResponse.length() - 1);
     }
 
     @Override

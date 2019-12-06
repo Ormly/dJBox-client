@@ -1,5 +1,6 @@
 package org.pineapple.ui.scene;
 
-public enum Scene {
+public enum SceneEnum
+{
     USERLOGINSCENE,USERIPCONNECTSCENE,QUEUESCENE,LIBRARYSCENE
 }

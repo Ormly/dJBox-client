@@ -7,37 +7,35 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
-import org.pineapple.ui.controller.LibraryController;
+import org.pineapple.core.Song;
+import org.pineapple.ui.controller.Controller;
 
 public class LibraryScene extends SceneMaker {
 
     public LibraryScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient);
-    }
-
-    @Override
-    public Scene getScene() {
+        super(stage, jukeBoxClient,500,400);
         // Uses controller for button handling
-        LibraryController controller = new LibraryController(stage, jukeBoxClient);
+        Controller controller = new Controller(stage, jukeBoxClient);
 
         // Search bar
         TextField searchTextField = new TextField();
         searchTextField.setPromptText("search");
 
         // Lists songs in the library
-        TableView songsTableView = new TableView();
-        TableColumn<String, String> songColumn = new TableColumn<>("Song");
+        TableView<Song> songsTableView = new TableView<>();
+        TableColumn<Song, String> songColumn = new TableColumn<>("Song");
         songColumn.setCellValueFactory(new PropertyValueFactory<>("song"));
-        TableColumn<String, String> artistColumn = new TableColumn<>("Artist");
+        TableColumn<Song, String> artistColumn = new TableColumn<>("Artist");
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        TableColumn<String, String> albumColumn = new TableColumn<>("Album");
+        TableColumn<Song, String> albumColumn = new TableColumn<>("Album");
         albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
-        songsTableView.getColumns().addAll(songColumn,artistColumn,albumColumn);
+        songsTableView.getColumns().add(songColumn);
+        songsTableView.getColumns().add(artistColumn);
+        songsTableView.getColumns().add(albumColumn);
         songsTableView.setPlaceholder(new Label("No songs have been added to the library"));
 
         // Stacks search bar on top of song list
@@ -72,7 +70,6 @@ public class LibraryScene extends SceneMaker {
         rightVBox.prefWidthProperty().bind(root.widthProperty());
         leftVBox.prefWidthProperty().bind(root.widthProperty());
 
-        Scene scene = new Scene(root,500,400);
-        return scene;
+        this.setRoot(root);
     }
 }

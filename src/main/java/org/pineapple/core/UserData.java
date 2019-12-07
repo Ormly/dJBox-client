@@ -1,5 +1,8 @@
 package org.pineapple.core;
 
+/**
+ * Represents the user's data, including a user's email address and their associated security token.
+ */
 public class UserData
 {
     private String emailAddress;
@@ -30,5 +33,12 @@ public class UserData
             return "";
         else
             return securityToken;
+    }
+
+    //TODO: make this not suck.
+    public void clear()
+    {
+        emailAddress = null;
+        securityToken = null;
     }
 }

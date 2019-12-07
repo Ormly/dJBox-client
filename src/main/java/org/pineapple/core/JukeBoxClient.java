@@ -10,10 +10,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: proper exception handling, prepare ui functionality
+/**
+ * Central class controlling client-side logic, wraps functionality provided by server and exposes it to the GUI.
+ */
 public class JukeBoxClient
 {
     private final ServerControllerService serverController;
+    //Singleton
     private static JukeBoxClient jukeBoxClientInstance;
 
     private IMediaList library;
@@ -22,6 +25,9 @@ public class JukeBoxClient
 
     //private boolean validResponse;
 
+    /**
+     * Initializes all relevant members, including the ServerControllerService providing server connection.
+     */
     private JukeBoxClient()
     {
         queue = new SongList();
@@ -34,6 +40,11 @@ public class JukeBoxClient
         userData = new UserData();
     }
 
+    /**
+     * JukeboxClient is Singleton.
+     *
+     * @return JukeboxClient instance.
+     */
     public static JukeBoxClient getJukeBoxClientInstance()
     {
         if(jukeBoxClientInstance == null)
@@ -42,11 +53,18 @@ public class JukeBoxClient
         return jukeBoxClientInstance;
     }
 
+    /**
+     * Exposes authentication functionality to GUI, relegates to ServerControllerService member.
+     * Saves relevant data to member UserData if API call succeeded.
+     *
+     * @param userEmail
+     * @param userPassword
+     * @return ResponseState enum signifying to GUI whether API call succeeded or not.
+     */
     public ResponseState doAuthentication(String userEmail, String userPassword)
     {
         try
         {
-
             userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
             userData.setEmailAddress(userEmail);
         } catch(IOException io)
@@ -62,6 +80,12 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
+    /**
+     * Exposes queue fetch functionality to GUI, relegates to ServerControllerService member.
+     * No actual queue is returned, queue list of songs gets saved to queue member if API call succeeds.
+     *
+     * @return ResponseState enum signifying to GUI whether API call succeeded or not.
+     */
     public ResponseState getQueueResponseState()
     {
         try
@@ -84,12 +108,24 @@ public class JukeBoxClient
     }
 
     //TODO: think about returning Optional instead
+
+    /**
+     * Provides JukeboxClient queue as list of songs, to be called only after a valid ResponseState has been determined through getQueueResponseState.
+     *
+     * @return list of songs representing queue state.
+     */
     public List<Song> doGetQueue()
     {
         //TODO: proofing
         return queue.getAllMedia();
     }
 
+    /**
+     * Exposes adding a song to server queue functionality to GUI, relegates to ServerControllerService member.
+     *
+     * @param songID ID of song to be added to queue.
+     * @return ResponseState enum signifying to GUI whether API call succeeded or not.
+     */
     public ResponseState addSongToQueue(int songID)
     {
         try
@@ -109,6 +145,12 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
+    /**
+     * Exposes library fetch functionality to GUI, relegates to ServerControllerService member.
+     * No actual library is returned, library list of songs gets saved to library member if API call succeeds.
+     *
+     * @return ResponseState enum signifying to GUI whether API call succeeded or not.
+     */
     public ResponseState getLibraryResponseState()
     {
         try
@@ -134,11 +176,17 @@ public class JukeBoxClient
         return library.getAllMedia();
     }
 
+    /**
+     * Exposes logout functionality to GUI, relegates to ServerControllerService member.
+     *
+     * @return ResponseState enum signifying to GUI whether API call succeeded or not.
+     */
     public ResponseState doLogout()
     {
         try
         {
             serverController.logoutUser(userData.getSecurityToken());
+            userData.clear();
         } catch(IOException io)
         {
             return ResponseState.FATAL;
@@ -153,6 +201,11 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
+    /**
+     * Setter for JukeBox IP. Sets ServerControllerService URI member.
+     *
+     * @param ipAddress
+     */
     public void setJukeBoxIP(String ipAddress)
     {
         serverController.setRequestURI(ipAddress);

@@ -3,6 +3,7 @@ package org.pineapple.backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.pineapple.backend.interfaces.ServerControllerService;
+import org.pineapple.backend.interfaces.HTTPControllerService;
 import org.pineapple.core.Song;
 
 import java.io.IOException;
@@ -10,18 +11,18 @@ import java.net.http.HttpHeaders;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Exposes methods fetching server data to JukeBoxClient.
+ */
 public class ServerController extends ServerControllerService
 {
-    //localhost for testing purposes
     private String requestURI;
 
-    public ServerController(HTTPControllerJavaNet httpController)
+    public ServerController(HTTPControllerService httpController)
     {
         this.httpController = httpController;
     }
 
-    @Override
     public void addSongToServerQueue(int songID, String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
     {
@@ -30,6 +31,16 @@ public class ServerController extends ServerControllerService
         httpController.sendGetRequestWithToken(request, securityToken);
     }
 
+    /**
+     * Fetches the current queue of songs from the server.
+     * JSON-formatted response from HTTPController gets converted into List of Song objects via Jackson.
+     *
+     * @param securityToken needs to be passed to identify the user.
+     * @return A list of songs representing the current queue state.
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws AuthenticationFailedException if the token is invalid.
+     */
     @Override
     public List<Song> getServerQueueWithToken(String securityToken)
     throws IOException, InterruptedException, AuthenticationFailedException
@@ -46,6 +57,16 @@ public class ServerController extends ServerControllerService
         return queue;
     }
 
+    /**
+     * Fetches the current library of songs from the server.
+     * JSON-formatted response from HTTPController gets converted into List of Song objects via Jackson.
+     *
+     * @param securityToken needs to be passed to identify the user.
+     * @return A list of songs representing the current library state.
+     * @throws IOException
+     * @throws InterruptedException
+     * @throws AuthenticationFailedException if the token is invalid.
+     */
     @Override
     public List<Song> getServerLibraryWithToken(String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
@@ -76,7 +97,7 @@ public class ServerController extends ServerControllerService
 
         authResponse.append(headers.allValues("token"));
 
-        //TODO: have server-side fix this
+        //token is surrounded by braces (JSON-formatted), which need to be removed
         return authResponse.substring(1, authResponse.length() - 1);
     }
 

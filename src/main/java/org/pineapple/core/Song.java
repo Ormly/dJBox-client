@@ -1,5 +1,8 @@
 package org.pineapple.core;
 
+/**
+ * Represents a song and its associated data.
+ */
 public class Song
 {
     private int id;

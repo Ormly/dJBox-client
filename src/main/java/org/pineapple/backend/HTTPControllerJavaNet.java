@@ -12,16 +12,31 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 
-
+/**
+ * Offers HTTP connectivity to ServerController.
+ */
 public class HTTPControllerJavaNet implements HTTPControllerService
 {
     HttpClient client;
 
+    /**
+     * Initiates a JavaNet specific HttpClient with a timeout set at 20 seconds.
+     */
     public HTTPControllerJavaNet()
     {
         client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(20)).build();
     }
 
+    /**
+     * Builds JavaNet Post HttpRequest request with given header/body and sends it via member HttpClient to given URI.
+     * Returns valid response contents (JSON formatted), or otherwise throws AuthenticationFailedException.
+     *
+     * @param requestURI URI address for the post request.
+     * @param requestBody Body to be sent to the URI.
+     * @return The header associated with the Post response.
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     public HttpHeaders sendPostRequest(String requestURI, String requestBody)
     throws IOException, InterruptedException
@@ -36,10 +51,19 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         if(responseStatusCode == 200)
             return response.headers();
         else
-
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
     }
 
+    /**
+     * Builds JavaNet Get HttpRequest request with given header and sends it via member HttpClient to given URI.
+     * Returns valid response contents (JSON formatted), or otherwise throws AuthenticationFailedException.
+     *
+     * @param requestURI URI address for the get request.
+     * @param token needs to be passed to identify user.
+     * @return String representation of response body.
+     * @throws IOException
+     * @throws InterruptedException
+     */
     @Override
     public String sendGetRequestWithToken(String requestURI, String token)
     throws IOException, InterruptedException

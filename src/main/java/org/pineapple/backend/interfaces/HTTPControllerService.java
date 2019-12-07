@@ -9,8 +9,6 @@ public interface HTTPControllerService
     public abstract HttpHeaders sendPostRequest(String requestURI, String requestBody)
     throws InterruptedException, IOException;
 
-    public abstract String sendGetRequest(String requestURI);
-
     public abstract String sendHeadRequest(String requestURI);
 
     public abstract String sendGetRequestWithToken(String requestURI, String token)

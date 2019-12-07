@@ -26,7 +26,9 @@ public class HTTPControllerJavaNet implements HTTPControllerService
     public HttpHeaders sendPostRequest(String requestURI, String requestBody)
     throws IOException, InterruptedException
     {
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type", "application/json").POST(BodyPublishers.ofString(requestBody)).build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(requestURI)).header("Content-Type",
+                                                                                          "application/json").POST(
+                BodyPublishers.ofString(requestBody)).build();
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         int responseStatusCode = response.statusCode();
@@ -36,13 +38,6 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         else
 
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
-    }
-
-    @Override
-    public String sendGetRequest(String requestURI)
-    {
-        return "";
-
     }
 
     @Override

@@ -27,7 +27,7 @@ public class ServerController extends ServerControllerService
     {
         String request = requestURI + "/queue/add/" + songID;
 
-        httpController.sendGetRequestWithToken(request,securityToken);
+        httpController.sendGetRequestWithToken(request, securityToken);
     }
 
     @Override

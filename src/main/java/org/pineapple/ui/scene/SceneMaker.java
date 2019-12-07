@@ -1,18 +1,25 @@
 package org.pineapple.ui.scene;
 
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.pineapple.core.JukeBoxClient;
+import org.pineapple.ui.controller.Controller;
 
-public abstract class SceneMaker {
+public abstract class SceneMaker extends Scene {
 
     protected Stage stage;
-    protected JukeBoxClient jukeBoxClient;
+    protected Controller controller;
 
-    public SceneMaker(Stage stage, JukeBoxClient jukeBoxClient){
+    /**
+     * Parent class of scenes
+     * @param stage window
+     * @param controller controls scene commands
+     * @param sizeX window width
+     * @param sizeY window height
+     */
+    public SceneMaker(Stage stage, Controller controller, double sizeX, double sizeY){
+        super(new AnchorPane(),sizeX,sizeY);
         this.stage = stage;
-        this.jukeBoxClient = jukeBoxClient;
+        this.controller = controller;
     }
-
-    abstract Scene getScene();
 }

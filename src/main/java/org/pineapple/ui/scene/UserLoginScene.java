@@ -1,7 +1,6 @@
 package org.pineapple.ui.scene;
 
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -11,21 +10,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.pineapple.core.JukeBoxClient;
-import org.pineapple.ui.controller.UserLoginController;
+import org.pineapple.ui.controller.Controller;
 
 public class UserLoginScene extends SceneMaker {
 
-    public UserLoginScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient);
-    }
-
-    @Override
-    public Scene getScene(){
-        // Controller for button handling
-        UserLoginController controller = new UserLoginController(stage, jukeBoxClient);
+    /**
+     * Creates User Login scene
+     * @param stage window
+     * @param controller controls scene commands
+     */
+    public UserLoginScene(Stage stage, Controller controller) {
+        super(stage, controller,800,600);
 
         // dJBox logo
         Image logoImage = new Image("ananas_color.png");
@@ -51,20 +47,17 @@ public class UserLoginScene extends SceneMaker {
 
         Button loginButton = new Button("Login");
 
+        // Response label changes after loginButton if there is an error or is blank if successful
         Label response = new Label("");
         response.setTextFill(Color.RED);
 
-        loginButton.setOnAction(e -> {
-            controller.loginButtonHandle(usernameTextField, passwordPasswordField, response);
-        });
+        loginButton.setOnAction(e -> controller.loginButtonHandle(usernameTextField, passwordPasswordField, response));
 
         // top to bottom, dJBox logo, username and field, password and field, button, response state
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(logoImageView,usernameHBox,passwordHBox,loginButton, response);
 
-        Scene scene = new Scene(root,800,600);
-
-        return scene;
+        this.setRoot(root);
     }
 }

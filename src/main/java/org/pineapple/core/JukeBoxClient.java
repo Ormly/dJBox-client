@@ -29,34 +29,39 @@ public class JukeBoxClient
 
         //TESTING
         serverController = new ServerController();
-        String testUser = "testperson@gmail.com";
-        String testPassword = "password";
+
         userData = new UserData();
-        doAuthentication(testUser,testPassword);
+
     }
 
     public static JukeBoxClient getJukeBoxClientInstance()
     {
         if(jukeBoxClientInstance == null)
-                jukeBoxClientInstance = new JukeBoxClient();
+            jukeBoxClientInstance = new JukeBoxClient();
 
         return jukeBoxClientInstance;
     }
 
     public ResponseState doAuthentication(String userEmail, String userPassword)
     {
+
         try
         {
+
             userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
+
             userData.setEmailAddress(userEmail);
+
         } catch(IOException io)
         {
-            return ResponseState.FATAL;
+            System.out.println("IOException");
         } catch(InterruptedException ie)
         {
             //TODO: think about this bullshit
+            System.out.println("InterruptedException");
         } catch(AuthenticationFailedException af)
         {
+            System.out.println("AUTHFAIL");
             return ResponseState.AUTHFAIL;
         }
 
@@ -76,6 +81,7 @@ public class JukeBoxClient
             //???
         } catch(AuthenticationFailedException af)
         {
+
             return ResponseState.AUTHFAIL;
         }
 
@@ -111,4 +117,26 @@ public class JukeBoxClient
     {
         return library.getAllMedia();
     }
+
+    public ResponseState doLogout()
+    {
+        try
+        {
+            serverController.logoutUser(userData.getSecurityToken());
+        } catch(IOException io)
+        {
+            return ResponseState.FATAL;
+        } catch(InterruptedException ie)
+        {
+            System.out.println("InterruptedException");
+        } catch(AuthenticationFailedException af)
+        {
+            return ResponseState.AUTHFAIL;
+        }
+
+        System.out.println("Logout is successful");
+        return ResponseState.SUCCESS;
+    }
 }
+
+

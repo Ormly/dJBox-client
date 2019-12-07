@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Both the Jukebox's queue and its library are represented by and handled as simple lists of songs. This List wrapper adds some functionality that is useful to the GUI layer.
+ */
 public class SongList implements IMediaList<Song>
 {
     //TODO: implement Library constructor

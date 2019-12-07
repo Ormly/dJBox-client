@@ -24,4 +24,6 @@ public abstract class ServerControllerService
 
     public abstract String authenticateUser(String userEmail, String userPassword)
     throws AuthenticationFailedException, IOException, InterruptedException;
+
+    public abstract void setRequestURI(String requestURI);
 }

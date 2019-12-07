@@ -14,11 +14,11 @@ import java.util.List;
 public class ServerController extends ServerControllerService
 {
     //localhost for testing purposes
-    final private String requestURI = "http://localhost:8080";
+    private String requestURI;
 
-    public ServerController()
+    public ServerController(HTTPControllerJavaNet httpController)
     {
-        httpController = new HTTPControllerJavaNet();
+        this.httpController = httpController;
     }
 
     @Override
@@ -87,5 +87,12 @@ public class ServerController extends ServerControllerService
         String request = requestURI + "/auth/logout";
 
         httpController.sendGetRequestWithToken(request, securityToken);
+    }
+
+    //TODO: change this it's horrible
+    @Override
+    public void setRequestURI(String requestURI)
+    {
+        this.requestURI = requestURI;
     }
 }

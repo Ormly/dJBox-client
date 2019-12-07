@@ -35,7 +35,7 @@ public class UserIPConnectScene extends SceneMaker {
 
         // Input for IP address
         TextField ipAddressTextField = new TextField();
-        ipAddressTextField.setText("127.0.0.1");
+        ipAddressTextField.setText("http://localhost:8080");
 
         // left to right JukeBox IP address, input field for IP address
         HBox ipAddressHBox = new HBox(20);

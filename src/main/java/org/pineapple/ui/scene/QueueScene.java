@@ -19,33 +19,27 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.pineapple.core.JukeBoxClient;
 import org.pineapple.core.Song;
-import org.pineapple.ui.controller.QueueController;
-
-import java.util.concurrent.atomic.AtomicReference;
+import org.pineapple.ui.controller.Controller;
 
 public class QueueScene extends SceneMaker {
 
-    private  Timeline timeline = null;
+    private  Timeline timeline;
 
     public QueueScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient);
-    }
-
-    @Override
-    public Scene getScene(){
+        super(stage, jukeBoxClient,800,600);
         // Uses controller for button handling
-        QueueController controller = new QueueController(stage, jukeBoxClient);
+        Controller controller = new Controller(stage, jukeBoxClient);
 
         // Lists songs in the queue
-        TableView<Song> tableView = new TableView<Song>();
-        TableColumn<Song, String> titleColumn = new TableColumn<Song, String>("Title");
-        titleColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("title"));
+        TableView<Song> tableView = new TableView<>();
+        TableColumn<Song, String> titleColumn = new TableColumn<>("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         titleColumn.setSortable(false);
-        TableColumn<Song, String> artistColumn = new TableColumn<Song, String>("Artist");
-        artistColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("artist"));
+        TableColumn<Song, String> artistColumn = new TableColumn<>("Artist");
+        artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
         artistColumn.setSortable(false);
-        TableColumn<Song, String> albumColumn = new TableColumn<Song, String>("Album");
-        albumColumn.setCellValueFactory(new PropertyValueFactory<Song, String>("album"));
+        TableColumn<Song, String> albumColumn = new TableColumn<>("Album");
+        albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
         albumColumn.setSortable(false);
         tableView.getColumns().add(titleColumn);
         tableView.getColumns().add(artistColumn);
@@ -65,23 +59,19 @@ public class QueueScene extends SceneMaker {
         // Search bar
         TextField searchTextField = new TextField();
         searchTextField.setPromptText("Search for a song");
-        searchTextField.textProperty().addListener((observable, oldValue, newValue)-> {
-            filteredList.setPredicate(song -> {
-                // Empty displays all
-                if (newValue == null || newValue.isEmpty())
-                    return true;
+        searchTextField.textProperty().addListener((observable, oldValue, newValue)-> filteredList.setPredicate(song -> {
+            // Empty displays all
+            if (newValue == null || newValue.isEmpty())
+                return true;
 
-                // Compare song title, album and artist with search bar
-                String lowerCaseFilter = newValue.toLowerCase();
-                if (song.getTitle().toLowerCase().contains(lowerCaseFilter))
-                    return true;
-                else if (song.getArtist().toLowerCase().contains(lowerCaseFilter))
-                    return true;
-                else if (song.getAlbum().toLowerCase().contains(lowerCaseFilter))
-                    return true;
-                return false;
-            });
-        });
+            // Compare song title, album and artist with search bar
+            String lowerCaseFilter = newValue.toLowerCase();
+            if (song.getTitle().toLowerCase().contains(lowerCaseFilter))
+                return true;
+            else if (song.getArtist().toLowerCase().contains(lowerCaseFilter))
+                return true;
+            else return song.getAlbum().toLowerCase().contains(lowerCaseFilter);
+        }));
 
         tableView.setItems(filteredList);
 
@@ -169,7 +159,6 @@ public class QueueScene extends SceneMaker {
         rightBorderPane.prefWidthProperty().bind(root.widthProperty());
         leftVBox.prefWidthProperty().bind(root.widthProperty());
 
-        Scene scene = new Scene(root,800,600);
-        return scene;
+        this.setRoot(root);
     }
 }

@@ -10,7 +10,6 @@ public class JukeBoxClientTest
 {
     private static JukeBoxClient jukeBoxClient = JukeBoxClient.getJukeBoxClientInstance();
 
-
     @Test
     @Order(1)
     @DisplayName("getJukeBoxClientInstanceTest")
@@ -26,7 +25,6 @@ public class JukeBoxClientTest
     {
         assertEquals(ResponseState.SUCCESS, (jukeBoxClient.doAuthentication("testperson@gmail.com", "password")));
     }
-
 
     @Test
     @Order(99)

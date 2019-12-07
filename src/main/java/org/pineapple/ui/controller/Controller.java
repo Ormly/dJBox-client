@@ -118,6 +118,7 @@ public class Controller {
         switch(responseState) {
             case SUCCESS:
                 songList = jukeBoxClient.doGetQueue();
+
                 break;
             case AUTHFAIL:
                 break;

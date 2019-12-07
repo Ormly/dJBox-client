@@ -25,6 +25,13 @@ public class QueueScene extends SceneMaker {
 
     private  Timeline timeline;
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
+    TableView<Song> tableView;
+    private Label currentTitleLabel;
+    private Label currentArtistLabel;
+    private Label currentAlbumLabel;
+    private Label nextTitleLabel;
+    private Label nextArtistLabel;
+    private Label nextAlbumLabel;
 
     /**
      * Creates Queue scene
@@ -36,7 +43,7 @@ public class QueueScene extends SceneMaker {
         // Uses controller for button handling
 
         // Lists songs in the queue
-        TableView<Song> tableView = new TableView<>();
+        tableView = new TableView<>();
         TableColumn<Song, String> titleColumn = new TableColumn<>("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         titleColumn.setSortable(false);
@@ -112,9 +119,9 @@ public class QueueScene extends SceneMaker {
         currentAlbumImageView.setFitWidth(100);
 
         // Song information of currently playing song
-        Label currentTitleLabel = new Label("Thriller");
-        Label currentArtistLabel = new Label("Michael Jackson");
-        Label currentAlbumLabel = new Label("Thriller");
+        currentTitleLabel = new Label();
+        currentArtistLabel = new Label();
+        currentAlbumLabel = new Label();
 
         // Album art, on top of song information
         VBox currentSongVBox = new VBox(10);
@@ -134,9 +141,9 @@ public class QueueScene extends SceneMaker {
         nextAlbumImageView.setFitHeight(50);
 
         // Song information for next song
-        Label nextTitleLabel = new Label("Heart of Glass");
-        Label nextArtistLabel = new Label("Blondie");
-        Label nextAlbumLabel = new Label("Parallel Lines");
+        nextTitleLabel = new Label();
+        nextArtistLabel = new Label();
+        nextAlbumLabel = new Label();
 
         // Stacks album art on top of song information for next song
         VBox nextSongVBox = new VBox(10);
@@ -173,5 +180,48 @@ public class QueueScene extends SceneMaker {
     {
         songObservableList.clear();
         songObservableList.addAll(songList);
+        Song current = null;
+        Song next = null;
+        switch(songList.size())
+        {
+            case 0:
+                break;
+            case 1:
+                current = songList.get(0);
+                break;
+            default:
+                current = songList.get(0);
+                next = songList.get(1);
+        }
+        updateSongInfo(current,next);
+    }
+
+    public void updateSongInfo(Song currentSong, Song nextSong)
+    {
+        if(currentSong != null)
+        {
+            currentTitleLabel.setText(currentSong.getTitle());
+            currentArtistLabel.setText(currentSong.getArtist());
+            currentAlbumLabel.setText(currentSong.getAlbum());
+        }
+        else
+        {
+            currentTitleLabel.setText("");
+            currentArtistLabel.setText("");
+            currentAlbumLabel.setText("");
+        }
+
+        if(nextSong != null)
+        {
+            nextTitleLabel.setText(nextSong.getTitle());
+            nextArtistLabel.setText(nextSong.getArtist());
+            nextAlbumLabel.setText(nextSong.getAlbum());
+        }
+        else
+        {
+            nextTitleLabel.setText("");
+            nextArtistLabel.setText("");
+            nextAlbumLabel.setText("");
+        }
     }
 }

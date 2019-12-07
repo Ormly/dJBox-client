@@ -1,25 +1,38 @@
 package org.pineapple.core;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("JukeBoxClient Test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class JukeBoxClientTest
 {
     private static JukeBoxClient jukeBoxClient = JukeBoxClient.getJukeBoxClientInstance();
 
+
     @Test
-    @DisplayName("Login")
-    void loginTest()
+    @Order(1)
+    @DisplayName("getJukeBoxClientInstanceTest")
+    void getJukeBoxClientInstanceTest()
     {
-        Assertions.assertEquals((jukeBoxClient.doAuthentication("testperson@gmail.com", "password")),ResponseState.SUCCESS);
+        assertNotNull(jukeBoxClient);
     }
 
     @Test
-    @DisplayName("Logout")
-    void logoutTest()
+    @Order(2)
+    @DisplayName("doAuthenticationTest")
+    void doAuthenticationTest()
     {
-        Assertions.assertEquals((jukeBoxClient.doLogout()),ResponseState.SUCCESS);
+        assertEquals(ResponseState.SUCCESS, (jukeBoxClient.doAuthentication("testperson@gmail.com", "password")));
+    }
+
+
+    @Test
+    @Order(99)
+    @DisplayName("doLogoutTest")
+    void doLogoutTest()
+    {
+        assertEquals(ResponseState.SUCCESS,(jukeBoxClient.doLogout()));
     }
 }

@@ -52,8 +52,14 @@ public class Controller {
     /**
      * Adds song to queue
      */
-    public void addToQueueButtonHandle() {
-        System.out.println("Song added to queue");
+    public void addToQueueButtonHandle()
+    {
+        int id = libraryScene.getSongObservableList();
+        if(id > 0)
+        {
+            jukeBoxClient.addSongToQueue(id);
+            queueScene.updateSongObservableList(doGetQueue());
+        }
     }
 
     /**

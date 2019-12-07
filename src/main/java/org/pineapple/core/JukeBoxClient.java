@@ -1,6 +1,7 @@
 package org.pineapple.core;
 
 import org.pineapple.backend.AuthenticationFailedException;
+import org.pineapple.backend.HTTPControllerJavaNet;
 import org.pineapple.backend.ServerController;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
@@ -28,7 +29,7 @@ public class JukeBoxClient
         //validResponse = false;
 
         //TESTING
-        serverController = new ServerController();
+        serverController = new ServerController(new HTTPControllerJavaNet());
 
         userData = new UserData();
     }
@@ -150,6 +151,11 @@ public class JukeBoxClient
         }
 
         return ResponseState.SUCCESS;
+    }
+
+    public void setJukeBoxIP(String ipAddress)
+    {
+        serverController.setRequestURI(ipAddress);
     }
 }
 

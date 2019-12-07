@@ -31,7 +31,6 @@ public class JukeBoxClient
         serverController = new ServerController();
 
         userData = new UserData();
-
     }
 
     public static JukeBoxClient getJukeBoxClientInstance()
@@ -44,24 +43,16 @@ public class JukeBoxClient
 
     public ResponseState doAuthentication(String userEmail, String userPassword)
     {
-
         try
         {
 
             userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
-
             userData.setEmailAddress(userEmail);
-
-            // For testing get library
-            getLibraryResponseState();
-            doGetLibrary();
-
         } catch(IOException io)
         {
         } catch(InterruptedException ie)
         {
-            //TODO: think about this bullshit
-            System.out.println("InterruptedException");
+            //...
         } catch(AuthenticationFailedException af)
         {
             return ResponseState.AUTHFAIL;
@@ -94,14 +85,27 @@ public class JukeBoxClient
     //TODO: think about returning Optional instead
     public List<Song> doGetQueue()
     {
-        List<Song> songs = queue.getAllMedia();
+        //TODO: proofing
+        return queue.getAllMedia();
+    }
 
-        for(Song song : songs)
+    public ResponseState addSongToQueue(int songID)
+    {
+        try
         {
-            System.out.println(song.getTitle());
+            serverController.addSongToServerQueue(songID, userData.getSecurityToken());
+        } catch(IOException io)
+        {
+            return ResponseState.FATAL;
+        } catch(InterruptedException ie)
+        {
+            //...
+        } catch(AuthenticationFailedException af)
+        {
+            return ResponseState.AUTHFAIL;
         }
 
-        return queue.getAllMedia();
+        return ResponseState.SUCCESS;
     }
 
     public ResponseState getLibraryResponseState()
@@ -114,7 +118,7 @@ public class JukeBoxClient
             return ResponseState.FATAL;
         } catch(InterruptedException ie)
         {
-            System.out.println("InterruptedException in getLibraryresponseState");
+            //...
         } catch(AuthenticationFailedException af)
         {
             return ResponseState.AUTHFAIL;
@@ -139,7 +143,7 @@ public class JukeBoxClient
             return ResponseState.FATAL;
         } catch(InterruptedException ie)
         {
-            System.out.println("InterruptedException");
+            //...
         } catch(AuthenticationFailedException af)
         {
             return ResponseState.AUTHFAIL;

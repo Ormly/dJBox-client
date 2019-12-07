@@ -1,5 +1,6 @@
 package org.pineapple.ui.controller;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -10,33 +11,66 @@ import org.pineapple.Main;
 import org.pineapple.core.JukeBoxClient;
 import org.pineapple.core.ResponseState;
 import org.pineapple.core.Song;
-import org.pineapple.ui.scene.SceneEnum;
+import org.pineapple.ui.scene.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+
+/**
+ * Controls and creates scenes
+ */
 public class Controller {
 
     private Stage stage;
     private JukeBoxClient jukeBoxClient;
+    private Map<SceneEnum, Scene> scenes = new HashMap<>();
 
+    /**
+     * Constructor creates and puts scenes into Map container
+     * @param stage window
+     * @param jukeBoxClient client
+     */
     public Controller(Stage stage, JukeBoxClient jukeBoxClient) {
         this.stage = stage;
         this.jukeBoxClient = jukeBoxClient;
+        scenes.put(SceneEnum.USERIPCONNECTSCENE, new UserIPConnectScene(stage, this));
+        scenes.put(SceneEnum.USERLOGINSCENE, new UserLoginScene(stage, this));
+        scenes.put(SceneEnum.QUEUESCENE, new QueueScene(stage, this));
+        scenes.put(SceneEnum.LIBRARYSCENE, new LibraryScene(stage, this));
     }
 
+    /**
+     * Gets scenes from Map container
+     * @return scenes
+     */
+    public Map<SceneEnum, Scene> getScenes() {return scenes; }
+
+    //TODO: Finish method
+    /**
+     * Adds song to queue
+     */
     public void addToQueueButtonHandle() {
         System.out.println("Song added to queue");
     }
 
+    /**
+     * Logs user out and changes scene to login
+     */
     public void logoutButtonHandle() {
-        stage.setScene(Main.getScenes().get(SceneEnum.USERLOGINSCENE));
+        stage.setScene(getScenes().get(SceneEnum.USERLOGINSCENE));
         stage.setTitle("dJBox - Login");
     }
 
+    /**
+     * Opens up a new window containing song library
+     * Main window can't be used until library is closed
+     */
     public void libraryButtonHandle() {
         Stage dialog = new Stage();
-        dialog.setScene(Main.getScenes().get(SceneEnum.LIBRARYSCENE));
+        dialog.setScene(getScenes().get(SceneEnum.LIBRARYSCENE));
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - Library");
@@ -44,34 +78,45 @@ public class Controller {
         dialog.show();
     }
 
+    /**
+     * Returns List of songs in the queue if it is able to otherwise an empty list
+     * @return songList
+     */
     public List<Song> doGetQueue() {
         ResponseState responseState = jukeBoxClient.getQueueResponseState();
         List<Song> songList = new ArrayList<>();
         switch(responseState) {
             case SUCCESS:
-                System.out.println("doGetQueue SUCCESS");
                 songList = jukeBoxClient.doGetQueue();
                 break;
             case AUTHFAIL:
-                System.out.println("doGetQueue AUTHFAIL");
                 break;
             case FATAL:
-                System.out.println("doGetQueue FATAL");
                 break;
         }
         return songList;
     }
 
+    //TODO: Finish method
+    /**
+     * Connects to the server and changes scene to login
+     */
     public void connectButtonHandle() {
-        stage.setScene(Main.getScenes().get(SceneEnum.USERLOGINSCENE));
+        stage.setScene(getScenes().get(SceneEnum.USERLOGINSCENE));
         stage.setTitle("dJBox - Login");
     }
 
+    /**
+     * Logs user in if able to, otherwise displays an error message
+     * @param user username/email
+     * @param password password
+     * @param response error message
+     */
     public void loginButtonHandle(TextField user, PasswordField password, Label response) {
         ResponseState responseState = jukeBoxClient.doAuthentication(user.getText(), password.getText());
         switch(responseState){
             case SUCCESS:
-                stage.setScene(Main.getScenes().get(SceneEnum.QUEUESCENE));
+                stage.setScene(getScenes().get(SceneEnum.QUEUESCENE));
                 stage.setTitle("dJBox - Queue");
                 user.setText("");
                 password.setText("");

@@ -25,10 +25,14 @@ public class QueueScene extends SceneMaker {
 
     private  Timeline timeline;
 
-    public QueueScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient,800,600);
+    /**
+     * Creates Queue scene
+     * @param stage window
+     * @param controller controls scene commands
+     */
+    public QueueScene(Stage stage, Controller controller) {
+        super(stage, controller,800,600);
         // Uses controller for button handling
-        Controller controller = new Controller(stage, jukeBoxClient);
 
         // Lists songs in the queue
         TableView<Song> tableView = new TableView<>();

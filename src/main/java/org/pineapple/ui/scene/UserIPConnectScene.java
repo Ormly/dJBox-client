@@ -24,7 +24,6 @@ public class UserIPConnectScene extends SceneMaker {
         super(stage, controller,800,600);
         // Connect to IP button
         Button connectButton = new Button("Connect");
-        connectButton.setOnAction(e -> controller.connectButtonHandle());
 
         // Image for dJBox logo
         Image logoImage = new Image("ananas_color.png");
@@ -36,7 +35,7 @@ public class UserIPConnectScene extends SceneMaker {
 
         // Input for IP address
         TextField ipAddressTextField = new TextField();
-        ipAddressTextField.setText("127.0.0.1");
+        ipAddressTextField.setText("http://localhost:8080");
 
         // left to right JukeBox IP address, input field for IP address
         HBox ipAddressHBox = new HBox(20);
@@ -47,6 +46,8 @@ public class UserIPConnectScene extends SceneMaker {
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(logoImageView,ipAddressHBox,connectButton);
+
+        connectButton.setOnAction(e -> controller.connectButtonHandle(ipAddressTextField.getText()));
 
         this.setRoot(root);
     }

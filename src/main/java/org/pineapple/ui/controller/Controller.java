@@ -132,7 +132,8 @@ public class Controller {
     /**
      * Connects to the server and changes scene to login
      */
-    public void connectButtonHandle() {
+    public void connectButtonHandle(String ip) {
+        jukeBoxClient.setJukeBoxIP(ip);
         stage.setScene(getUserLoginScene());
         stage.setTitle("dJBox - Login");
     }

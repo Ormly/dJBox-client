@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -20,7 +19,11 @@ import java.util.List;
 
 public class LibraryScene extends SceneMaker {
 
+    private TableView<Song> songTableView;
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
+    private Label titleLabel;
+    private Label artistLabel;
+    private Label albumLabel;
     /**
      * Creates library scene
      * @param stage window
@@ -30,17 +33,19 @@ public class LibraryScene extends SceneMaker {
         super(stage,controller,500,400);
 
         // Lists songs in the library
-        TableView<Song> tableView = new TableView<>();
+        songTableView = new TableView<>();
         TableColumn<Song, String> titleColumn = new TableColumn<>("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         TableColumn<Song, String> artistColumn = new TableColumn<>("Artist");
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
         TableColumn<Song, String> albumColumn = new TableColumn<>("Album");
         albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
-        tableView.getColumns().add(titleColumn);
-        tableView.getColumns().add(artistColumn);
-        tableView.getColumns().add(albumColumn);
-        tableView.setPlaceholder(new Label("No songs have been added to the library"));
+        songTableView.getColumns().add(titleColumn);
+        songTableView.getColumns().add(artistColumn);
+        songTableView.getColumns().add(albumColumn);
+        songTableView.setPlaceholder(new Label("No songs have been added to the library"));
+        songTableView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue)
+                                                                                     -> updateSongInfo(newValue));
 
         // Wrap songObservableList in FilteredList (Showing all data initially)
         FilteredList<Song> filteredList = new FilteredList<>(songObservableList, p -> true);
@@ -62,10 +67,10 @@ public class LibraryScene extends SceneMaker {
                 return true;
             else return song.getAlbum().toLowerCase().contains(lowerCaseFilter);
         }));
-        tableView.setItems(filteredList);
+        songTableView.setItems(filteredList);
 
         // Stacks search bar on top of song list
-        VBox leftVBox = new VBox(searchTextField,tableView);
+        VBox leftVBox = new VBox(searchTextField,songTableView);
 
         // Album art for currently selected song
         Image albumImage = new Image("PlaceHolder.png");
@@ -74,9 +79,9 @@ public class LibraryScene extends SceneMaker {
         albumImageView.setFitHeight(50);
 
         // Song information
-        Label titleLabel = new Label("Heart of Glass");
-        Label artistLabel = new Label("Blondie");
-        Label albumLabel = new Label("Parallel Lines");
+        titleLabel = new Label();
+        artistLabel = new Label();
+        albumLabel = new Label();
 
         // Add to queue button
         Button addToQueueButton = new Button("Add to Queue");
@@ -102,5 +107,25 @@ public class LibraryScene extends SceneMaker {
     {
         songObservableList.clear();
         songObservableList.addAll(songList);
+        songTableView.getSelectionModel().selectFirst();
     }
+
+    public int getSongObservableList()
+    {
+        if(songTableView.getSelectionModel().getSelectedItem() != null)
+            return songTableView.getSelectionModel().getSelectedItem().getId();
+        else
+            return -1;
+    }
+
+    public void updateSongInfo(Song song)
+    {
+        if(song != null)
+        {
+            titleLabel.setText(song.getTitle());
+            artistLabel.setText(song.getArtist());
+            albumLabel.setText(song.getAlbum());
+        }
+    }
+
 }

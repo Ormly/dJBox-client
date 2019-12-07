@@ -60,8 +60,18 @@ public class Controller {
      * Logs user out and changes scene to login
      */
     public void logoutButtonHandle() {
-        stage.setScene(getScenes().get(SceneEnum.USERLOGINSCENE));
-        stage.setTitle("dJBox - Login");
+        ResponseState responseState = jukeBoxClient.doLogout();
+        switch(responseState)
+        {
+            case SUCCESS:
+                stage.setScene(getScenes().get(SceneEnum.USERLOGINSCENE));
+                stage.setTitle("dJBox - Login");
+                break;
+            case AUTHFAIL:
+                break;
+            case FATAL:
+                break;
+        }
     }
 
     /**

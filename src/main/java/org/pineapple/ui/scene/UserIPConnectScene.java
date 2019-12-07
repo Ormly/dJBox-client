@@ -15,11 +15,13 @@ import org.pineapple.ui.controller.Controller;
 
 public class UserIPConnectScene extends SceneMaker {
 
-    public UserIPConnectScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient,800,600);
-        // Button handler
-        Controller controller = new Controller(stage, jukeBoxClient);
-
+    /**
+     * Creates User IP Connect scene
+     * @param stage window
+     * @param controller controls scene commands
+     */
+    public UserIPConnectScene(Stage stage, Controller controller) {
+        super(stage, controller,800,600);
         // Connect to IP button
         Button connectButton = new Button("Connect");
         connectButton.setOnAction(e -> controller.connectButtonHandle());
@@ -32,6 +34,7 @@ public class UserIPConnectScene extends SceneMaker {
 
         Label ipAddressLabel = new Label("Jukebox IP address:");
 
+        // Input for IP address
         TextField ipAddressTextField = new TextField();
         ipAddressTextField.setText("127.0.0.1");
 

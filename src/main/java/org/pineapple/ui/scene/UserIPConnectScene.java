@@ -24,7 +24,6 @@ public class UserIPConnectScene extends SceneMaker {
         super(stage, controller,800,600);
         // Connect to IP button
         Button connectButton = new Button("Connect");
-        connectButton.setOnAction(e -> controller.connectButtonHandle());
 
         // Image for dJBox logo
         Image logoImage = new Image("ananas_color.png");
@@ -47,6 +46,8 @@ public class UserIPConnectScene extends SceneMaker {
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(logoImageView,ipAddressHBox,connectButton);
+
+        connectButton.setOnAction(e -> controller.connectButtonHandle(ipAddressTextField.getText()));
 
         this.setRoot(root);
     }

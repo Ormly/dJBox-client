@@ -35,6 +35,9 @@ public class UserLoginScene extends SceneMaker {
         TextField usernameTextField = new TextField();
         PasswordField passwordPasswordField = new PasswordField();
 
+        usernameTextField.setText("testperson@gmail.com");
+        passwordPasswordField.setText("password");
+
         // left to right, Username:, textfield for username
         HBox usernameHBox = new HBox(20);
         usernameHBox.setAlignment(Pos.CENTER);

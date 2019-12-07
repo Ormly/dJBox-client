@@ -22,7 +22,7 @@ public class Main extends Application
 
         // Initial scene is Connect IP
         stage.getIcons().add(new Image("ananas_color.png"));
-        stage.setScene(controller.getScenes().get(SceneEnum.USERIPCONNECTSCENE));
+        stage.setScene(controller.getUserIPConnectScene());
         stage.setTitle("dJBox - IP connect");
         stage.centerOnScreen();
         stage.show();

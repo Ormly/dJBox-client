@@ -7,7 +7,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -17,13 +16,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.pineapple.core.JukeBoxClient;
 import org.pineapple.core.Song;
 import org.pineapple.ui.controller.Controller;
+
+import java.util.List;
 
 public class QueueScene extends SceneMaker {
 
     private  Timeline timeline;
+    private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
 
     /**
      * Creates Queue scene
@@ -49,21 +50,20 @@ public class QueueScene extends SceneMaker {
         tableView.getColumns().add(artistColumn);
         tableView.getColumns().add(albumColumn);
         tableView.setPlaceholder(new Label("No songs are in the queue please add a song"));
-        ObservableList<Song> observableSongList = FXCollections.observableArrayList();
         timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
-            observableSongList.clear();
-            observableSongList.addAll(controller.doGetQueue());
+            updateSongObservableList(controller.doGetQueue());
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+
 
         // Wrap observableList in FilteredList (Showing all data initially)
-        FilteredList<Song> filteredList = new FilteredList<>(observableSongList, p -> true);
+        FilteredList<Song> filteredList = new FilteredList<>(songObservableList, p -> true);
 
         // Search bar
         TextField searchTextField = new TextField();
         searchTextField.setPromptText("Search for a song");
-        searchTextField.textProperty().addListener((observable, oldValue, newValue)-> filteredList.setPredicate(song -> {
+        searchTextField.textProperty().addListener((observable, oldValue, newValue)
+                                                           -> filteredList.setPredicate(song -> {
             // Empty displays all
             if (newValue == null || newValue.isEmpty())
                 return true;
@@ -76,7 +76,6 @@ public class QueueScene extends SceneMaker {
                 return true;
             else return song.getAlbum().toLowerCase().contains(lowerCaseFilter);
         }));
-
         tableView.setItems(filteredList);
 
         // Search bar on top of song list
@@ -164,5 +163,15 @@ public class QueueScene extends SceneMaker {
         leftVBox.prefWidthProperty().bind(root.widthProperty());
 
         this.setRoot(root);
+    }
+
+    public void playTimeLine() { timeline.play(); }
+
+    public void stopTimeLine() { timeline.stop(); }
+
+    public void updateSongObservableList(List<Song> songList)
+    {
+        songObservableList.clear();
+        songObservableList.addAll(songList);
     }
 }

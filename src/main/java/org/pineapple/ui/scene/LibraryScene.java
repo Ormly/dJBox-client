@@ -1,5 +1,8 @@
 package org.pineapple.ui.scene;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,8 +16,11 @@ import javafx.stage.Stage;
 import org.pineapple.core.Song;
 import org.pineapple.ui.controller.Controller;
 
+import java.util.List;
+
 public class LibraryScene extends SceneMaker {
 
+    private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
     /**
      * Creates library scene
      * @param stage window
@@ -23,25 +29,43 @@ public class LibraryScene extends SceneMaker {
     public LibraryScene(Stage stage, Controller controller) {
         super(stage,controller,500,400);
 
-        // Search bar
-        TextField searchTextField = new TextField();
-        searchTextField.setPromptText("search");
-
         // Lists songs in the library
-        TableView<Song> songsTableView = new TableView<>();
-        TableColumn<Song, String> songColumn = new TableColumn<>("Song");
-        songColumn.setCellValueFactory(new PropertyValueFactory<>("song"));
+        TableView<Song> tableView = new TableView<>();
+        TableColumn<Song, String> titleColumn = new TableColumn<>("Title");
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         TableColumn<Song, String> artistColumn = new TableColumn<>("Artist");
         artistColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
         TableColumn<Song, String> albumColumn = new TableColumn<>("Album");
         albumColumn.setCellValueFactory(new PropertyValueFactory<>("album"));
-        songsTableView.getColumns().add(songColumn);
-        songsTableView.getColumns().add(artistColumn);
-        songsTableView.getColumns().add(albumColumn);
-        songsTableView.setPlaceholder(new Label("No songs have been added to the library"));
+        tableView.getColumns().add(titleColumn);
+        tableView.getColumns().add(artistColumn);
+        tableView.getColumns().add(albumColumn);
+        tableView.setPlaceholder(new Label("No songs have been added to the library"));
+
+        // Wrap songObservableList in FilteredList (Showing all data initially)
+        FilteredList<Song> filteredList = new FilteredList<>(songObservableList, p -> true);
+
+        // Search bar
+        TextField searchTextField = new TextField();
+        searchTextField.setPromptText("Search for a song");
+        searchTextField.textProperty().addListener((observable, oldValue, newValue)
+                                                           -> filteredList.setPredicate(song -> {
+            //Empty displays all
+            if(newValue == null || newValue.isEmpty())
+                return true;
+
+            // Compare song title, album and artist with search bar
+            String lowerCaseFilter = newValue.toLowerCase();
+            if(song.getTitle().toLowerCase().contains(lowerCaseFilter))
+                return true;
+            else if(song.getArtist().toLowerCase().contains(lowerCaseFilter))
+                return true;
+            else return song.getAlbum().toLowerCase().contains(lowerCaseFilter);
+        }));
+        tableView.setItems(filteredList);
 
         // Stacks search bar on top of song list
-        VBox leftVBox = new VBox(searchTextField,songsTableView);
+        VBox leftVBox = new VBox(searchTextField,tableView);
 
         // Album art for currently selected song
         Image albumImage = new Image("PlaceHolder.png");
@@ -73,5 +97,10 @@ public class LibraryScene extends SceneMaker {
         leftVBox.prefWidthProperty().bind(root.widthProperty());
 
         this.setRoot(root);
+    }
+    public void updateSongObservableList(List<Song> songList)
+    {
+        songObservableList.clear();
+        songObservableList.addAll(songList);
     }
 }

@@ -10,16 +10,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.pineapple.core.JukeBoxClient;
 import org.pineapple.core.Song;
 import org.pineapple.ui.controller.Controller;
 
 public class LibraryScene extends SceneMaker {
 
-    public LibraryScene(Stage stage, JukeBoxClient jukeBoxClient) {
-        super(stage, jukeBoxClient,500,400);
-        // Uses controller for button handling
-        Controller controller = new Controller(stage, jukeBoxClient);
+    /**
+     * Creates library scene
+     * @param stage window
+     * @param controller controls scene commands
+     */
+    public LibraryScene(Stage stage, Controller controller) {
+        super(stage,controller,500,400);
 
         // Search bar
         TextField searchTextField = new TextField();

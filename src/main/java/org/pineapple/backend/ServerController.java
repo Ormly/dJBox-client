@@ -25,7 +25,9 @@ public class ServerController extends ServerControllerService
     public void addSongToServerQueue(int songID, String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
     {
+        String request = requestURI + "/queue/add/" + songID;
 
+        httpController.sendGetRequestWithToken(request,securityToken);
     }
 
     @Override

@@ -104,6 +104,25 @@ public class JukeBoxClient
         return queue.getAllMedia();
     }
 
+    public ResponseState addSongToQueue(int songID)
+    {
+        try
+        {
+            serverController.addSongToServerQueue(songID, userData.getSecurityToken());
+        } catch(IOException io)
+        {
+            return ResponseState.FATAL;
+        } catch(InterruptedException ie)
+        {
+            //...
+        } catch(AuthenticationFailedException af)
+        {
+            return ResponseState.AUTHFAIL;
+        }
+
+        return ResponseState.SUCCESS;
+    }
+
     public ResponseState getLibraryResponseState()
     {
         try

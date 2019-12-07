@@ -8,9 +8,11 @@ public class Song {
     private String genre;
     private int year;
     private int duration;
-    private String location;
+    private String pathToFile;
 
-    public Song(int id, String title, String artist, String album, String genre, int year, int duration, String location) {
+    public Song() {};
+
+    public Song(int id, String title, String artist, String album,  String genre,int year, int duration, String pathToFile) {
         this.id = id;
         this.title = title;
         this.artist = artist;
@@ -18,7 +20,7 @@ public class Song {
         this.genre = genre;
         this.year = year;
 //        this.duration = duration;
-        this.location = location;
+        this.pathToFile = pathToFile;
     }
 
     public int getId() {
@@ -77,11 +79,11 @@ public class Song {
         this.duration = duration;
     }
 
-    public String getLocation() {
-        return location;
+    public String getPathToFile() {
+        return pathToFile;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setPathToFile(String pathToFile) {
+        this.pathToFile = pathToFile;
     }
 }

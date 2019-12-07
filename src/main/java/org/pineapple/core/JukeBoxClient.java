@@ -186,6 +186,7 @@ public class JukeBoxClient
         try
         {
             serverController.logoutUser(userData.getSecurityToken());
+            userData.clear();
         } catch(IOException io)
         {
             return ResponseState.FATAL;

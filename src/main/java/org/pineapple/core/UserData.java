@@ -34,4 +34,11 @@ public class UserData
         else
             return securityToken;
     }
+
+    //TODO: make this not suck.
+    public void clear()
+    {
+        emailAddress = null;
+        securityToken = null;
+    }
 }

@@ -25,7 +25,7 @@ public class QueueScene extends SceneMaker {
 
     private  Timeline timeline;
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
-    TableView<Song> tableView;
+    private TableView<Song> tableView;
     private Label currentTitleLabel;
     private Label currentArtistLabel;
     private Label currentAlbumLabel;
@@ -38,7 +38,8 @@ public class QueueScene extends SceneMaker {
      * @param stage window
      * @param controller controls scene commands
      */
-    public QueueScene(Stage stage, Controller controller) {
+    public QueueScene(Stage stage, Controller controller)
+    {
         super(stage, controller,800,600);
         // Uses controller for button handling
 
@@ -61,7 +62,6 @@ public class QueueScene extends SceneMaker {
             updateSongObservableList(controller.doGetQueue());
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
-
 
         // Wrap observableList in FilteredList (Showing all data initially)
         FilteredList<Song> filteredList = new FilteredList<>(songObservableList, p -> true);
@@ -96,7 +96,7 @@ public class QueueScene extends SceneMaker {
         libraryImageView.setFitHeight(25);
         libraryImageView.setPickOnBounds(true);
         Tooltip.install(libraryImageView,libraryTooltip);
-        libraryImageView.setOnMouseClicked(e -> controller.libraryButtonHandle());
+        libraryImageView.setOnMouseClicked(e -> controller.libraryButtonHandleQueueScene());
 
         Tooltip logoutTooltip = new Tooltip("Log out");
         Image logoutImage = new Image("PlaceHolder.png");
@@ -105,7 +105,7 @@ public class QueueScene extends SceneMaker {
         logoutImageView.setFitHeight(25);
         logoutImageView.setPickOnBounds(true);
         Tooltip.install(logoutImageView,logoutTooltip);
-        logoutImageView.setOnMouseClicked(e -> controller.logoutButtonHandle());
+        logoutImageView.setOnMouseClicked(e -> controller.logoutButtonHandleQueueScene());
 
         // Menu options are next to each other
         HBox rightTopBorderHBox = new HBox(20);

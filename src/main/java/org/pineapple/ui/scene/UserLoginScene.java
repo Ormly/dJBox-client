@@ -54,7 +54,7 @@ public class UserLoginScene extends SceneMaker {
         Label response = new Label("");
         response.setTextFill(Color.RED);
 
-        loginButton.setOnAction(e -> controller.loginButtonHandle(usernameTextField, passwordPasswordField, response));
+        loginButton.setOnAction(e -> controller.loginButtonHandleUserLoginScene(usernameTextField, passwordPasswordField, response));
 
         // top to bottom, dJBox logo, username and field, password and field, button, response state
         VBox root = new VBox(20);

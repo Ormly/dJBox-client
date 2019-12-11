@@ -7,6 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -38,17 +39,15 @@ public class UserLoginScene extends SceneMaker {
         usernameTextField.setText("testperson@gmail.com");
         passwordPasswordField.setText("password");
 
-        // left to right, Username:, textfield for username
-        HBox usernameHBox = new HBox(20);
-        usernameHBox.setAlignment(Pos.CENTER);
-        usernameHBox.getChildren().addAll(usernameLabel,usernameTextField);
-
-        // left to right Password, passwordfield for password
-        HBox passwordHBox = new HBox(20);
-        passwordHBox.setAlignment(Pos.CENTER);
-        passwordHBox.getChildren().addAll(passwordLabel,passwordPasswordField);
+        GridPane gridPane = new GridPane();
+        gridPane.setVgap(10);
+        gridPane.setHgap(10);
+        gridPane.addRow(0,usernameLabel,usernameTextField);
+        gridPane.addRow(1,passwordLabel,passwordPasswordField);
+        gridPane.setAlignment(Pos.CENTER);
 
         Button loginButton = new Button("Login");
+        loginButton.setDefaultButton(true);
 
         // Response label changes after loginButton if there is an error or is blank if successful
         Label response = new Label("");
@@ -59,7 +58,7 @@ public class UserLoginScene extends SceneMaker {
         // top to bottom, dJBox logo, username and field, password and field, button, response state
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(logoImageView,usernameHBox,passwordHBox,loginButton, response);
+        root.getChildren().addAll(logoImageView,gridPane,loginButton, response);
 
         this.setRoot(root);
     }

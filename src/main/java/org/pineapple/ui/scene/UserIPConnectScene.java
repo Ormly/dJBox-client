@@ -15,7 +15,6 @@ import org.pineapple.ui.controller.Controller;
 
 public class UserIPConnectScene extends SceneMaker
 {
-
     private TableView<JukeBox> jukeBoxTableView;
     private ObservableList<JukeBox> jukeBoxObservableList = FXCollections.observableArrayList();
 
@@ -39,17 +38,20 @@ public class UserIPConnectScene extends SceneMaker
         Button editButton = new Button("Edit");
         Button deleteButton = new Button("Delete");
         Button connectButton = new Button("Connect");
+        connectButton.setDefaultButton(true);
 
         // Table
         jukeBoxTableView = new TableView<>();
         TableColumn<JukeBox, String> nameColumn = new TableColumn<>("Name");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        nameColumn.setPrefWidth(149);
         TableColumn<JukeBox, String> ipAddressColumn = new TableColumn<>("IP");
         ipAddressColumn.setCellValueFactory(new PropertyValueFactory<>("ipAddress"));
+        ipAddressColumn.setPrefWidth(149);
         jukeBoxTableView.getColumns().add(nameColumn);
         jukeBoxTableView.getColumns().add(ipAddressColumn);
         jukeBoxTableView.setItems(jukeBoxObservableList);
-        jukeBoxObservableList.add(new JukeBox("Localhost","localhost"));
+        jukeBoxTableView.setMaxSize(300,300);
 
         // left to right JukeBox IP address, input field for IP address
         HBox buttonsHBox = new HBox(20);
@@ -69,12 +71,10 @@ public class UserIPConnectScene extends SceneMaker
         });
         connectButton.setOnAction(e -> {
             JukeBox jukeBox = jukeBoxTableView.getSelectionModel().getSelectedItem();
-            controller.connectButtonHandleUserIPConnectScene(jukeBox.getIpAddress());
+            controller.connectButtonHandleUserIPConnectScene(jukeBox);
         });
-
         this.setRoot(root);
     }
-
     public ObservableList<JukeBox> getJukeBoxObservableList()
     {
         return jukeBoxObservableList;

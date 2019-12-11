@@ -24,12 +24,11 @@ public class NewIPScene extends SceneMaker
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        gridPane.add(nameLabel,0,0);
-        gridPane.add(nameTextField,1,0);
-        gridPane.add(ipLabel,0,1);
-        gridPane.add(ipTextField,1,1);
+        gridPane.addRow(0,nameLabel,nameTextField);
+        gridPane.addRow(1,ipLabel,ipTextField);
 
         Button addButton = new Button("Add");
+        addButton.setDefaultButton(true);
         addButton.setOnAction(e -> {
             controller.addIPButtonHandleNewIPScene(nameTextField.getText(), ipTextField.getText());
             nameTextField.setText("");

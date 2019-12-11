@@ -42,7 +42,7 @@ public class Controller {
         userIPConnectScene = new UserIPConnectScene(stage,this);
         userLoginScene = new UserLoginScene(stage,this);
         queueScene = new QueueScene(stage,this);
-        libraryScene = new LibraryScene(stage,this);
+        libraryScene = new LibraryScene(dialog,this);
         newIPScene = new NewIPScene(dialog,this);
         editIPScene = new EditIPScene(dialog,this);
     }
@@ -187,13 +187,16 @@ public class Controller {
     /**
      * Connects to the server and changes scene to login
      */
-    public void connectButtonHandleUserIPConnectScene(String ip)
+    public void connectButtonHandleUserIPConnectScene(JukeBox jukeBox)
     {
-        String preText ="http://";
-        String postText =":8080";
-        jukeBoxClient.setJukeBoxIP(preText + ip + postText);
-        stage.setScene(getUserLoginScene());
-        stage.setTitle("dJBox - Login");
+        if(jukeBox != null)
+        {
+            String preText ="http://";
+            String postText =":8080";
+            jukeBoxClient.setJukeBoxIP(preText + jukeBox.getIpAddress() + postText);
+            stage.setScene(getUserLoginScene());
+            stage.setTitle("dJBox - Login");
+        }
     }
 
     /**

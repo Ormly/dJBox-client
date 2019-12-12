@@ -91,7 +91,7 @@ public class ServerController extends ServerControllerService
         StringBuilder authResponse = new StringBuilder();
         String request = requestURI + "/auth";
         //TODO: reconsider this bullshit
-        String requestBody = "{ \"" + "userName" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
+        String requestBody = "{ \"" + "userEmail" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
 
         HttpHeaders headers = httpController.sendPostRequest(request, requestBody);
 

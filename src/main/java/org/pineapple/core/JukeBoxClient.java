@@ -104,8 +104,6 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
-    //TODO: think about returning Optional instead
-
     /**
      * Provides JukeboxClient queue as list of songs, to be called only after a valid ResponseState has been determined through getQueueResponseState.
      *
@@ -176,9 +174,14 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
+    /**
+     * Provides JukeboxClient library as list of songs, to be called only after a valid ResponseState has been determined through getLibraryResponseState.
+     *
+     * @return list of songs representing library state.
+     */
     public List<Song> doGetLibrary()
     {
-
+        //TODO: proofing
         return library.getAllMedia();
     }
 
@@ -210,6 +213,15 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
+    /**
+     * Exposes connection functionality to GUI.
+     * Since no API call that tests for/establishes a connection to a JukeBox server exists, the authentication API is used to achieve the same result.
+     * The auth API is called with nonsense data to force a 401 error code response, in which case we know that we reached a JukeBox. Otherwise, an
+     * appropriate response state is returned instead.
+     *
+     * @param ip IP address of JukeBox to be connected.
+     * @return ResponseState enum signifying to GUI whether API call succeeder not.
+     */
     public ResponseState doConnectViaIP(String ip)
     {
         try

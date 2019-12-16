@@ -38,7 +38,7 @@ public class Main extends Application
                 break;
             case AUTHFAIL:
                 break;
-            case FATAL:
+            case CANTREACH:
                 break;
         }
     }

@@ -5,5 +5,5 @@ package org.pineapple.core;
  */
 public enum ResponseState
 {
-    SUCCESS,AUTHFAIL,FATAL
+    SUCCESS,AUTHFAIL,SONGNOTFOUND,CANTREACH,GENERALFAIL
 }

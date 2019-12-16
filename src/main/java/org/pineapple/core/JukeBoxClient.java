@@ -1,13 +1,10 @@
 package org.pineapple.core;
 
-import org.pineapple.backend.AuthenticationFailedException;
-import org.pineapple.backend.HTTPControllerJavaNet;
-import org.pineapple.backend.ServerController;
+import org.pineapple.backend.*;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,8 +20,6 @@ public class JukeBoxClient
     private IMediaList queue;
     private UserData userData;
 
-    //private boolean validResponse;
-
     /**
      * Initializes all relevant members, including the ServerControllerService providing server connection.
      */
@@ -32,11 +27,7 @@ public class JukeBoxClient
     {
         queue = new SongList();
         library = new SongList();
-        //validResponse = false;
-
-        //TESTING
         serverController = new ServerController(new HTTPControllerJavaNet());
-
         userData = new UserData();
     }
 
@@ -67,14 +58,18 @@ public class JukeBoxClient
         {
             userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
             userData.setEmailAddress(userEmail);
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
@@ -92,16 +87,18 @@ public class JukeBoxClient
         {
             queue.setSongList(serverController.getServerQueueWithToken(userData.getSecurityToken()));
 
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //???
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
-
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
@@ -131,15 +128,21 @@ public class JukeBoxClient
         try
         {
             serverController.addSongToServerQueue(songID, userData.getSecurityToken());
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(SongNotFoundException songNotFoundEx)
+        {
+            return ResponseState.SONGNOTFOUND;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
@@ -156,15 +159,18 @@ public class JukeBoxClient
         try
         {
             library.setSongList(serverController.getServerLibraryWithToken(userData.getSecurityToken()));
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
@@ -187,15 +193,18 @@ public class JukeBoxClient
         {
             serverController.logoutUser(userData.getSecurityToken());
             userData.clear();
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;

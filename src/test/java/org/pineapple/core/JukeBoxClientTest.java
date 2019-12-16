@@ -1,7 +1,6 @@
 package org.pineapple.core;
 
 import org.junit.jupiter.api.*;
-import org.pineapple.core.interfaces.IMediaList;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -34,6 +33,19 @@ public class JukeBoxClientTest
     }
 
     @Test
+    @Order(0)
+    @Tag("API")
+    @Tag("Logic")
+    @DisplayName("Calling API before authenticating.")
+    void apiCallsWithoutValidTokenTest()
+    {
+        assertEquals(ResponseState.AUTHFAIL, (jukeBoxClient.getQueueResponseState()), "Queue could be fetched without providing valid token.");
+        assertEquals(ResponseState.AUTHFAIL, (jukeBoxClient.getLibraryResponseState()), "Library could be fetched without providing valid token.");
+        assertEquals(ResponseState.AUTHFAIL, (jukeBoxClient.addSongToQueue(songIDTest+1)), "Song could be added to server queue without providing valid token.");
+        assertEquals(ResponseState.AUTHFAIL, (jukeBoxClient.doLogout()), "User could logout without prior authentication.");
+    }
+
+    @Test
     @Order(1)
     @Tag("API")
     @Tag("Logic")
@@ -46,7 +58,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(2)
+    @Order(4)
     @Tag("API")
     @Tag("Logic")
     @DisplayName("Fetching library Response State and setting library song list")
@@ -56,7 +68,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(3)
+    @Order(5)
     @Tag("Logic")
     @DisplayName("Checking library Song list")
     public void libraryFetchSongListTest()
@@ -67,17 +79,17 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(4)
+    @Order(6)
     @Tag("API")
     @DisplayName("Adding Song to the Queue")
     void addSongToQueueTest()
     {
-        assertEquals(ResponseState.AUTHFAIL, (jukeBoxClient.addSongToQueue(1212121212)), "Adding song with invalid ID was accepted.");
+        assertEquals(ResponseState.SONGNOTFOUND, (jukeBoxClient.addSongToQueue(1212121212)), "Adding song with invalid ID was accepted.");
         assertEquals(ResponseState.SUCCESS, (jukeBoxClient.addSongToQueue(songIDTest)), "Adding song with valid ID was not accepted.");
     }
 
     @Test
-    @Order(5)
+    @Order(2)
     @Tag("API")
     @Tag("Logic")
     @DisplayName("Fetching server queue Response State and setting queue song list")
@@ -87,7 +99,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(6)
+    @Order(3)
     @Tag("Logic")
     @DisplayName("Checking server queue Song list")
     public void queueFetchSongListTest()

@@ -48,7 +48,9 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         int responseStatusCode = response.statusCode();
-        if(responseStatusCode == ClientConstants.AUTH_FAILURE_ERROR_CODE)
+        if(responseStatusCode == ClientConstants.GENERAL_ERROR_CODE)
+            throw new GeneralServerIssueException(String.valueOf(responseStatusCode));
+        else if(responseStatusCode == ClientConstants.AUTH_FAILURE_ERROR_CODE)
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
 
         return response.headers();
@@ -72,7 +74,9 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         int responseStatusCode = response.statusCode();
-        if(responseStatusCode == ClientConstants.SONG_NOT_FOUND_ERROR_CODE)
+        if(responseStatusCode == ClientConstants.GENERAL_ERROR_CODE)
+            throw new GeneralServerIssueException(String.valueOf(responseStatusCode));
+        else if(responseStatusCode == ClientConstants.SONG_NOT_FOUND_ERROR_CODE)
             throw new SongNotFoundException(String.valueOf(responseStatusCode));
         else if(responseStatusCode == ClientConstants.AUTH_FAILURE_ERROR_CODE)
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));

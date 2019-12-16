@@ -1,9 +1,6 @@
 package org.pineapple.core;
 
-import org.pineapple.backend.AuthenticationFailedException;
-import org.pineapple.backend.HTTPControllerJavaNet;
-import org.pineapple.backend.ServerController;
-import org.pineapple.backend.SongNotFoundException;
+import org.pineapple.backend.*;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 
@@ -64,6 +61,9 @@ public class JukeBoxClient
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
@@ -90,6 +90,9 @@ public class JukeBoxClient
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
@@ -128,6 +131,9 @@ public class JukeBoxClient
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
@@ -156,6 +162,9 @@ public class JukeBoxClient
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
@@ -187,6 +196,9 @@ public class JukeBoxClient
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;

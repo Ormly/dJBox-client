@@ -116,4 +116,11 @@ public class ServerController extends ServerControllerService
     {
         this.requestURI = requestURI;
     }
+
+    //TODO: change this it's horrible
+    @Override
+    public void clearRequestURI()
+    {
+        this.requestURI = "";
+    }
 }

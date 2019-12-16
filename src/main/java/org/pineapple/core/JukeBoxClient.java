@@ -210,12 +210,33 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
+    public ResponseState doConnectViaIP(String ip)
+    {
+        try
+        {
+            setJukeBoxIP(ip);
+            serverController.authenticateUser(ClientConstants.NONSENSE_USER_DATA, ClientConstants.NONSENSE_USER_DATA);
+        } catch(IOException ioEx)
+        {
+            return ResponseState.CANTREACH;
+        } catch(AuthenticationFailedException authFailEx)
+        {
+            return ResponseState.SUCCESS;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
+        }
+
+        serverController.clearRequestURI();
+        return ResponseState.WRONGSTATE;
+    }
+
     /**
      * Setter for JukeBox IP. Sets ServerControllerService URI member.
      *
      * @param ipAddress
      */
-    public void setJukeBoxIP(String ipAddress)
+    private void setJukeBoxIP(String ipAddress)
     {
         serverController.setRequestURI(ipAddress);
     }

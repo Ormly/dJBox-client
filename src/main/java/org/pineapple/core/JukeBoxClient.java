@@ -227,7 +227,7 @@ public class JukeBoxClient
             Thread.currentThread().interrupt();
         }
 
-        serverController.clearRequestURI();
+        clearJukeBoxIP();
         return ResponseState.WRONGSTATE;
     }
 
@@ -239,6 +239,14 @@ public class JukeBoxClient
     private void setJukeBoxIP(String ipAddress)
     {
         serverController.setRequestURI(ipAddress);
+    }
+
+    /**
+     * Clears IP of JukeBox set in Servercontroller.
+     */
+    private void clearJukeBoxIP()
+    {
+        serverController.clearRequestURI();
     }
 }
 

@@ -21,7 +21,6 @@ public class JukeBoxClientTest
     {
         jukeBoxClient = jukeBoxClient.getJukeBoxClientInstance();
         assertNotNull(jukeBoxClient, "JukeBoxClient instance could not be retrieved.");
-        jukeBoxClient.setJukeBoxIP("http://localhost:8080");
         songIDTest = 1;
     }
 
@@ -36,6 +35,18 @@ public class JukeBoxClientTest
     @Order(0)
     @Tag("API")
     @Tag("Logic")
+    @DisplayName("Connecting to Jukebox.")
+    void connectToJukebox()
+    {
+        assertEquals(ResponseState.WRONGSTATE,jukeBoxClient.doConnectViaIP("http://localhost"),"Successful connection response on invalid localhost IP.");
+        assertEquals(ResponseState.CANTREACH,jukeBoxClient.doConnectViaIP("http://blabla"),"Successful connection response on invalid IP.");
+        assertEquals(ResponseState.SUCCESS,jukeBoxClient.doConnectViaIP("http://localhost:8080"),"Unsuccessful connection response on valid IP.");
+    }
+
+    @Test
+    @Order(1)
+    @Tag("API")
+    @Tag("Logic")
     @DisplayName("Calling API before authenticating.")
     void apiCallsWithoutValidTokenTest()
     {
@@ -46,7 +57,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(1)
+    @Order(2)
     @Tag("API")
     @Tag("Logic")
     @DisplayName("Authenticating")
@@ -58,7 +69,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     @Tag("API")
     @Tag("Logic")
     @DisplayName("Fetching library Response State and setting library song list")
@@ -68,7 +79,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(5)
+    @Order(6)
     @Tag("Logic")
     @DisplayName("Checking library Song list")
     public void libraryFetchSongListTest()
@@ -79,7 +90,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(6)
+    @Order(7)
     @Tag("API")
     @DisplayName("Adding Song to the Queue")
     void addSongToQueueTest()
@@ -89,7 +100,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(2)
+    @Order(3)
     @Tag("API")
     @Tag("Logic")
     @DisplayName("Fetching server queue Response State and setting queue song list")
@@ -99,7 +110,7 @@ public class JukeBoxClientTest
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     @Tag("Logic")
     @DisplayName("Checking server queue Song list")
     public void queueFetchSongListTest()

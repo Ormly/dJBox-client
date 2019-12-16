@@ -76,7 +76,7 @@ public class Controller {
                 break;
             case AUTHFAIL:
                 break;
-            case FATAL:
+            case CANTREACH:
                 break;
         }
     }
@@ -95,7 +95,7 @@ public class Controller {
                 break;
             case AUTHFAIL:
                 break;
-            case FATAL:
+            case CANTREACH:
                 break;
         }
         Stage dialog = new Stage();
@@ -122,7 +122,7 @@ public class Controller {
                 break;
             case AUTHFAIL:
                 break;
-            case FATAL:
+            case CANTREACH:
                 break;
         }
         return songList;
@@ -160,8 +160,8 @@ public class Controller {
                 response.setText("AUTHFAIL error");
                 password.setText("");
                 break;
-            case FATAL:
-                response.setText("FATAL error");
+            case CANTREACH:
+                response.setText("CANTREACH error");
                 break;
         }
     }

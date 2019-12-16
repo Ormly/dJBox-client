@@ -24,7 +24,7 @@ public class ServerController extends ServerControllerService
     }
 
     public void addSongToServerQueue(int songID, String securityToken)
-    throws AuthenticationFailedException, IOException, InterruptedException
+    throws AuthenticationFailedException, SongNotFoundException, IOException, InterruptedException
     {
         String request = requestURI + "/queue/add/" + songID;
 
@@ -43,7 +43,7 @@ public class ServerController extends ServerControllerService
      */
     @Override
     public List<Song> getServerQueueWithToken(String securityToken)
-    throws IOException, InterruptedException, AuthenticationFailedException
+    throws AuthenticationFailedException, IOException, InterruptedException
     {
         List<Song> queue;
         String request = requestURI + "/queue";
@@ -86,7 +86,7 @@ public class ServerController extends ServerControllerService
 
     @Override
     public String authenticateUser(String userEmail, String userPassword)
-    throws IOException, InterruptedException, AuthenticationFailedException
+    throws AuthenticationFailedException, IOException, InterruptedException
     {
         StringBuilder authResponse = new StringBuilder();
         String request = requestURI + "/auth";

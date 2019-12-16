@@ -1,7 +1,6 @@
 package org.pineapple.core;
 
 import org.junit.jupiter.api.*;
-import org.pineapple.core.interfaces.IMediaList;
 
 import java.util.List;
 import java.util.logging.Logger;

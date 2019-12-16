@@ -84,4 +84,9 @@ public abstract class ServerControllerService
      * @param requestURI
      */
     public abstract void setRequestURI(String requestURI);
+
+    /**
+     * requestURI clear.
+     */
+    public abstract void clearRequestURI();
 }

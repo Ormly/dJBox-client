@@ -191,9 +191,9 @@ public class Controller {
     {
         if(jukeBox != null)
         {
-            ResponseState responseState = jukeBoxClient.doConnectViaIP(jukeBox.getIpAddress());
             String preText ="http://";
             String postText =":8080";
+            ResponseState responseState = jukeBoxClient.doConnectViaIP(preText + jukeBox.getIpAddress() + postText);
             switch(responseState)
             {
                 case SUCCESS:

@@ -52,6 +52,7 @@ public class UserIPConnectScene extends SceneMaker
         jukeBoxTableView.getColumns().add(ipAddressColumn);
         jukeBoxTableView.setItems(jukeBoxObservableList);
         jukeBoxTableView.setMaxSize(300,300);
+        jukeBoxObservableList.add(new JukeBox("localhost","localhost"));
 
         // left to right JukeBox IP address, input field for IP address
         HBox buttonsHBox = new HBox(20);

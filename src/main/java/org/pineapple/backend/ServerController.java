@@ -24,7 +24,7 @@ public class ServerController extends ServerControllerService
     }
 
     public void addSongToServerQueue(int songID, String securityToken)
-    throws AuthenticationFailedException, IOException, InterruptedException
+    throws AuthenticationFailedException, GeneralServerIssueException, SongNotFoundException, IOException, InterruptedException
     {
         String request = requestURI + "/queue/add/" + songID;
 
@@ -43,7 +43,7 @@ public class ServerController extends ServerControllerService
      */
     @Override
     public List<Song> getServerQueueWithToken(String securityToken)
-    throws IOException, InterruptedException, AuthenticationFailedException
+    throws AuthenticationFailedException, GeneralServerIssueException, IOException, InterruptedException
     {
         List<Song> queue;
         String request = requestURI + "/queue";
@@ -69,7 +69,7 @@ public class ServerController extends ServerControllerService
      */
     @Override
     public List<Song> getServerLibraryWithToken(String securityToken)
-    throws AuthenticationFailedException, IOException, InterruptedException
+    throws AuthenticationFailedException, GeneralServerIssueException, IOException, InterruptedException
     {
         List<Song> library;
         String request = requestURI + "/library";
@@ -86,12 +86,12 @@ public class ServerController extends ServerControllerService
 
     @Override
     public String authenticateUser(String userEmail, String userPassword)
-    throws IOException, InterruptedException, AuthenticationFailedException
+    throws AuthenticationFailedException, GeneralServerIssueException, IOException, InterruptedException
     {
         StringBuilder authResponse = new StringBuilder();
         String request = requestURI + "/auth";
         //TODO: reconsider this bullshit
-        String requestBody = "{ \"" + "userName" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
+        String requestBody = "{ \"" + "userEmail" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
 
         HttpHeaders headers = httpController.sendPostRequest(request, requestBody);
 
@@ -103,7 +103,7 @@ public class ServerController extends ServerControllerService
 
     @Override
     public void logoutUser(String securityToken)
-    throws AuthenticationFailedException, IOException, InterruptedException
+    throws AuthenticationFailedException, GeneralServerIssueException, IOException, InterruptedException
     {
         String request = requestURI + "/auth/logout";
 
@@ -115,5 +115,12 @@ public class ServerController extends ServerControllerService
     public void setRequestURI(String requestURI)
     {
         this.requestURI = requestURI;
+    }
+
+    //TODO: change this it's horrible
+    @Override
+    public void clearRequestURI()
+    {
+        this.requestURI = "";
     }
 }

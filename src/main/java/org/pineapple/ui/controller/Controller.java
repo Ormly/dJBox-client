@@ -82,7 +82,7 @@ public class Controller {
                 break;
             case AUTHFAIL:
                 break;
-            case FATAL:
+            case CANTREACH:
                 break;
         }
     }
@@ -102,7 +102,7 @@ public class Controller {
                 break;
             case AUTHFAIL:
                 break;
-            case FATAL:
+            case CANTREACH:
                 break;
         }
         dialog = new Stage();
@@ -130,7 +130,7 @@ public class Controller {
                 break;
             case AUTHFAIL:
                 break;
-            case FATAL:
+            case CANTREACH:
                 break;
         }
         return songList;
@@ -191,11 +191,19 @@ public class Controller {
     {
         if(jukeBox != null)
         {
+            ResponseState responseState = jukeBoxClient.doConnectViaIP(jukeBox.getIpAddress());
             String preText ="http://";
             String postText =":8080";
-            jukeBoxClient.setJukeBoxIP(preText + jukeBox.getIpAddress() + postText);
-            stage.setScene(getUserLoginScene());
-            stage.setTitle("dJBox - Login");
+            switch(responseState)
+            {
+                case SUCCESS:
+                    stage.setScene(getUserLoginScene());
+                    stage.setTitle("dJBox - Login");
+                    break;
+                case CANTREACH:
+                case WRONGSTATE:
+                    break;
+            }
         }
     }
 
@@ -222,8 +230,8 @@ public class Controller {
                 response.setText("AUTHFAIL error");
                 password.setText("");
                 break;
-            case FATAL:
-                response.setText("FATAL error");
+            case CANTREACH:
+                response.setText("CANTREACH error");
                 break;
         }
     }

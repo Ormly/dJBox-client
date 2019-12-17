@@ -1,13 +1,10 @@
 package org.pineapple.core;
 
-import org.pineapple.backend.AuthenticationFailedException;
-import org.pineapple.backend.HTTPControllerJavaNet;
-import org.pineapple.backend.ServerController;
+import org.pineapple.backend.*;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,8 +20,6 @@ public class JukeBoxClient
     private IMediaList queue;
     private UserData userData;
 
-    //private boolean validResponse;
-
     /**
      * Initializes all relevant members, including the ServerControllerService providing server connection.
      */
@@ -32,11 +27,7 @@ public class JukeBoxClient
     {
         queue = new SongList();
         library = new SongList();
-        //validResponse = false;
-
-        //TESTING
         serverController = new ServerController(new HTTPControllerJavaNet());
-
         userData = new UserData();
     }
 
@@ -67,14 +58,18 @@ public class JukeBoxClient
         {
             userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
             userData.setEmailAddress(userEmail);
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
@@ -92,22 +87,22 @@ public class JukeBoxClient
         {
             queue.setSongList(serverController.getServerQueueWithToken(userData.getSecurityToken()));
 
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //???
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
-
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
     }
-
-    //TODO: think about returning Optional instead
 
     /**
      * Provides JukeboxClient queue as list of songs, to be called only after a valid ResponseState has been determined through getQueueResponseState.
@@ -131,15 +126,21 @@ public class JukeBoxClient
         try
         {
             serverController.addSongToServerQueue(songID, userData.getSecurityToken());
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(SongNotFoundException songNotFoundEx)
+        {
+            return ResponseState.SONGNOTFOUND;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
@@ -156,23 +157,31 @@ public class JukeBoxClient
         try
         {
             library.setSongList(serverController.getServerLibraryWithToken(userData.getSecurityToken()));
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
     }
 
+    /**
+     * Provides JukeboxClient library as list of songs, to be called only after a valid ResponseState has been determined through getLibraryResponseState.
+     *
+     * @return list of songs representing library state.
+     */
     public List<Song> doGetLibrary()
     {
-
+        //TODO: proofing
         return library.getAllMedia();
     }
 
@@ -187,18 +196,51 @@ public class JukeBoxClient
         {
             serverController.logoutUser(userData.getSecurityToken());
             userData.clear();
-        } catch(IOException io)
+        } catch(IOException ioEx)
         {
-            return ResponseState.FATAL;
-        } catch(InterruptedException ie)
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
         {
-            //...
-        } catch(AuthenticationFailedException af)
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
         }
 
         return ResponseState.SUCCESS;
+    }
+
+    /**
+     * Exposes connection functionality to GUI.
+     * Since no API call that tests for/establishes a connection to a JukeBox server exists, the authentication API is used to achieve the same result.
+     * The auth API is called with nonsense data to force a 401 error code response, in which case we know that we reached a JukeBox. Otherwise, an
+     * appropriate response state is returned instead.
+     *
+     * @param ip IP address of JukeBox to be connected.
+     * @return ResponseState enum signifying to GUI whether API call succeeder not.
+     */
+    public ResponseState doConnectViaIP(String ip)
+    {
+        try
+        {
+            setJukeBoxIP(ip);
+            serverController.authenticateUser(ClientConstants.NONSENSE_USER_DATA, ClientConstants.NONSENSE_USER_DATA);
+        } catch(IOException ioEx)
+        {
+            return ResponseState.CANTREACH;
+        } catch(AuthenticationFailedException authFailEx)
+        {
+            return ResponseState.SUCCESS;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
+        }
+
+        clearJukeBoxIP();
+        return ResponseState.WRONGSTATE;
     }
 
     /**
@@ -206,9 +248,17 @@ public class JukeBoxClient
      *
      * @param ipAddress
      */
-    public void setJukeBoxIP(String ipAddress)
+    private void setJukeBoxIP(String ipAddress)
     {
         serverController.setRequestURI(ipAddress);
+    }
+
+    /**
+     * Clears IP of JukeBox set in Servercontroller.
+     */
+    private void clearJukeBoxIP()
+    {
+        serverController.clearRequestURI();
     }
 }
 

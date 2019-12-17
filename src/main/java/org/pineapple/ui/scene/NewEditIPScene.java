@@ -9,12 +9,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.pineapple.ui.controller.Controller;
 
-public class EditIPScene extends SceneMaker
+public class NewEditIPScene extends SceneMaker
 {
     private TextField nameTextField;
     private TextField ipTextField;
+    private Button newEditButton;
+    // true adding, false editing
+    private boolean status;
 
-    public EditIPScene(Stage stage, Controller controller)
+    public NewEditIPScene(Stage stage, Controller controller)
     {
         super(stage, controller, 300,300);
 
@@ -30,16 +33,23 @@ public class EditIPScene extends SceneMaker
         gridPane.addRow(0,nameLabel,nameTextField);
         gridPane.addRow(1,ipLabel,ipTextField);
 
-        Button editButton = new Button("Edit");
-        editButton.setDefaultButton(true);
+        newEditButton = new Button("Edit");
+        newEditButton.setDefaultButton(true);
 
-        editButton.setOnAction(e -> {
-            controller.editIPButtonHandleEditIPScene(nameTextField.getText(), ipTextField.getText());
+        newEditButton.setOnAction(e -> {
+            if(status)
+            {
+                controller.addIPButtonHandleNewEditIPScene(nameTextField.getText(), ipTextField.getText());
+            }
+            else
+            {
+                controller.editIPButtonHandleNewEditIPScene(nameTextField.getText(), ipTextField.getText());
+            }
             nameTextField.setText("");
             ipTextField.setText("");
         });
 
-        VBox root = new VBox(10,gridPane,editButton);
+        VBox root = new VBox(10,gridPane,newEditButton);
         root.setAlignment(Pos.CENTER);
 
         this.setRoot(root);
@@ -49,9 +59,16 @@ public class EditIPScene extends SceneMaker
     {
         nameTextField.setText(text);
     }
-
     public void setIpTextField(String text)
     {
         ipTextField.setText(text);
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+        if(status)
+            newEditButton.setText("Add");
+        else
+            newEditButton.setText("Edit");
     }
 }

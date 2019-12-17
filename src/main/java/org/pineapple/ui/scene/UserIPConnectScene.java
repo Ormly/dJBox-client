@@ -1,22 +1,25 @@
 package org.pineapple.ui.scene;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.pineapple.core.JukeBox;
 import org.pineapple.ui.controller.Controller;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserIPConnectScene extends SceneMaker
 {
-    private TableView<JukeBox> jukeBoxTableView;
-    private ObservableList<JukeBox> jukeBoxObservableList = FXCollections.observableArrayList();
+    private Map<String, String> jukeBoxHashMap;
+    private TableView<Map.Entry<String, String>> jukeBoxTableView;
+    private ObservableList<Map.Entry<String, String>> jukeBoxObservableList;
 
     /**
      * Creates User IP Connect scene
@@ -42,17 +45,19 @@ public class UserIPConnectScene extends SceneMaker
 
         // Table
         jukeBoxTableView = new TableView<>();
-        TableColumn<JukeBox, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<Map.Entry<String, String>,String > nameColumn = new TableColumn<>("Name");
+        nameColumn.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getKey()));
         nameColumn.setPrefWidth(149);
-        TableColumn<JukeBox, String> ipAddressColumn = new TableColumn<>("IP");
-        ipAddressColumn.setCellValueFactory(new PropertyValueFactory<>("ipAddress"));
+        TableColumn<Map.Entry<String, String>, String> ipAddressColumn = new TableColumn<>("IP");
+        ipAddressColumn.setCellValueFactory(p -> new SimpleStringProperty(p.getValue().getValue()));
         ipAddressColumn.setPrefWidth(149);
         jukeBoxTableView.getColumns().add(nameColumn);
         jukeBoxTableView.getColumns().add(ipAddressColumn);
-        jukeBoxTableView.setItems(jukeBoxObservableList);
         jukeBoxTableView.setMaxSize(300,300);
-        jukeBoxObservableList.add(new JukeBox("localhost","localhost"));
+        jukeBoxHashMap = new HashMap<>();
+        jukeBoxHashMap.put("localhost","localhost");
+        jukeBoxObservableList = FXCollections.observableArrayList(jukeBoxHashMap.entrySet());
+        jukeBoxTableView.setItems(jukeBoxObservableList);
 
         // left to right JukeBox IP address, input field for IP address
         HBox buttonsHBox = new HBox(20);
@@ -66,19 +71,12 @@ public class UserIPConnectScene extends SceneMaker
 
         newButton.setOnAction(e -> controller.newIPButtonHandleUserIPConnectScene());
         editButton.setOnAction(e -> controller.editIPButtonHandleUserIPConnectScene());
-        deleteButton.setOnAction(e -> {
-            JukeBox jukeBox = jukeBoxTableView.getSelectionModel().getSelectedItem();
-            controller.deleteIPButtonHandleUserIPConnectScene(jukeBox);
-        });
-        connectButton.setOnAction(e -> {
-            JukeBox jukeBox = jukeBoxTableView.getSelectionModel().getSelectedItem();
-            controller.connectButtonHandleUserIPConnectScene(jukeBox);
-        });
+        deleteButton.setOnAction(e -> controller.deleteIPButtonHandleUserIPConnectScene());
+        connectButton.setOnAction(e -> controller.connectButtonHandleUserIPConnectScene());
         this.setRoot(root);
     }
-    public ObservableList<JukeBox> getJukeBoxObservableList()
-    {
-        return jukeBoxObservableList;
-    }
-    public TableView<JukeBox> getJukeBoxTableView() { return jukeBoxTableView; }
+
+    public Map<String, String> getJukeBoxHashMap() { return jukeBoxHashMap; }
+    public ObservableList<Map.Entry<String, String>> getJukeBoxObservableList() { return jukeBoxObservableList; }
+    public TableView<Map.Entry<String, String>> getJukeBoxTableView() { return jukeBoxTableView; }
 }

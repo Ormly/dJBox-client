@@ -6,7 +6,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.pineapple.core.JukeBox;
 import org.pineapple.core.JukeBoxClient;
 import org.pineapple.core.ResponseState;
 import org.pineapple.core.Song;
@@ -27,8 +26,7 @@ public class Controller {
     private UserLoginScene userLoginScene;
     private QueueScene queueScene;
     private LibraryScene libraryScene;
-    private NewIPScene newIPScene;
-    private EditIPScene editIPScene;
+    private NewEditIPScene newEditIPScene;
 
     /**
      * Constructor creates and puts scenes into Map container
@@ -43,16 +41,14 @@ public class Controller {
         userLoginScene = new UserLoginScene(stage,this);
         queueScene = new QueueScene(stage,this);
         libraryScene = new LibraryScene(dialog,this);
-        newIPScene = new NewIPScene(dialog,this);
-        editIPScene = new EditIPScene(dialog,this);
+        newEditIPScene = new NewEditIPScene(dialog, this);
     }
 
     public UserIPConnectScene getUserIPConnectScene() { return userIPConnectScene; }
     public UserLoginScene getUserLoginScene() { return userLoginScene; }
     public QueueScene getQueueScene() { return queueScene; }
     public LibraryScene getLibraryScene() { return libraryScene; }
-    public NewIPScene getNewIPScene() { return newIPScene; }
-    public EditIPScene getEditIPScene() { return editIPScene; }
+    public NewEditIPScene getNewEditIPScene() { return newEditIPScene; }
 
     /**
      * Adds song to queue
@@ -126,7 +122,6 @@ public class Controller {
         switch(responseState) {
             case SUCCESS:
                 songList = jukeBoxClient.doGetQueue();
-
                 break;
             case AUTHFAIL:
                 break;
@@ -136,10 +131,14 @@ public class Controller {
         return songList;
     }
 
+    /**
+     * Creates popup to enter new IP address
+     */
     public void newIPButtonHandleUserIPConnectScene()
     {
         dialog = new Stage();
-        dialog.setScene(getNewIPScene());
+        getNewEditIPScene().setStatus(true);
+        dialog.setScene(getNewEditIPScene());
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - New IP");
@@ -147,63 +146,106 @@ public class Controller {
         dialog.show();
     }
 
+    /**
+     * Creates popup to edit IP address
+     */
     public void editIPButtonHandleUserIPConnectScene()
     {
-        JukeBox jukeBox = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem();
-        if(jukeBox != null)
+        try
         {
-            getEditIPScene().setIpTextField(jukeBox.getIpAddress());
-            getEditIPScene().setNameTextField(jukeBox.getName());
+            String name = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getKey();
+            String ip = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getValue();
+            getNewEditIPScene().setIpTextField(ip);
+            getNewEditIPScene().setNameTextField(name);
             dialog = new Stage();
-            dialog.setScene(getEditIPScene());
+            getNewEditIPScene().setStatus(false);
+            dialog.setScene(getNewEditIPScene());
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(stage);
             dialog.setTitle("dJBox - Edit IP");
             dialog.getIcons().add(new Image("ananas_color.png"));
             dialog.show();
         }
+        catch(NullPointerException npe)
+        {
+            System.out.println("Nothing Selected");
+        }
     }
 
-    public void addIPButtonHandleNewIPScene(String name, String ip)
+    /**
+     * Adds ip to hashmap and displays
+     * @param name obtained from textfield
+     * @param ip obtained from textfield
+     */
+    public void addIPButtonHandleNewEditIPScene(String name, String ip)
     {
-        getUserIPConnectScene().getJukeBoxObservableList().add(new JukeBox(name, ip));
+        getUserIPConnectScene().getJukeBoxHashMap().put(name, ip);
+        getUserIPConnectScene().getJukeBoxObservableList().clear();
+        getUserIPConnectScene().getJukeBoxObservableList().addAll(getUserIPConnectScene().getJukeBoxHashMap().entrySet());
         dialog.close();
     }
 
-    public void editIPButtonHandleEditIPScene(String name, String ip)
+    /**
+     * Deletes currently selected ip and adds new ip
+     * @param name obtained from textfield
+     * @param ip obtained from textfield
+     */
+    public void editIPButtonHandleNewEditIPScene(String name, String ip)
     {
-        getUserIPConnectScene().getJukeBoxObservableList().set(
-                getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedIndex(),
-                new JukeBox(name, ip)
-        );
+        String key = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getKey();
+        getUserIPConnectScene().getJukeBoxHashMap().remove(key);
+        getUserIPConnectScene().getJukeBoxHashMap().put(name, ip);
+        getUserIPConnectScene().getJukeBoxObservableList().clear();
+        getUserIPConnectScene().getJukeBoxObservableList().addAll(getUserIPConnectScene().getJukeBoxHashMap().entrySet());
         dialog.close();
     }
 
-    public void deleteIPButtonHandleUserIPConnectScene(JukeBox jukeBox)
+    /**
+     * Removes currently selected ip from table and hashmap
+     */
+    public void deleteIPButtonHandleUserIPConnectScene()
     {
-        getUserIPConnectScene().getJukeBoxObservableList().remove(jukeBox);
+        try
+        {
+            String key = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getKey();
+            getUserIPConnectScene().getJukeBoxHashMap().remove(key);
+            getUserIPConnectScene().getJukeBoxObservableList().clear();
+            getUserIPConnectScene().getJukeBoxObservableList().addAll(getUserIPConnectScene().getJukeBoxHashMap().entrySet());
+        }
+        catch(NullPointerException npe)
+        {
+            System.out.println("Nothing Selected");
+        }
     }
 
     /**
      * Connects to the server and changes scene to login
      */
-    public void connectButtonHandleUserIPConnectScene(JukeBox jukeBox)
+    public void connectButtonHandleUserIPConnectScene()
     {
-        if(jukeBox != null)
+        try
         {
-            String preText ="http://";
-            String postText =":8080";
-            ResponseState responseState = jukeBoxClient.doConnectViaIP(preText + jukeBox.getIpAddress() + postText);
-            switch(responseState)
+            String ip = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getValue();
+            if(ip != null)
             {
-                case SUCCESS:
-                    stage.setScene(getUserLoginScene());
-                    stage.setTitle("dJBox - Login");
-                    break;
-                case CANTREACH:
-                case WRONGSTATE:
-                    break;
+                String preText ="http://";
+                String postText =":8080";
+                ResponseState responseState = jukeBoxClient.doConnectViaIP(preText + ip + postText);
+                switch(responseState)
+                {
+                    case SUCCESS:
+                        stage.setScene(getUserLoginScene());
+                        stage.setTitle("dJBox - Login");
+                        break;
+                    case CANTREACH:
+                    case WRONGSTATE:
+                        break;
+                }
             }
+        }
+        catch(NullPointerException npe)
+        {
+            System.out.println("Nothing Selected");
         }
     }
 

@@ -44,37 +44,37 @@ public class Controller {
         newEditIPScene = new NewEditIPScene(dialog, this);
     }
 
-    public UserIPConnectScene getUserIPConnectScene() { return userIPConnectScene; }
-    public UserLoginScene getUserLoginScene() { return userLoginScene; }
-    public QueueScene getQueueScene() { return queueScene; }
-    public LibraryScene getLibraryScene() { return libraryScene; }
-    public NewEditIPScene getNewEditIPScene() { return newEditIPScene; }
+    /**
+     * Returns the Initial Scene to connect to an IP
+     * @return userIPScene
+     */
+    public UserIPConnectScene getInitialScene() { return userIPConnectScene; }
 
     /**
      * Adds song to queue
      */
-    public void addToQueueButtonHandleLibraryScene()
+    public void addToQueueButtonLibrary()
     {
         int id = libraryScene.getSongObservableList();
         if(id > 0)
         {
             jukeBoxClient.addSongToQueue(id);
-            queueScene.updateSongObservableList(doGetQueue());
+            queueScene.updateSongObservableList(getQueueList());
         }
     }
 
     /**
      * Logs user out and changes scene to login
      */
-    public void logoutButtonHandleQueueScene()
+    public void logoutButtonQueue()
     {
         ResponseState responseState = jukeBoxClient.doLogout();
         switch(responseState)
         {
             case SUCCESS:
-                stage.setScene(getUserLoginScene());
+                stage.setScene(userLoginScene);
                 stage.setTitle("dJBox - Login");
-                getQueueScene().stopTimeLine();
+                queueScene.stopTimeLine();
                 break;
             case AUTHFAIL:
                 break;
@@ -87,7 +87,7 @@ public class Controller {
      * Opens up a new window containing song library
      * Main window can't be used until library is closed
      */
-    public void libraryButtonHandleQueueScene()
+    public void libraryButtonQueue()
     {
         ResponseState responseState = jukeBoxClient.getLibraryResponseState();
         List<Song> songList = new ArrayList<>();
@@ -102,8 +102,8 @@ public class Controller {
                 break;
         }
         dialog = new Stage();
-        getLibraryScene().updateSongObservableList(songList);
-        dialog.setScene(getLibraryScene());
+        libraryScene.updateSongObservableList(songList);
+        dialog.setScene(libraryScene);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - Library");
@@ -115,7 +115,7 @@ public class Controller {
      * Returns List of songs in the queue if it is able to otherwise an empty list
      * @return songList
      */
-    public List<Song> doGetQueue()
+    public List<Song> getQueueList()
     {
         ResponseState responseState = jukeBoxClient.getQueueResponseState();
         List<Song> songList = new ArrayList<>();
@@ -134,11 +134,11 @@ public class Controller {
     /**
      * Creates popup to enter new IP address
      */
-    public void newIPButtonHandleUserIPConnectScene()
+    public void newIPButtonUserIPConnect()
     {
         dialog = new Stage();
-        getNewEditIPScene().setStatus(true);
-        dialog.setScene(getNewEditIPScene());
+        newEditIPScene.setStatus(true);
+        dialog.setScene(newEditIPScene);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - New IP");
@@ -149,17 +149,17 @@ public class Controller {
     /**
      * Creates popup to edit IP address
      */
-    public void editIPButtonHandleUserIPConnectScene()
+    public void editIPButtonUserIPConnect()
     {
         try
         {
-            String name = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getKey();
-            String ip = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getValue();
-            getNewEditIPScene().setIpTextField(ip);
-            getNewEditIPScene().setNameTextField(name);
+            String name = userIPConnectScene.getKeyFromTableSelection();
+            String ip = userIPConnectScene.getIPFromTableSelection();
+            newEditIPScene.setIpTextField(ip);
+            newEditIPScene.setNameTextField(name);
             dialog = new Stage();
-            getNewEditIPScene().setStatus(false);
-            dialog.setScene(getNewEditIPScene());
+            newEditIPScene.setStatus(false);
+            dialog.setScene(newEditIPScene);
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(stage);
             dialog.setTitle("dJBox - Edit IP");
@@ -177,11 +177,10 @@ public class Controller {
      * @param name obtained from textfield
      * @param ip obtained from textfield
      */
-    public void addIPButtonHandleNewEditIPScene(String name, String ip)
+    public void addIPButtonNewEditIP(String name, String ip)
     {
-        getUserIPConnectScene().getJukeBoxHashMap().put(name, ip);
-        getUserIPConnectScene().getJukeBoxObservableList().clear();
-        getUserIPConnectScene().getJukeBoxObservableList().addAll(getUserIPConnectScene().getJukeBoxHashMap().entrySet());
+        userIPConnectScene.putHashMap(name, ip);
+        userIPConnectScene.updateObservableList();
         dialog.close();
     }
 
@@ -192,25 +191,23 @@ public class Controller {
      */
     public void editIPButtonHandleNewEditIPScene(String name, String ip)
     {
-        String key = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getKey();
-        getUserIPConnectScene().getJukeBoxHashMap().remove(key);
-        getUserIPConnectScene().getJukeBoxHashMap().put(name, ip);
-        getUserIPConnectScene().getJukeBoxObservableList().clear();
-        getUserIPConnectScene().getJukeBoxObservableList().addAll(getUserIPConnectScene().getJukeBoxHashMap().entrySet());
+        String key = userIPConnectScene.getKeyFromTableSelection();
+        userIPConnectScene.removeHashMap(key);
+        userIPConnectScene.putHashMap(name, ip);
+        userIPConnectScene.updateObservableList();
         dialog.close();
     }
 
     /**
      * Removes currently selected ip from table and hashmap
      */
-    public void deleteIPButtonHandleUserIPConnectScene()
+    public void deleteIPButtonUserIPConnect()
     {
         try
         {
-            String key = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getKey();
-            getUserIPConnectScene().getJukeBoxHashMap().remove(key);
-            getUserIPConnectScene().getJukeBoxObservableList().clear();
-            getUserIPConnectScene().getJukeBoxObservableList().addAll(getUserIPConnectScene().getJukeBoxHashMap().entrySet());
+            String key = userIPConnectScene.getKeyFromTableSelection();
+            userIPConnectScene.removeHashMap(key);
+            userIPConnectScene.updateObservableList();
         }
         catch(NullPointerException npe)
         {
@@ -221,11 +218,11 @@ public class Controller {
     /**
      * Connects to the server and changes scene to login
      */
-    public void connectButtonHandleUserIPConnectScene()
+    public void connectButtonUserIPConnect()
     {
         try
         {
-            String ip = getUserIPConnectScene().getJukeBoxTableView().getSelectionModel().getSelectedItem().getValue();
+            String ip = userIPConnectScene.getIPFromTableSelection();
             if(ip != null)
             {
                 String preText ="http://";
@@ -234,7 +231,7 @@ public class Controller {
                 switch(responseState)
                 {
                     case SUCCESS:
-                        stage.setScene(getUserLoginScene());
+                        stage.setScene(userLoginScene);
                         stage.setTitle("dJBox - Login");
                         break;
                     case CANTREACH:
@@ -255,18 +252,18 @@ public class Controller {
      * @param password password
      * @param response error message
      */
-    public void loginButtonHandleUserLoginScene(TextField user, PasswordField password, Label response)
+    public void loginButtonUserLogin(TextField user, PasswordField password, Label response)
     {
         ResponseState responseState = jukeBoxClient.doAuthentication(user.getText(), password.getText());
         switch(responseState){
             case SUCCESS:
-                stage.setScene(getQueueScene());
+                stage.setScene(queueScene);
                 stage.setTitle("dJBox - Queue");
                 user.setText("");
                 password.setText("");
                 response.setText("");
-                getQueueScene().playTimeLine();
-                getQueueScene().updateSongObservableList(doGetQueue());
+                queueScene.playTimeLine();
+                queueScene.updateSongObservableList(getQueueList());
                 break;
             case AUTHFAIL:
                 response.setText("AUTHFAIL error");

@@ -39,7 +39,7 @@ public class NewEditIPScene extends SceneMaker
         newEditButton.setOnAction(e -> {
             if(status)
             {
-                controller.addIPButtonHandleNewEditIPScene(nameTextField.getText(), ipTextField.getText());
+                controller.addIPButtonNewEditIP(nameTextField.getText(), ipTextField.getText());
             }
             else
             {

@@ -69,14 +69,45 @@ public class UserIPConnectScene extends SceneMaker
         root.setAlignment(Pos.CENTER);
         root.getChildren().addAll(logoImageView, jukeBoxTableView, buttonsHBox);
 
-        newButton.setOnAction(e -> controller.newIPButtonHandleUserIPConnectScene());
-        editButton.setOnAction(e -> controller.editIPButtonHandleUserIPConnectScene());
-        deleteButton.setOnAction(e -> controller.deleteIPButtonHandleUserIPConnectScene());
-        connectButton.setOnAction(e -> controller.connectButtonHandleUserIPConnectScene());
+        // Button handlers
+        newButton.setOnAction(e -> controller.newIPButtonUserIPConnect());
+        editButton.setOnAction(e -> controller.editIPButtonUserIPConnect());
+        deleteButton.setOnAction(e -> controller.deleteIPButtonUserIPConnect());
+        connectButton.setOnAction(e -> controller.connectButtonUserIPConnect());
         this.setRoot(root);
     }
 
-    public Map<String, String> getJukeBoxHashMap() { return jukeBoxHashMap; }
-    public ObservableList<Map.Entry<String, String>> getJukeBoxObservableList() { return jukeBoxObservableList; }
-    public TableView<Map.Entry<String, String>> getJukeBoxTableView() { return jukeBoxTableView; }
+    /**
+     * Returns selected key from table selection
+     * @return key
+     */
+    public String getKeyFromTableSelection() { return jukeBoxTableView.getSelectionModel().getSelectedItem().getKey(); }
+
+    /**
+     * Returns selected ip from table selection
+     * @return ip
+     */
+    public String getIPFromTableSelection() { return jukeBoxTableView.getSelectionModel().getSelectedItem().getValue(); }
+
+    /**
+     * Updates table list by clearing and adding hashmap
+     */
+    public void updateObservableList()
+    {
+        jukeBoxObservableList.clear();
+        jukeBoxObservableList.addAll(jukeBoxHashMap.entrySet());
+    }
+
+    /**
+     * Puts name and ip into hashmap
+     * @param name
+     * @param ip
+     */
+    public void putHashMap(String name, String ip) { jukeBoxHashMap.put(name, ip); }
+
+    /**
+     * Removes key from hashmap
+     * @param key
+     */
+    public void removeHashMap(String key) { jukeBoxHashMap.remove(key); }
 }

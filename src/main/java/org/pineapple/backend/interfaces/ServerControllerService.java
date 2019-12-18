@@ -79,6 +79,20 @@ public abstract class ServerControllerService
     throws AuthenticationFailedException, IOException, InterruptedException;
 
     /**
+     * Registration to create a new user account
+     * Constructs appropriate URI according to server API and sends request via member HTTPController.
+     *
+     * @param userEmail
+     * @param userPassword
+     * @return
+     * @throws AuthenticationFailedException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public abstract void registration(String userEmail, String userPassword)
+    throws AuthenticationFailedException, IOException, InterruptedException;
+
+    /**
      * requestURI setter.
      *
      * @param requestURI
@@ -89,4 +103,6 @@ public abstract class ServerControllerService
      * requestURI clear.
      */
     public abstract void clearRequestURI();
+
+
 }

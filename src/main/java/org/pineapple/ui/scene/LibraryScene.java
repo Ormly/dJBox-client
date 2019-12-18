@@ -17,7 +17,8 @@ import org.pineapple.ui.controller.Controller;
 
 import java.util.List;
 
-public class LibraryScene extends SceneMaker {
+public class LibraryScene extends SceneMaker
+{
 
     private TableView<Song> songTableView;
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
@@ -29,7 +30,8 @@ public class LibraryScene extends SceneMaker {
      * @param stage window
      * @param controller controls scene commands
      */
-    public LibraryScene(Stage stage, Controller controller) {
+    public LibraryScene(Stage stage, Controller controller)
+    {
         super(stage,controller,500,400);
 
         // Lists songs in the library
@@ -85,7 +87,7 @@ public class LibraryScene extends SceneMaker {
 
         // Add to queue button
         Button addToQueueButton = new Button("Add to Queue");
-        addToQueueButton.setOnAction(e -> controller.addToQueueButtonHandle());
+        addToQueueButton.setOnAction(e -> controller.addToQueueButtonLibrary());
 
         // Album art song information and queue button
         VBox rightVBox = new VBox(10);

@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.pineapple.core.ResponseState;
 import org.pineapple.ui.controller.Controller;
-import org.pineapple.ui.scene.*;
 import org.pineapple.core.JukeBoxClient;
 
 public class Main extends Application
@@ -22,7 +21,7 @@ public class Main extends Application
 
         // Initial scene is Connect IP
         stage.getIcons().add(new Image("ananas_color.png"));
-        stage.setScene(controller.getUserIPConnectScene());
+        stage.setScene(controller.getInitialScene());
         stage.setTitle("dJBox - IP connect");
         stage.centerOnScreen();
         stage.show();

@@ -25,7 +25,6 @@ public class QueueScene extends SceneMaker {
 
     private  Timeline timeline;
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
-    TableView<Song> tableView;
     private Label currentTitleLabel;
     private Label currentArtistLabel;
     private Label currentAlbumLabel;
@@ -38,12 +37,13 @@ public class QueueScene extends SceneMaker {
      * @param stage window
      * @param controller controls scene commands
      */
-    public QueueScene(Stage stage, Controller controller) {
+    public QueueScene(Stage stage, Controller controller)
+    {
         super(stage, controller,800,600);
         // Uses controller for button handling
 
         // Lists songs in the queue
-        tableView = new TableView<>();
+        TableView<Song> tableView = new TableView<>();
         TableColumn<Song, String> titleColumn = new TableColumn<>("Title");
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         titleColumn.setSortable(false);
@@ -58,10 +58,9 @@ public class QueueScene extends SceneMaker {
         tableView.getColumns().add(albumColumn);
         tableView.setPlaceholder(new Label("No songs are in the queue please add a song"));
         timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
-            updateSongObservableList(controller.doGetQueue());
+            updateSongObservableList(controller.getQueueList());
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
-
 
         // Wrap observableList in FilteredList (Showing all data initially)
         FilteredList<Song> filteredList = new FilteredList<>(songObservableList, p -> true);
@@ -86,7 +85,7 @@ public class QueueScene extends SceneMaker {
         tableView.setItems(filteredList);
 
         // Search bar on top of song list
-        VBox leftVBox = new VBox(searchTextField,tableView);
+        VBox leftVBox = new VBox(searchTextField, tableView);
 
         // Menu options in top right Library and logout
         Tooltip libraryTooltip = new Tooltip("Library");
@@ -96,8 +95,9 @@ public class QueueScene extends SceneMaker {
         libraryImageView.setFitHeight(25);
         libraryImageView.setPickOnBounds(true);
         Tooltip.install(libraryImageView,libraryTooltip);
-        libraryImageView.setOnMouseClicked(e -> controller.libraryButtonHandle());
+        libraryImageView.setOnMouseClicked(e -> controller.libraryButtonQueue());
 
+        // Logout button
         Tooltip logoutTooltip = new Tooltip("Log out");
         Image logoutImage = new Image("PlaceHolder.png");
         ImageView logoutImageView = new ImageView(logoutImage);
@@ -105,7 +105,7 @@ public class QueueScene extends SceneMaker {
         logoutImageView.setFitHeight(25);
         logoutImageView.setPickOnBounds(true);
         Tooltip.install(logoutImageView,logoutTooltip);
-        logoutImageView.setOnMouseClicked(e -> controller.logoutButtonHandle());
+        logoutImageView.setOnMouseClicked(e -> controller.logoutButtonQueue());
 
         // Menu options are next to each other
         HBox rightTopBorderHBox = new HBox(20);
@@ -172,10 +172,14 @@ public class QueueScene extends SceneMaker {
         this.setRoot(root);
     }
 
+    // Controller for refreshing queue
     public void playTimeLine() { timeline.play(); }
-
     public void stopTimeLine() { timeline.stop(); }
 
+    /**
+     * Updates the list and updates current and next song
+     * @param songList
+     */
     public void updateSongObservableList(List<Song> songList)
     {
         songObservableList.clear();
@@ -196,6 +200,11 @@ public class QueueScene extends SceneMaker {
         updateSongInfo(current,next);
     }
 
+    /**
+     * Updates current and next song information
+     * @param currentSong
+     * @param nextSong
+     */
     public void updateSongInfo(Song currentSong, Song nextSong)
     {
         if(currentSong != null)

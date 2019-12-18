@@ -32,7 +32,7 @@ public class HTTPControllerJavaNet implements HTTPControllerService
      * Builds JavaNet Post HttpRequest request with given header/body and sends it via member HttpClient to given URI.
      * Returns valid response contents (JSON formatted), or otherwise throws AuthenticationFailedException.
      *
-     * @param requestURI URI address for the post request.
+     * @param requestURI  URI address for the post request.
      * @param requestBody Body to be sent to the URI.
      * @return The header associated with the Post response.
      * @throws IOException
@@ -48,6 +48,9 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         int responseStatusCode = response.statusCode();
+
+        System.out.println(responseStatusCode);
+
         if(responseStatusCode == ClientConstants.GENERAL_ERROR_CODE)
             throw new GeneralServerIssueException(String.valueOf(responseStatusCode));
         else if(responseStatusCode == ClientConstants.AUTH_FAILURE_ERROR_CODE)
@@ -61,7 +64,7 @@ public class HTTPControllerJavaNet implements HTTPControllerService
      * Returns valid response contents (JSON formatted), or otherwise throws AuthenticationFailedException.
      *
      * @param requestURI URI address for the get request.
-     * @param token needs to be passed to identify user.
+     * @param token      needs to be passed to identify user.
      * @return String representation of response body.
      * @throws IOException
      * @throws InterruptedException

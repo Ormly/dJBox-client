@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -51,8 +52,13 @@ public class UserLoginScene extends SceneMaker {
         gridPane.addRow(1,passwordLabel,passwordPasswordField);
         gridPane.setAlignment(Pos.CENTER);
 
+        // Buttons
         Button loginButton = new Button("Login");
+        Button registerButton = new Button("Register");
         loginButton.setDefaultButton(true);
+
+        HBox buttonsHBox = new HBox(10, loginButton, registerButton);
+        buttonsHBox.setAlignment(Pos.CENTER);
 
         // Response label changes after loginButton if there is an error or is blank if successful
         Label response = new Label("");
@@ -60,11 +66,12 @@ public class UserLoginScene extends SceneMaker {
 
         // Button Handle
         loginButton.setOnAction(e -> controller.loginButtonUserLogin(usernameTextField, passwordPasswordField, response));
+        registerButton.setOnAction(e -> controller.registerButtonUserLogin());
 
         // top to bottom, dJBox logo, username and field, password and field, button, response state
         VBox root = new VBox(20);
         root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(logoImageView,gridPane,loginButton, response);
+        root.getChildren().addAll(logoImageView,gridPane,buttonsHBox, response);
 
         this.setRoot(root);
     }

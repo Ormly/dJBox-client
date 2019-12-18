@@ -24,6 +24,7 @@ public class Controller {
     private JukeBoxClient jukeBoxClient;
     private UserIPConnectScene userIPConnectScene;
     private UserLoginScene userLoginScene;
+    private RegistrationScene registrationScene;
     private QueueScene queueScene;
     private LibraryScene libraryScene;
     private NewEditIPScene newEditIPScene;
@@ -39,6 +40,7 @@ public class Controller {
         this.jukeBoxClient = jukeBoxClient;
         userIPConnectScene = new UserIPConnectScene(stage,this);
         userLoginScene = new UserLoginScene(stage,this);
+        registrationScene = new RegistrationScene(dialog,this);
         queueScene = new QueueScene(stage,this);
         libraryScene = new LibraryScene(dialog,this);
         newEditIPScene = new NewEditIPScene(dialog, this);
@@ -272,6 +274,38 @@ public class Controller {
             case CANTREACH:
                 response.setText("CANTREACH error");
                 break;
+        }
+    }
+
+    public void registerButtonUserLogin()
+    {
+        dialog = new Stage();
+        registrationScene.resetFields();
+        dialog.setScene(registrationScene);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+        dialog.setTitle("dJBox - Register");
+        dialog.getIcons().add(new Image("ananas_color.png"));
+        dialog.show();
+    }
+
+    public void signUpButtonRegistration(TextField emailTextField, PasswordField passwordField, PasswordField confirmPasswordField,Label response)
+    {
+        String email = emailTextField.getText();
+        String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+        if(!password.equals(confirmPassword))
+        {
+            response.setText("Passwords do not match");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
+        }
+        else
+        {
+            emailTextField.setText("");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
+            dialog.close();
         }
     }
 }

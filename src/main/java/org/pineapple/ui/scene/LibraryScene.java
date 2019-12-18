@@ -87,7 +87,7 @@ public class LibraryScene extends SceneMaker
 
         // Add to queue button
         Button addToQueueButton = new Button("Add to Queue");
-        addToQueueButton.setOnAction(e -> controller.addToQueueButtonHandleLibraryScene());
+        addToQueueButton.setOnAction(e -> controller.addToQueueButtonLibrary());
 
         // Album art song information and queue button
         VBox rightVBox = new VBox(10);

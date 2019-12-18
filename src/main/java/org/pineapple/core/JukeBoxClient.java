@@ -30,10 +30,10 @@ public class JukeBoxClient
         serverController = new ServerController(new HTTPControllerJavaNet());
         userData = new UserData();
 
-        // test registration
-//        doConnectViaIP("http://localhost:8080");
-//        System.out.println("test registration");
-//        doRegistration("test@gmail.com","test");
+//         test registration
+        doConnectViaIP("http://localhost:8080");
+        System.out.println("test registration");
+        doRegistration("test8888888@gmail.com","test");
 
 
     }

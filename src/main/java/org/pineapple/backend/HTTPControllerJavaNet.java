@@ -83,6 +83,8 @@ public class HTTPControllerJavaNet implements HTTPControllerService
             throw new SongNotFoundException(String.valueOf(responseStatusCode));
         else if(responseStatusCode == ClientConstants.AUTH_FAILURE_ERROR_CODE)
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
+        else if(responseStatusCode == ClientConstants.REGISTRATION_FAILURE_ERROR_CODE)
+            throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
 
         return response.body();
     }

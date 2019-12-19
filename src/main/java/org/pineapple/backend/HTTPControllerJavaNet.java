@@ -48,9 +48,6 @@ public class HTTPControllerJavaNet implements HTTPControllerService
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         int responseStatusCode = response.statusCode();
-
-        System.out.println(responseStatusCode);
-
         if(responseStatusCode == ClientConstants.GENERAL_ERROR_CODE)
             throw new GeneralServerIssueException(String.valueOf(responseStatusCode));
         else if(responseStatusCode == ClientConstants.AUTH_FAILURE_ERROR_CODE)

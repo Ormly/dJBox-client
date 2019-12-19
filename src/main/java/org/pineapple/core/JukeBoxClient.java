@@ -231,14 +231,14 @@ public class JukeBoxClient
             serverController.authenticateUser(ClientConstants.NONSENSE_USER_DATA, ClientConstants.NONSENSE_USER_DATA);
         } catch(IOException ioEx)
         {
-            System.err.println("ioEx:" + ioEx);
+
             return ResponseState.CANTREACH;
         } catch(AuthenticationFailedException authFailEx)
         {
-            System.err.println("authEx:" + authFailEx);
             return ResponseState.SUCCESS;
         } catch(InterruptedException interruptedEx)
         {
+
             Thread.currentThread().interrupt();
         }
 

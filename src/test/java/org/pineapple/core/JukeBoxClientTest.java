@@ -38,8 +38,7 @@ public class JukeBoxClientTest
     @DisplayName("Connecting to Jukebox.")
     void connectToJukebox()
     {
-
-        assertEquals(ResponseState.WRONGSTATE,jukeBoxClient.doConnectViaIP("http://localhost"),"Successful connection response on invalid localhost IP.");
+        assertEquals(ResponseState.INVALIDIP, jukeBoxClient.doConnectViaIP("http://localhost:8080/nonsense"), "Successful connection response on invalid localhost IP.");
         assertEquals(ResponseState.CANTREACH,jukeBoxClient.doConnectViaIP("http://blabla"),"Successful connection response on invalid IP.");
         assertEquals(ResponseState.SUCCESS,jukeBoxClient.doConnectViaIP("http://localhost:8080"),"Unsuccessful connection response on valid IP.");
     }
@@ -101,11 +100,32 @@ public class JukeBoxClientTest
     }
 
     @Test
+    @Order(9)
+    @Tag("Logic")
+    @DisplayName("Checking server queue Song list after adding song")
+    public void queueFetchSongListTestAfter()
+    {
+        List<Song> songList = jukeBoxClient.doGetQueue();
+        assertFalse(songList.isEmpty(),"queue song list is empty, when it should be populated.");
+        assertEquals(songIDTest,songList.get(0).getId(),"song in queue does not have expected ID value.");
+    }
+
+    @Test
     @Order(3)
     @Tag("API")
     @Tag("Logic")
-    @DisplayName("Fetching server queue Response State and setting queue song list")
-    public void queueFetchResponseTest()
+    @DisplayName("Fetching server queue Response State and setting queue song list before adding song to queue")
+    public void queueFetchResponseTestBefore()
+    {
+        assertEquals(ResponseState.SUCCESS, (jukeBoxClient.getQueueResponseState()),"queue could not be fetched with valid token.");
+    }
+
+    @Test
+    @Order(8)
+    @Tag("API")
+    @Tag("Logic")
+    @DisplayName("Fetching server queue Response State and setting queue song list after adding song to queue")
+    public void queueFetchResponseTestAfter()
     {
         assertEquals(ResponseState.SUCCESS, (jukeBoxClient.getQueueResponseState()),"queue could not be fetched with valid token.");
     }
@@ -113,12 +133,11 @@ public class JukeBoxClientTest
     @Test
     @Order(4)
     @Tag("Logic")
-    @DisplayName("Checking server queue Song list")
-    public void queueFetchSongListTest()
+    @DisplayName("Checking server queue Song list before adding song")
+    public void queueFetchSongListTestBefore()
     {
         List<Song> songList = jukeBoxClient.doGetQueue();
-        assertFalse(songList.isEmpty(),"queue song list is empty, when it should be set with songs from server.");
-        assertEquals(songIDTest,songList.get(0).getId(),"song in queue does not have expected ID value.");
+        assertTrue(songList.isEmpty(),"queue song list is populated, when it should be empty.");
     }
 
     //TODO: test exception handling -> after rework?

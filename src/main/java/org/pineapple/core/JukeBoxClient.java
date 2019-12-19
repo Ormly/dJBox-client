@@ -243,7 +243,7 @@ public class JukeBoxClient
         }
 
         clearJukeBoxIP();
-        return ResponseState.WRONGSTATE;
+        return ResponseState.INVALIDIP;
     }
 
 

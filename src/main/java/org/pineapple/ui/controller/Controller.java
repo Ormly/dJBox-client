@@ -302,10 +302,25 @@ public class Controller {
         }
         else
         {
-            emailTextField.setText("");
-            passwordField.setText("");
-            confirmPasswordField.setText("");
-            dialog.close();
+            ResponseState responseState = jukeBoxClient.doRegistration(email,password);
+            switch(responseState)
+            {
+                case SUCCESS:
+                    emailTextField.setText("");
+                    passwordField.setText("");
+                    confirmPasswordField.setText("");
+                    dialog.close();
+                    break;
+                case WRONGSTATE:
+                    response.setText("Wrong State");
+                    break;
+                case CANTREACH:
+                    response.setText("Can't Reach");
+                    break;
+                case GENERALFAIL:
+                    response.setText("General Fail");
+                    break;
+            }
         }
     }
 }

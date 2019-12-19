@@ -237,7 +237,7 @@ public class Controller {
                         stage.setTitle("dJBox - Login");
                         break;
                     case CANTREACH:
-                    case WRONGSTATE:
+                    case INVALIDIP:
                         break;
                 }
             }

@@ -30,12 +30,6 @@ public class JukeBoxClient
         serverController = new ServerController(new HTTPControllerJavaNet());
         userData = new UserData();
 
-        // test registration
-//        doConnectViaIP("http://localhost:8080");
-//        System.out.println("test registration");
-//        doRegistration("test@gmail.com","test");
-
-
     }
 
     /**
@@ -237,17 +231,19 @@ public class JukeBoxClient
             serverController.authenticateUser(ClientConstants.NONSENSE_USER_DATA, ClientConstants.NONSENSE_USER_DATA);
         } catch(IOException ioEx)
         {
+
             return ResponseState.CANTREACH;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.SUCCESS;
         } catch(InterruptedException interruptedEx)
         {
+
             Thread.currentThread().interrupt();
         }
 
         clearJukeBoxIP();
-        return ResponseState.WRONGSTATE;
+        return ResponseState.INVALIDIP;
     }
 
 
@@ -269,14 +265,18 @@ public class JukeBoxClient
         serverController.clearRequestURI();
     }
 
+    /**
+     * Exposes registration functionality to GUI.relegates to ServerControllerService member.
+     *
+     * @param userEmail
+     * @param userPassword
+     * @return
+     */
     public ResponseState doRegistration(String userEmail, String userPassword)
     {
         try
         {
             serverController.registration(userEmail, userPassword);
-
-            // TODO: Idea for discussion: After a user register, to the login view, the email is automatically on the input field
-//            userData.setEmailAddress(userEmail);
 
         } catch(IOException ioEx)
         {

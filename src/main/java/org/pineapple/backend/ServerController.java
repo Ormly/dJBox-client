@@ -107,7 +107,7 @@ public class ServerController extends ServerControllerService
     {
 
         String request = requestURI + "/auth/register";
-        //TODO: reconsider this bullshit
+
         String requestBody = "{ \"" + "userEmail" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
 
         httpController.sendPostRequest(request, requestBody);

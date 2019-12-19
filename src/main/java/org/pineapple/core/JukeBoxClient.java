@@ -265,14 +265,18 @@ public class JukeBoxClient
         serverController.clearRequestURI();
     }
 
+    /**
+     * Exposes registration functionality to GUI.relegates to ServerControllerService member.
+     *
+     * @param userEmail
+     * @param userPassword
+     * @return
+     */
     public ResponseState doRegistration(String userEmail, String userPassword)
     {
         try
         {
             serverController.registration(userEmail, userPassword);
-
-            // TODO: Idea for discussion: After a user register, to the login view, the email is automatically on the input field
-//            userData.setEmailAddress(userEmail);
 
         } catch(IOException ioEx)
         {

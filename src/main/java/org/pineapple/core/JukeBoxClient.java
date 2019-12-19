@@ -30,12 +30,6 @@ public class JukeBoxClient
         serverController = new ServerController(new HTTPControllerJavaNet());
         userData = new UserData();
 
-//         test registration
-        doConnectViaIP("http://localhost:8080");
-        System.out.println("test registration");
-        doRegistration("test8888888@gmail.com","test");
-
-
     }
 
     /**
@@ -237,9 +231,11 @@ public class JukeBoxClient
             serverController.authenticateUser(ClientConstants.NONSENSE_USER_DATA, ClientConstants.NONSENSE_USER_DATA);
         } catch(IOException ioEx)
         {
+            System.err.println("ioEx:" + ioEx);
             return ResponseState.CANTREACH;
         } catch(AuthenticationFailedException authFailEx)
         {
+            System.err.println("authEx:" + authFailEx);
             return ResponseState.SUCCESS;
         } catch(InterruptedException interruptedEx)
         {

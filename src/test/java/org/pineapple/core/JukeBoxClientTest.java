@@ -38,6 +38,7 @@ public class JukeBoxClientTest
     @DisplayName("Connecting to Jukebox.")
     void connectToJukebox()
     {
+
         assertEquals(ResponseState.WRONGSTATE,jukeBoxClient.doConnectViaIP("http://localhost"),"Successful connection response on invalid localhost IP.");
         assertEquals(ResponseState.CANTREACH,jukeBoxClient.doConnectViaIP("http://blabla"),"Successful connection response on invalid IP.");
         assertEquals(ResponseState.SUCCESS,jukeBoxClient.doConnectViaIP("http://localhost:8080"),"Unsuccessful connection response on valid IP.");

@@ -289,6 +289,11 @@ public class Controller {
         dialog.show();
     }
 
+    public void disconnectButtonUserLogin()
+    {
+        stage.setScene(userIPConnectScene);
+    }
+
     public void signUpButtonRegistration(TextField emailTextField, PasswordField passwordField, PasswordField confirmPasswordField,Label response)
     {
         String email = emailTextField.getText();
@@ -311,8 +316,8 @@ public class Controller {
                     confirmPasswordField.setText("");
                     dialog.close();
                     break;
-                case WRONGSTATE:
-                    response.setText("Wrong State");
+                case INVALIDIP:
+                    response.setText("Invalid IP");
                     break;
                 case CANTREACH:
                     response.setText("Can't Reach");

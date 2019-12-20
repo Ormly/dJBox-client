@@ -1,12 +1,11 @@
 package org.pineapple.ui.scene;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,6 +22,19 @@ public class UserLoginScene extends SceneMaker {
      */
     public UserLoginScene(Stage stage, Controller controller) {
         super(stage, controller,800,600);
+
+        Tooltip disConnectTooltip = new Tooltip("Disconnect");
+        Image disconnectImage = new Image("PlaceHolder.png");
+        ImageView disconnectImageView = new ImageView(disconnectImage);
+        disconnectImageView.setFitHeight(25);
+        disconnectImageView.setFitWidth(25);
+        disconnectImageView.setPickOnBounds(true);
+        Tooltip.install(disconnectImageView,disConnectTooltip);
+        disconnectImageView.setOnMouseClicked(e -> controller.disconnectButtonUserLogin());
+
+        HBox topHBox = new HBox(20,disconnectImageView);
+        topHBox.setPadding(new Insets(10));
+        topHBox.setAlignment(Pos.CENTER_RIGHT);
 
         // dJBox logo
         Image logoImage = new Image("ananas_color.png");
@@ -56,7 +68,6 @@ public class UserLoginScene extends SceneMaker {
         Button loginButton = new Button("Login");
         Button registerButton = new Button("Register");
         loginButton.setDefaultButton(true);
-
         HBox buttonsHBox = new HBox(10, loginButton, registerButton);
         buttonsHBox.setAlignment(Pos.CENTER);
 
@@ -69,9 +80,13 @@ public class UserLoginScene extends SceneMaker {
         registerButton.setOnAction(e -> controller.registerButtonUserLogin());
 
         // top to bottom, dJBox logo, username and field, password and field, button, response state
-        VBox root = new VBox(20);
-        root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(logoImageView,gridPane,buttonsHBox, response);
+        VBox centerNode = new VBox(20);
+        centerNode.setAlignment(Pos.CENTER);
+        centerNode.getChildren().addAll(logoImageView,gridPane,buttonsHBox, response);
+
+        BorderPane root = new BorderPane();
+        root.setCenter(centerNode);
+        root.setTop(topHBox);
 
         this.setRoot(root);
     }

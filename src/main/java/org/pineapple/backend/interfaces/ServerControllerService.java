@@ -89,7 +89,7 @@ public abstract class ServerControllerService
      * @throws IOException
      * @throws InterruptedException
      */
-    public abstract void registration(String userEmail, String userPassword)
+    public abstract void registerUser(String userEmail, String userPassword)
     throws AuthenticationFailedException, IOException, InterruptedException;
 
     /**

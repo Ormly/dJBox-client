@@ -29,7 +29,6 @@ public class JukeBoxClient
         library = new SongList();
         serverController = new ServerController(new HTTPControllerJavaNet());
         userData = new UserData();
-
     }
 
     /**
@@ -59,6 +58,7 @@ public class JukeBoxClient
         {
             userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
             userData.setEmailAddress(userEmail);
+
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
@@ -276,7 +276,7 @@ public class JukeBoxClient
     {
         try
         {
-            serverController.registration(userEmail, userPassword);
+            serverController.registerUser(userEmail, userPassword);
 
         } catch(IOException ioEx)
         {

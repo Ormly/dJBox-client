@@ -17,7 +17,7 @@ public abstract class ServerControllerService
      * Adds a song with a given ID to the Jukebox (server) queue.
      * Constructs appropriate URI and sends request via member HTTPController.
      *
-     * @param songID ID uniquely identifying song.
+     * @param songID        ID uniquely identifying song.
      * @param securityToken needs to be passed to identify the user.
      * @throws AuthenticationFailedException if the token is invalid.
      * @throws IOException
@@ -89,7 +89,7 @@ public abstract class ServerControllerService
      * @throws IOException
      * @throws InterruptedException
      */
-    public abstract void registration(String userEmail, String userPassword)
+    public abstract void registerUser(String userEmail, String userPassword)
     throws AuthenticationFailedException, IOException, InterruptedException;
 
     /**
@@ -103,6 +103,4 @@ public abstract class ServerControllerService
      * requestURI clear.
      */
     public abstract void clearRequestURI();
-
-
 }

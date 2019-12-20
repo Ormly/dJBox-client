@@ -102,7 +102,7 @@ public class ServerController extends ServerControllerService
     }
 
     @Override
-    public void registration(String userEmail, String userPassword)
+    public void registerUser(String userEmail, String userPassword)
     throws AuthenticationFailedException, IOException, InterruptedException
     {
 

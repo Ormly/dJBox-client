@@ -7,6 +7,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.pineapple.ui.controller.Controller;
 
@@ -15,6 +16,7 @@ public class RegistrationScene extends SceneMaker
     private TextField emailTextField;
     private PasswordField passwordField;
     private PasswordField confirmPasswordField;
+    private Label responseLabel;
     /**
      * Parent class of scenes
      *
@@ -29,7 +31,8 @@ public class RegistrationScene extends SceneMaker
         Label emailLabel = new Label("Email");
         Label passwordLabel = new Label("Password");
         Label confirmPasswordLabel = new Label("Confirm Password");
-        Label responseLabel = new Label("");
+        responseLabel = new Label("");
+        responseLabel.setTextFill(Color.RED);
 
         // Input fields
         emailTextField = new TextField();
@@ -64,5 +67,6 @@ public class RegistrationScene extends SceneMaker
         emailTextField.setText("");
         passwordField.setText("");
         confirmPasswordField.setText("");
+        responseLabel.setText("");
     }
 }

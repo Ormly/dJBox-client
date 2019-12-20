@@ -341,6 +341,12 @@ public class Controller {
                 case GENERALFAIL:
                     response.setText("General Fail");
                     break;
+                case AUTHFAIL:
+                    response.setText("Authentication Fail");
+                    break;
+                case SONGNOTFOUND:
+                    response.setText("Song Not Found");
+                    break;
             }
         }
     }

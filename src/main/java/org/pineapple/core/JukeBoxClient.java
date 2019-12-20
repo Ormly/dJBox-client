@@ -29,7 +29,6 @@ public class JukeBoxClient
         library = new SongList();
         serverController = new ServerController(new HTTPControllerJavaNet());
         userData = new UserData();
-
     }
 
     /**
@@ -231,17 +230,14 @@ public class JukeBoxClient
             serverController.authenticateUser(ClientConstants.NONSENSE_USER_DATA, ClientConstants.NONSENSE_USER_DATA);
         } catch(IOException ioEx)
         {
-
             return ResponseState.CANTREACH;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.SUCCESS;
         } catch(InterruptedException interruptedEx)
         {
-
             Thread.currentThread().interrupt();
         }
-
         clearJukeBoxIP();
         return ResponseState.INVALIDIP;
     }
@@ -276,7 +272,7 @@ public class JukeBoxClient
     {
         try
         {
-            serverController.registration(userEmail, userPassword);
+            serverController.registerUser(userEmail, userPassword);
 
         } catch(IOException ioEx)
         {

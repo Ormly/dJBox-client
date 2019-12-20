@@ -24,20 +24,24 @@ public class RegistrationScene extends SceneMaker
     public RegistrationScene(Stage stage, Controller controller)
     {
         super(stage, controller, 300, 300);
+
+        // Labels
         Label emailLabel = new Label("Email");
         Label passwordLabel = new Label("Password");
         Label confirmPasswordLabel = new Label("Confirm Password");
         Label responseLabel = new Label("");
 
+        // Input fields
         emailTextField = new TextField();
         passwordField = new PasswordField();
         confirmPasswordField = new PasswordField();
 
+        // Buttons
         Button signUpButton = new Button("Sign Up");
         signUpButton.setDefaultButton(true);
-
         signUpButton.setOnAction(e -> controller.signUpButtonRegistration(emailTextField,passwordField,confirmPasswordField,responseLabel));
 
+        // Layout of labels and input fields
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(10);
@@ -46,12 +50,16 @@ public class RegistrationScene extends SceneMaker
         gridPane.addRow(1,passwordLabel,passwordField);
         gridPane.addRow(2,confirmPasswordLabel,confirmPasswordField);
 
+        // Top to bottom labels and input fields, signup button, response label
         VBox root = new VBox(10,gridPane,signUpButton,responseLabel);
         root.setAlignment(Pos.CENTER);
         this.setRoot(root);
     }
 
-    public void resetFields()
+    /**
+     * Clears all input fields
+     */
+    public void clearFields()
     {
         emailTextField.setText("");
         passwordField.setText("");

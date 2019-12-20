@@ -277,10 +277,15 @@ public class Controller {
         }
     }
 
+    /**
+     * Opens new popup for registration
+     * clears registration fields
+     * main scene is inactive until popup is closed
+     */
     public void registerButtonUserLogin()
     {
         dialog = new Stage();
-        registrationScene.resetFields();
+        registrationScene.clearFields();
         dialog.setScene(registrationScene);
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
@@ -289,11 +294,22 @@ public class Controller {
         dialog.show();
     }
 
+    /**
+     * Disconnects from server
+     * TODO: requires JukBoxClient method to complete disconnect
+     */
     public void disconnectButtonUserLogin()
     {
         stage.setScene(userIPConnectScene);
     }
 
+    /**
+     * Signs up user from input checking for password confirmation match and response state
+     * @param emailTextField email
+     * @param passwordField password
+     * @param confirmPasswordField repeated password
+     * @param response for errors
+     */
     public void signUpButtonRegistration(TextField emailTextField, PasswordField passwordField, PasswordField confirmPasswordField,Label response)
     {
         String email = emailTextField.getText();

@@ -58,7 +58,6 @@ public class JukeBoxClient
         {
             userData.setSecurityToken(serverController.authenticateUser(userEmail, userPassword));
             userData.setEmailAddress(userEmail);
-
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
@@ -231,17 +230,14 @@ public class JukeBoxClient
             serverController.authenticateUser(ClientConstants.NONSENSE_USER_DATA, ClientConstants.NONSENSE_USER_DATA);
         } catch(IOException ioEx)
         {
-
             return ResponseState.CANTREACH;
         } catch(AuthenticationFailedException authFailEx)
         {
             return ResponseState.SUCCESS;
         } catch(InterruptedException interruptedEx)
         {
-
             Thread.currentThread().interrupt();
         }
-
         clearJukeBoxIP();
         return ResponseState.INVALIDIP;
     }

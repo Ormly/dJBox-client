@@ -102,6 +102,20 @@ public class ServerController extends ServerControllerService
     }
 
     @Override
+    public void registerUser(String userEmail, String userPassword)
+    throws AuthenticationFailedException, IOException, InterruptedException
+    {
+
+        String request = requestURI + "/auth/register";
+
+        String requestBody = "{ \"" + "userEmail" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
+
+        httpController.sendPostRequest(request, requestBody);
+
+    }
+
+
+    @Override
     public void logoutUser(String securityToken)
     throws AuthenticationFailedException, GeneralServerIssueException, IOException, InterruptedException
     {

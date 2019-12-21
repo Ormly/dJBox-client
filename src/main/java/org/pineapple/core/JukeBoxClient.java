@@ -238,10 +238,10 @@ public class JukeBoxClient
         {
             Thread.currentThread().interrupt();
         }
-
         clearJukeBoxIP();
         return ResponseState.INVALIDIP;
     }
+
 
     /**
      * Setter for JukeBox IP. Sets ServerControllerService URI member.
@@ -259,6 +259,36 @@ public class JukeBoxClient
     private void clearJukeBoxIP()
     {
         serverController.clearRequestURI();
+    }
+
+    /**
+     * Exposes registration functionality to GUI.relegates to ServerControllerService member.
+     *
+     * @param userEmail
+     * @param userPassword
+     * @return
+     */
+    public ResponseState doRegistration(String userEmail, String userPassword)
+    {
+        try
+        {
+            serverController.registerUser(userEmail, userPassword);
+
+        } catch(IOException ioEx)
+        {
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
+        {
+            return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
+        }
+
+        return ResponseState.SUCCESS;
     }
 }
 

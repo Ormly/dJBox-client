@@ -24,6 +24,7 @@ public class Controller {
     private JukeBoxClient jukeBoxClient;
     private UserIPConnectScene userIPConnectScene;
     private UserLoginScene userLoginScene;
+    private RegistrationScene registrationScene;
     private QueueScene queueScene;
     private LibraryScene libraryScene;
     private NewEditIPScene newEditIPScene;
@@ -39,6 +40,7 @@ public class Controller {
         this.jukeBoxClient = jukeBoxClient;
         userIPConnectScene = new UserIPConnectScene(stage,this);
         userLoginScene = new UserLoginScene(stage,this);
+        registrationScene = new RegistrationScene(dialog,this);
         queueScene = new QueueScene(stage,this);
         libraryScene = new LibraryScene(dialog,this);
         newEditIPScene = new NewEditIPScene(dialog, this);
@@ -272,6 +274,80 @@ public class Controller {
             case CANTREACH:
                 response.setText("CANTREACH error");
                 break;
+        }
+    }
+
+    /**
+     * Opens new popup for registration
+     * clears registration fields
+     * main scene is inactive until popup is closed
+     */
+    public void registerButtonUserLogin()
+    {
+        dialog = new Stage();
+        registrationScene.clearFields();
+        dialog.setScene(registrationScene);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(stage);
+        dialog.setTitle("dJBox - Register");
+        dialog.getIcons().add(new Image("ananas_color.png"));
+        dialog.show();
+    }
+
+    /**
+     * Disconnects from server
+     * TODO: requires JukBoxClient method to complete disconnect
+     */
+    public void disconnectButtonUserLogin()
+    {
+        stage.setScene(userIPConnectScene);
+    }
+
+    /**
+     * Signs up user from input checking for password confirmation match and response state
+     * @param emailTextField email
+     * @param passwordField password
+     * @param confirmPasswordField repeated password
+     * @param response for errors
+     */
+    public void signUpButtonRegistration(TextField emailTextField, PasswordField passwordField, PasswordField confirmPasswordField,Label response)
+    {
+        String email = emailTextField.getText();
+        String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
+        if(!password.equals(confirmPassword))
+        {
+            response.setText("Passwords do not match");
+            passwordField.setText("");
+            confirmPasswordField.setText("");
+        }
+        else
+        {
+            ResponseState responseState = jukeBoxClient.doRegistration(email,password);
+            switch(responseState)
+            {
+                case SUCCESS:
+                    emailTextField.setText("");
+                    passwordField.setText("");
+                    confirmPasswordField.setText("");
+                    dialog.close();
+                    break;
+                case INVALIDIP:
+                    response.setText("Invalid IP");
+                    break;
+                case CANTREACH:
+                    response.setText("Can't Reach");
+                    break;
+                case GENERALFAIL:
+                    response.setText("General Fail");
+                    break;
+                case AUTHFAIL:
+                    response.setText("Authentication Fail");
+                    break;
+                case SONGNOTFOUND:
+                    response.setText("Song Not Found");
+                    break;
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ public class JukeBoxClient
     private IMediaList library;
     private IMediaList queue;
     private UserData userData;
+    private CurrentSong currentSong;
 
     /**
      * Initializes all relevant members, including the ServerControllerService providing server connection.
@@ -29,6 +30,7 @@ public class JukeBoxClient
         library = new SongList();
         serverController = new ServerController(new HTTPControllerJavaNet());
         userData = new UserData();
+        currentSong = new CurrentSong();
     }
 
     /**
@@ -220,7 +222,7 @@ public class JukeBoxClient
      * appropriate response state is returned instead.
      *
      * @param ip IP address of JukeBox to be connected.
-     * @return ResponseState enum signifying to GUI whether API call succeeder not.
+     * @return ResponseState enum signifying to GUI whether API call succeeded not.
      */
     public ResponseState doConnectViaIP(String ip)
     {
@@ -273,7 +275,6 @@ public class JukeBoxClient
         try
         {
             serverController.registerUser(userEmail, userPassword);
-
         } catch(IOException ioEx)
         {
             return ResponseState.CANTREACH;
@@ -286,6 +287,89 @@ public class JukeBoxClient
         } catch(InterruptedException interruptedEx)
         {
             Thread.currentThread().interrupt();
+        }
+
+        return ResponseState.SUCCESS;
+    }
+
+    /**
+     * Provides a song object representing the currently playing song from the server.
+     * To be called only after updateCurrentSong has been called at least once.
+     *
+     * @return
+     */
+    public Song getCurrentSong()
+    {
+        return currentSong.song();
+    }
+
+    /**
+     * Provides the elapsed time in seconds related to the currently playing song.
+     *
+     * @return
+     */
+    public double getCurrentSongElapsed()
+    {
+        return currentSong.getElapsed();
+    }
+
+    /**
+     * Exposes fetching the currently playing song from the server.
+     * Stores fetched information in a CurrentSong member, which wraps the relevant Song object together with the elapsed time in seconds at time of request.
+     *
+     * @return enum signifying to GUI whether API call succeeded or not.
+     */
+    public ResponseState updateCurrentSong()
+    {
+        try
+        {
+            currentSong.setSong(serverController.getCurrentSong(userData.getSecurityToken()));
+        } catch(IOException ioEx)
+        {
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
+        {
+            return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
+        } catch(NoCurrentSongException noCurrentEx)
+        {
+            return ResponseState.NOCURRENTSONG;
+        }
+
+        return ResponseState.SUCCESS;
+    }
+
+    /**
+     * Exposes fetching the elapsed time in seconds in regards to the currently playing song from the server.
+     * Stores fetched information in a CurrentSong member, which wraps the relevant Song object together with the elapsed time in seconds at time of request.
+     *
+     * @return enum signifying to GUI whether API call succeeded or not.
+     */
+    public ResponseState updateCurrentSongElapsed()
+    {
+        try
+        {
+            currentSong.setElapsed(serverController.getCurrentSongElapsed(userData.getSecurityToken()));
+        } catch(IOException ioEx)
+        {
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
+        {
+            return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
+        } catch(NoCurrentSongException noCurrentEx)
+        {
+            return ResponseState.NOCURRENTSONG;
         }
 
         return ResponseState.SUCCESS;

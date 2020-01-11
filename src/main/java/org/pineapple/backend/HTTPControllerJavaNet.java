@@ -2,7 +2,6 @@ package org.pineapple.backend;
 
 import org.pineapple.backend.interfaces.HTTPControllerService;
 
-import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -82,6 +81,8 @@ public class HTTPControllerJavaNet implements HTTPControllerService
             throw new SongNotFoundException(String.valueOf(responseStatusCode));
         else if(responseStatusCode == ClientConstants.AUTH_FAILURE_ERROR_CODE)
             throw new AuthenticationFailedException(String.valueOf(responseStatusCode));
+        else if(responseStatusCode == ClientConstants.NO_CURRENT_SONG_ERROR_CODE)
+            throw new NoCurrentSongException(String.valueOf(responseStatusCode));
 
         return response.body();
     }

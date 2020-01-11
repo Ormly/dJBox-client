@@ -12,7 +12,6 @@ public class Song
     private String genre;
     private int year;
     private int duration;
-    private String pathToFile;
     private String coverArtURL;
 
     public Song() {}
@@ -24,7 +23,6 @@ public class Song
                 String genre,
                 int year,
                 int duration,
-                String pathToFile,
                 String coverArtURL)
     {
         this.id = id;
@@ -33,8 +31,7 @@ public class Song
         this.album = album;
         this.genre = genre;
         this.year = year;
-//        this.duration = duration;
-        this.pathToFile = pathToFile;
+        this.duration = duration;
         this.coverArtURL = coverArtURL;
     }
 
@@ -71,11 +68,6 @@ public class Song
     public int getDuration()
     {
         return duration;
-    }
-
-    public String getPathToFile()
-    {
-        return pathToFile;
     }
 
     public String getCoverArtURL() { return coverArtURL; }

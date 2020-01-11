@@ -79,7 +79,7 @@ public abstract class ServerControllerService
     throws AuthenticationFailedException, IOException, InterruptedException;
 
     /**
-     * Registration to create a new user account
+     * Registration to create a new user account.
      * Constructs appropriate URI according to server API and sends request via member HTTPController.
      *
      * @param userEmail
@@ -90,6 +90,32 @@ public abstract class ServerControllerService
      * @throws InterruptedException
      */
     public abstract void registerUser(String userEmail, String userPassword)
+    throws AuthenticationFailedException, IOException, InterruptedException;
+
+    /**
+     * Fetches the song data associated with the currently playing song from the server.
+     * Constructs appropriate URI according to server API and sends request via member HTTPController.
+     *
+     * @param securityToken
+     * @return
+     * @throws AuthenticationFailedException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public abstract Song getCurrentSong(String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException;
+
+    /**
+     * Fetches the elapsed time associated with the currently playing song from the server.
+     * Constructs appropriate URI according to server API and sends request via member HTTPController.
+     *
+     * @param securityToken
+     * @return
+     * @throws AuthenticationFailedException
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public abstract double getCurrentSongElapsed(String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException;
 
     /**

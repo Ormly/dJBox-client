@@ -187,19 +187,11 @@ public class QueueScene extends SceneMaker {
     {
         songObservableList.clear();
         songObservableList.addAll(songList);
-        Song current = null;
+        Song current = controller.getCurrentSong();
         Song next = null;
-        switch(songList.size())
-        {
-            case 0:
-                break;
-            case 1:
-                current = songList.get(0);
-                break;
-            default:
-                current = songList.get(0);
-                next = songList.get(1);
-        }
+        if(!songObservableList.isEmpty())
+            next = songObservableList.get(0);
+
         updateSongInfo(current,next);
     }
 

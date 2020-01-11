@@ -371,4 +371,20 @@ public class Controller {
             }
         }
     }
+
+    public Song getCurrentSong() {
+        ResponseState responseState = jukeBoxClient.updateCurrentSong();
+        switch(responseState)
+        {
+            case SUCCESS:
+                return jukeBoxClient.getCurrentSong();
+            case SONGNOTFOUND:
+            case NOCURRENTSONG:
+            case AUTHFAIL:
+            case INVALIDIP:
+            case GENERALFAIL:
+            case CANTREACH:
+        }
+        return null;
+    }
 }

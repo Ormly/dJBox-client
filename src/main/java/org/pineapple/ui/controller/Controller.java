@@ -315,7 +315,7 @@ public class Controller {
     }
 
     /**
-     * Signs up user from input checking for password confirmation match and response state
+     * Signs up user from input checking for password confirmation match, empty fields and response state
      * @param emailTextField email
      * @param passwordField password
      * @param confirmPasswordField repeated password
@@ -326,11 +326,21 @@ public class Controller {
         String email = emailTextField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
+        //
+        final Pattern VALIDEMAIL =  Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+        boolean isEmailValid = VALIDEMAIL.matcher(email).find();
+
+
         if(!password.equals(confirmPassword))
         {
             response.setText("Passwords do not match");
             passwordField.setText("");
             confirmPasswordField.setText("");
+        }else if(password.trim().isEmpty() && confirmPassword.trim().isEmpty()) {
+            response.setText("Passwords can not be empty");
+        }
+        else if(email.trim().isEmpty() || !isEmailValid){
+            response.setText("Please input a valid email");
         }
         else
         {

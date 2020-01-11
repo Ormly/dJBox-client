@@ -31,6 +31,10 @@ public class QueueScene extends SceneMaker {
     private Label nextTitleLabel;
     private Label nextArtistLabel;
     private Label nextAlbumLabel;
+    private ImageView currentAlbumImageView;
+    private ImageView nextAlbumImageView;
+    private ImageView rightArrowImageView;
+    private Image placeHolderImage;
 
     /**
      * Creates Queue scene
@@ -89,7 +93,7 @@ public class QueueScene extends SceneMaker {
 
         // Menu options in top right Library and logout
         Tooltip libraryTooltip = new Tooltip("Library");
-        Image libraryImage = new Image("PlaceHolder.png");
+        Image libraryImage = new Image("book-music.png");
         ImageView libraryImageView = new ImageView(libraryImage);
         libraryImageView.setFitWidth(25);
         libraryImageView.setFitHeight(25);
@@ -99,7 +103,7 @@ public class QueueScene extends SceneMaker {
 
         // Logout button
         Tooltip logoutTooltip = new Tooltip("Log out");
-        Image logoutImage = new Image("PlaceHolder.png");
+        Image logoutImage = new Image("logout.png");
         ImageView logoutImageView = new ImageView(logoutImage);
         logoutImageView.setFitWidth(25);
         logoutImageView.setFitHeight(25);
@@ -113,8 +117,8 @@ public class QueueScene extends SceneMaker {
         rightTopBorderHBox.setAlignment(Pos.CENTER_RIGHT);
 
         //Album art of currently playing song
-        Image currentAlbumImage = new Image("PlaceHolder.png");
-        ImageView currentAlbumImageView = new ImageView((currentAlbumImage));
+        placeHolderImage = new Image("PlaceHolder.png");
+        currentAlbumImageView = new ImageView((placeHolderImage));
         currentAlbumImageView.setFitHeight(100);
         currentAlbumImageView.setFitWidth(100);
 
@@ -129,14 +133,13 @@ public class QueueScene extends SceneMaker {
         currentSongVBox.getChildren().addAll(currentAlbumImageView,currentTitleLabel,currentArtistLabel,currentAlbumLabel);
 
         // Right arrow
-        Image rightArrowImage = new Image("PlaceHolder.png");
-        ImageView rightArrowImageView = new ImageView(rightArrowImage);
+        Image rightArrowImage = new Image("right_arrow.png");
+        rightArrowImageView = new ImageView(rightArrowImage);
         rightArrowImageView.setFitWidth(25);
         rightArrowImageView.setFitHeight(25);
 
         // Album art for next song
-        Image nextAlbumImage = new Image("PlaceHolder.png");
-        ImageView nextAlbumImageView = new ImageView(nextAlbumImage);
+        nextAlbumImageView = new ImageView(placeHolderImage);
         nextAlbumImageView.setFitWidth(50);
         nextAlbumImageView.setFitHeight(50);
 
@@ -212,12 +215,18 @@ public class QueueScene extends SceneMaker {
             currentTitleLabel.setText(currentSong.getTitle());
             currentArtistLabel.setText(currentSong.getArtist());
             currentAlbumLabel.setText(currentSong.getAlbum());
+            if(currentSong.getCoverArtURL().isEmpty())
+                currentAlbumImageView.setImage(placeHolderImage);
+            else
+                currentAlbumImageView.setImage(new Image(currentSong.getCoverArtURL()));
+            currentAlbumImageView.setVisible(true);
         }
         else
         {
             currentTitleLabel.setText("");
             currentArtistLabel.setText("");
             currentAlbumLabel.setText("");
+            currentAlbumImageView.setVisible(false);
         }
 
         if(nextSong != null)
@@ -225,12 +234,20 @@ public class QueueScene extends SceneMaker {
             nextTitleLabel.setText(nextSong.getTitle());
             nextArtistLabel.setText(nextSong.getArtist());
             nextAlbumLabel.setText(nextSong.getAlbum());
+            if(currentSong.getCoverArtURL().isEmpty())
+                nextAlbumImageView.setImage(placeHolderImage);
+            else
+                nextAlbumImageView.setImage(new Image(currentSong.getCoverArtURL()));
+            nextAlbumImageView.setVisible(true);
+            rightArrowImageView.setVisible(true);
         }
         else
         {
             nextTitleLabel.setText("");
             nextArtistLabel.setText("");
             nextAlbumLabel.setText("");
+            nextAlbumImageView.setVisible(false);
+            rightArrowImageView.setVisible(false);
         }
     }
 }

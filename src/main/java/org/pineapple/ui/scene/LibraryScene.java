@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import org.pineapple.core.Song;
 import org.pineapple.ui.controller.Controller;
 
+import java.io.IOException;
 import java.util.List;
 
 public class LibraryScene extends SceneMaker
@@ -25,6 +26,7 @@ public class LibraryScene extends SceneMaker
     private Label titleLabel;
     private Label artistLabel;
     private Label albumLabel;
+    private ImageView albumImageView = new ImageView(new Image("Placeholder.png"));
     /**
      * Creates library scene
      * @param stage window
@@ -32,7 +34,7 @@ public class LibraryScene extends SceneMaker
      */
     public LibraryScene(Stage stage, Controller controller)
     {
-        super(stage,controller,500,400);
+        super(stage,controller,1000,400);
 
         // Lists songs in the library
         songTableView = new TableView<>();
@@ -75,10 +77,8 @@ public class LibraryScene extends SceneMaker
         VBox leftVBox = new VBox(searchTextField,songTableView);
 
         // Album art for currently selected song
-        Image albumImage = new Image("PlaceHolder.png");
-        ImageView albumImageView = new ImageView(albumImage);
-        albumImageView.setFitWidth(50);
-        albumImageView.setFitHeight(50);
+        albumImageView.setFitWidth(200);
+        albumImageView.setFitHeight(200);
 
         // Song information
         titleLabel = new Label();
@@ -127,6 +127,10 @@ public class LibraryScene extends SceneMaker
             titleLabel.setText(song.getTitle());
             artistLabel.setText(song.getArtist());
             albumLabel.setText(song.getAlbum());
+            if(song.getCoverArtURL().isEmpty())
+                albumImageView.setImage(new Image("PlaceHolder.png"));
+            else
+                albumImageView.setImage(new Image(song.getCoverArtURL()));
         }
     }
 

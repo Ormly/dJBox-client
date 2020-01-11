@@ -372,6 +372,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Gets current song
+     * Tests response state before returning a song if successful or null if unsuccessful
+     * @return current playing song
+     */
     public Song getCurrentSong() {
         ResponseState responseState = jukeBoxClient.updateCurrentSong();
         switch(responseState)

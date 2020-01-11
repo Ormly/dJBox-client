@@ -97,6 +97,7 @@ public class JukeBoxClientTest
     {
         assertEquals(ResponseState.SONGNOTFOUND, (jukeBoxClient.addSongToQueue(1212121212)), "Adding song with invalid ID was accepted.");
         assertEquals(ResponseState.SUCCESS, (jukeBoxClient.addSongToQueue(songIDTest)), "Adding song with valid ID was not accepted.");
+        jukeBoxClient.addSongToQueue(songIDTest);
     }
 
     @Test
@@ -108,6 +109,28 @@ public class JukeBoxClientTest
         List<Song> songList = jukeBoxClient.doGetQueue();
         assertFalse(songList.isEmpty(),"queue song list is empty, when it should be populated.");
         assertEquals(songIDTest,songList.get(0).getId(),"song in queue does not have expected ID value.");
+    }
+
+    @Test
+    @Order(10)
+    @Tag("API")
+    @Tag("Logic")
+    @DisplayName("Checking current song")
+    public void fetchAndCheckCurrentSong()
+    {
+        //dough needs some time to rise
+        try
+        {
+            Thread.sleep(1000);
+        } catch(InterruptedException e)
+        {
+
+        }
+
+        Song song;
+        assertEquals(ResponseState.SUCCESS,jukeBoxClient.updateCurrentSong(),"Current song could not be fetched.");
+        song = jukeBoxClient.getCurrentSong();
+        assertEquals(songIDTest,song.getId(),"Fetched current song does not hold expected ID value.");
     }
 
     @Test

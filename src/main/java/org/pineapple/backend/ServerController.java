@@ -111,7 +111,6 @@ public class ServerController extends ServerControllerService
         String requestBody = "{ \"" + "userEmail" + "\"" + " : " + "\"" + userEmail + "\"" + ", " + "\"" + "password" + "\"" + " : " + "\"" + userPassword + "\" }";
 
         httpController.sendPostRequest(request, requestBody);
-
     }
 
 
@@ -122,6 +121,37 @@ public class ServerController extends ServerControllerService
         String request = requestURI + "/auth/logout";
 
         httpController.sendGetRequestWithToken(request, securityToken);
+    }
+
+    @Override
+    public Song getCurrentSong(String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException
+    {
+        Song currentSong;
+        String request = requestURI + "/player/current";
+        ObjectMapper mapper = new ObjectMapper();
+        StringBuilder authResponse = new StringBuilder();
+
+        authResponse.append(httpController.sendGetRequestWithToken(request, securityToken));
+        currentSong = mapper.readValue(authResponse.toString(), Song.class);
+
+        return currentSong;
+    }
+
+    @Override
+    public double getCurrentSongElapsed(String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException
+    {
+        double elapsed;
+        String temp;
+        String request = requestURI + "/player/elapsed";
+        StringBuilder authResponse = new StringBuilder();
+
+        authResponse.append(httpController.sendGetRequestWithToken(request, securityToken));
+        temp = authResponse.substring(1, authResponse.length() - 1);
+        elapsed = Double.parseDouble(temp);
+
+        return elapsed;
     }
 
     //TODO: change this it's horrible

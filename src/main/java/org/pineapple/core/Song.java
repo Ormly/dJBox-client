@@ -12,7 +12,6 @@ public class Song
     private String genre;
     private int year;
     private int duration;
-    private String pathToFile;
 
     public Song() {}
 
@@ -22,8 +21,7 @@ public class Song
                 String album,
                 String genre,
                 int year,
-                int duration,
-                String pathToFile)
+                int duration)
     {
         this.id = id;
         this.title = title;
@@ -31,8 +29,7 @@ public class Song
         this.album = album;
         this.genre = genre;
         this.year = year;
-//        this.duration = duration;
-        this.pathToFile = pathToFile;
+        this.duration = duration;
     }
 
     public int getId()
@@ -68,10 +65,5 @@ public class Song
     public int getDuration()
     {
         return duration;
-    }
-
-    public String getPathToFile()
-    {
-        return pathToFile;
     }
 }

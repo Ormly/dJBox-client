@@ -97,6 +97,7 @@ public class JukeBoxClientTest
     {
         assertEquals(ResponseState.SONGNOTFOUND, (jukeBoxClient.addSongToQueue(1212121212)), "Adding song with invalid ID was accepted.");
         assertEquals(ResponseState.SUCCESS, (jukeBoxClient.addSongToQueue(songIDTest)), "Adding song with valid ID was not accepted.");
+        jukeBoxClient.addSongToQueue(songIDTest);
     }
 
     @Test

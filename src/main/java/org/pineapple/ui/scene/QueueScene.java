@@ -215,10 +215,14 @@ public class QueueScene extends SceneMaker {
             currentTitleLabel.setText(currentSong.getTitle());
             currentArtistLabel.setText(currentSong.getArtist());
             currentAlbumLabel.setText(currentSong.getAlbum());
-            if(currentSong.getCoverArtURL().isEmpty())
-                currentAlbumImageView.setImage(placeHolderImage);
-            else
+            try
+            {
                 currentAlbumImageView.setImage(new Image(currentSong.getCoverArtURL()));
+            }
+            catch(Exception e)
+            {
+                currentAlbumImageView.setImage(placeHolderImage);
+            }
             currentAlbumImageView.setVisible(true);
         }
         else
@@ -234,10 +238,14 @@ public class QueueScene extends SceneMaker {
             nextTitleLabel.setText(nextSong.getTitle());
             nextArtistLabel.setText(nextSong.getArtist());
             nextAlbumLabel.setText(nextSong.getAlbum());
-            if(currentSong.getCoverArtURL().isEmpty())
+            try
+            {
+                nextAlbumImageView.setImage(new Image(nextSong.getCoverArtURL()));
+            }
+            catch(Exception e)
+            {
                 nextAlbumImageView.setImage(placeHolderImage);
-            else
-                nextAlbumImageView.setImage(new Image(currentSong.getCoverArtURL()));
+            }
             nextAlbumImageView.setVisible(true);
             rightArrowImageView.setVisible(true);
         }

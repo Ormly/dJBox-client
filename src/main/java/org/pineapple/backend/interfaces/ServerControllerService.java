@@ -92,6 +92,12 @@ public abstract class ServerControllerService
     public abstract void registerUser(String userEmail, String userPassword)
     throws AuthenticationFailedException, IOException, InterruptedException;
 
+    public abstract Song getCurrentSong(String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException;
+
+    public abstract double getCurrentSongElapsed(String securityToken)
+    throws AuthenticationFailedException, IOException, InterruptedException;
+
     /**
      * requestURI setter.
      *

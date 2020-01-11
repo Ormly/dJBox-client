@@ -111,6 +111,28 @@ public class JukeBoxClientTest
     }
 
     @Test
+    @Order(10)
+    @Tag("API")
+    @Tag("Logic")
+    @DisplayName("Checking current song")
+    public void fetchAndCheckCurrentSong()
+    {
+        //dough needs some time to rise
+        try
+        {
+            Thread.sleep(1000);
+        } catch(InterruptedException e)
+        {
+
+        }
+
+        Song song;
+        assertEquals(ResponseState.SUCCESS,jukeBoxClient.updateCurrentSong(),"Current song could not be fetched.");
+        song = jukeBoxClient.getCurrentSong();
+        assertEquals(songIDTest,song.getId(),"Fetched current song does not hold expected ID value.");
+    }
+
+    @Test
     @Order(3)
     @Tag("API")
     @Tag("Logic")

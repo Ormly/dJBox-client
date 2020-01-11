@@ -1,5 +1,8 @@
 package org.pineapple.core;
 
+/**
+ * Wraps a song object and adds an elapsed member, representing the elapsed time in seconds.
+ */
 public class CurrentSong
 {
     private Song currentSong;

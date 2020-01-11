@@ -294,6 +294,7 @@ public class JukeBoxClient
 
     /**
      * Provides a song object representing the currently playing song from the server.
+     * To be called only after updateCurrentSong has been called at least once.
      *
      * @return
      */
@@ -323,6 +324,36 @@ public class JukeBoxClient
         try
         {
             currentSong.setSong(serverController.getCurrentSong(userData.getSecurityToken()));
+        } catch(IOException ioEx)
+        {
+            return ResponseState.CANTREACH;
+        } catch(GeneralServerIssueException generalEx)
+        {
+            return ResponseState.GENERALFAIL;
+        } catch(AuthenticationFailedException authFailEx)
+        {
+            return ResponseState.AUTHFAIL;
+        } catch(InterruptedException interruptedEx)
+        {
+            Thread.currentThread().interrupt();
+        } catch(NoCurrentSongException noCurrentEx)
+        {
+            return ResponseState.NOCURRENTSONG;
+        }
+
+        return ResponseState.SUCCESS;
+    }
+
+    /**
+     * Exposes fetching the elapsed time in seconds in regards to the currently playing song from the server.
+     * Stores fetched information in a CurrentSong member, which wraps the relevant Song object together with the elapsed time in seconds at time of request.
+     *
+     * @return enum signifying to GUI whether API call succeeded or not.
+     */
+    public ResponseState updateCurrentSongElapsed()
+    {
+        try
+        {
             currentSong.setElapsed(serverController.getCurrentSongElapsed(userData.getSecurityToken()));
         } catch(IOException ioEx)
         {

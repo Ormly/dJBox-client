@@ -31,7 +31,7 @@ public class UserIPConnectScene extends SceneMaker
         super(stage, controller,800,600);
 
         // Image for dJBox logo
-        Image logoImage = new Image("ananas_color.png");
+        Image logoImage = new Image("Pineapple_logo.png");
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitHeight(100);
         logoImageView.setPreserveRatio(true);

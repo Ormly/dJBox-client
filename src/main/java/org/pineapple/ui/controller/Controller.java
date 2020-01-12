@@ -110,7 +110,7 @@ public class Controller {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - Library");
-        dialog.getIcons().add(new Image("ananas_color.png"));
+        dialog.getIcons().add(new Image("Pineapple_logo.png"));
         dialog.show();
     }
 
@@ -145,7 +145,7 @@ public class Controller {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - New IP");
-        dialog.getIcons().add(new Image("ananas_color.png"));
+        dialog.getIcons().add(new Image("Pineapple_logo.png"));
         dialog.show();
     }
 
@@ -166,7 +166,7 @@ public class Controller {
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(stage);
             dialog.setTitle("dJBox - Edit IP");
-            dialog.getIcons().add(new Image("ananas_color.png"));
+            dialog.getIcons().add(new Image("Pineapple_logo.png"));
             dialog.show();
         }
         catch(NullPointerException npe)
@@ -266,7 +266,8 @@ public class Controller {
                 password.setText("");
                 response.setText("");
                 queueScene.playQueueTimeLine();
-                queueScene.updateSongObservableList(getQueueList());
+                queueScene.playSongPlayingTimeline();
+                queueScene.timeline10Seconds();
                 break;
             case AUTHFAIL:
                 response.setText("AUTHFAIL error");
@@ -291,7 +292,7 @@ public class Controller {
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(stage);
         dialog.setTitle("dJBox - Register");
-        dialog.getIcons().add(new Image("ananas_color.png"));
+        dialog.getIcons().add(new Image("Pineapple_logo.png"));
         dialog.show();
     }
 
@@ -368,7 +369,6 @@ public class Controller {
      * @return current playing song
      */
     public Song getCurrentSong() {
-        Song song = new Song();
         ResponseState responseState = jukeBoxClient.updateCurrentSong();
         switch(responseState)
         {
@@ -381,7 +381,7 @@ public class Controller {
             case GENERALFAIL:
             case CANTREACH:
         }
-        return song;
+        return null;
     }
 
     public double getCurrentSongElapsed()

@@ -24,7 +24,7 @@ public class UserLoginScene extends SceneMaker {
         super(stage, controller,800,600);
 
         Tooltip disConnectTooltip = new Tooltip("Disconnect");
-        Image disconnectImage = new Image("PlaceHolder.png");
+        Image disconnectImage = new Image("server-remove.png");
         ImageView disconnectImageView = new ImageView(disconnectImage);
         disconnectImageView.setFitHeight(25);
         disconnectImageView.setFitWidth(25);

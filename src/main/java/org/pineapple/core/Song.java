@@ -12,6 +12,7 @@ public class Song
     private String genre;
     private int year;
     private int duration;
+    private String coverArtURL;
 
     public Song() {}
 
@@ -21,7 +22,8 @@ public class Song
                 String album,
                 String genre,
                 int year,
-                int duration)
+                int duration,
+                String coverArtURL)
     {
         this.id = id;
         this.title = title;
@@ -30,6 +32,7 @@ public class Song
         this.genre = genre;
         this.year = year;
         this.duration = duration;
+        this.coverArtURL = coverArtURL;
     }
 
     public int getId()
@@ -66,4 +69,6 @@ public class Song
     {
         return duration;
     }
+
+    public String getCoverArtURL() { return coverArtURL; }
 }

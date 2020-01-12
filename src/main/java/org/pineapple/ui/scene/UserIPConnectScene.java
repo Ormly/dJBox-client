@@ -10,9 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.pineapple.core.JukeBoxIPNamePair;
 import org.pineapple.ui.controller.Controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserIPConnectScene extends SceneMaker
@@ -55,7 +57,10 @@ public class UserIPConnectScene extends SceneMaker
         jukeBoxTableView.getColumns().add(ipAddressColumn);
         jukeBoxTableView.setMaxSize(300,300);
         jukeBoxHashMap = new HashMap<>();
-        jukeBoxHashMap.put("localhost","localhost");
+        List<JukeBoxIPNamePair> ipNamePairs = controller.getIPNamePairs();
+        for(int i = 0; i < ipNamePairs.size(); i++)
+            jukeBoxHashMap.put(ipNamePairs.get(i).getJukeBoxName(),ipNamePairs.get(i).getJukeBoxIP());
+        // jukeBoxHashMap.put("localhost","localhost");
         jukeBoxObservableList = FXCollections.observableArrayList(jukeBoxHashMap.entrySet());
         jukeBoxTableView.setItems(jukeBoxObservableList);
 

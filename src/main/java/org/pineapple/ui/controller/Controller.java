@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
+import org.pineapple.core.JukeBoxIPNamePair;
 import org.pineapple.core.ResponseState;
 import org.pineapple.core.Song;
 import org.pineapple.ui.scene.*;
@@ -186,6 +187,7 @@ public class Controller {
     {
         userIPConnectScene.putHashMap(name, ip);
         userIPConnectScene.updateObservableList();
+        jukeBoxClient.addIPNamePair(name, ip);
         dialog.close();
     }
 
@@ -198,7 +200,9 @@ public class Controller {
     {
         String key = userIPConnectScene.getKeyFromTableSelection();
         userIPConnectScene.removeHashMap(key);
+        jukeBoxClient.deleteIPNamePair(key);
         userIPConnectScene.putHashMap(name, ip);
+        jukeBoxClient.addIPNamePair(name, ip);
         userIPConnectScene.updateObservableList();
         dialog.close();
     }
@@ -212,6 +216,7 @@ public class Controller {
         {
             String key = userIPConnectScene.getKeyFromTableSelection();
             userIPConnectScene.removeHashMap(key);
+            jukeBoxClient.deleteIPNamePair(key);
             userIPConnectScene.updateObservableList();
         }
         catch(NullPointerException npe)
@@ -249,6 +254,11 @@ public class Controller {
         {
             System.out.println("Nothing Selected");
         }
+    }
+
+    public List<JukeBoxIPNamePair> getIPNamePairs()
+    {
+        return jukeBoxClient.fetchAllJukeBoxIPNamePairs();
     }
 
     /**

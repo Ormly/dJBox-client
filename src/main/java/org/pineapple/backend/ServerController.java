@@ -143,13 +143,13 @@ public class ServerController extends ServerControllerService
     throws AuthenticationFailedException, IOException, InterruptedException
     {
         double elapsed;
-        String temp;
+        String result;
         String request = requestURI + "/player/elapsed";
         StringBuilder authResponse = new StringBuilder();
 
         authResponse.append(httpController.sendGetRequestWithToken(request, securityToken));
-        temp = authResponse.substring(1, authResponse.length() - 1);
-        elapsed = Double.parseDouble(temp);
+        result = authResponse.toString();
+        elapsed = Double.parseDouble(result);
 
         return elapsed;
     }

@@ -5,6 +5,7 @@ import org.pineapple.backend.exceptions.AuthenticationFailedException;
 import org.pineapple.backend.exceptions.GeneralServerIssueException;
 import org.pineapple.backend.exceptions.NoCurrentSongException;
 import org.pineapple.backend.exceptions.SongNotFoundException;
+import org.pineapple.backend.interfaces.PersistenceControllerService;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 
@@ -24,6 +25,7 @@ public class JukeBoxClient
     private IMediaList queue;
     private UserData userData;
     private CurrentSong currentSong;
+    private PersistenceControllerService jbIPNamePersistence;
 
     /**
      * Initializes all relevant members, including the ServerControllerService providing server connection.
@@ -35,6 +37,14 @@ public class JukeBoxClient
         serverController = new ServerController(new HTTPControllerJavaNet());
         userData = new UserData();
         currentSong = new CurrentSong();
+
+        try
+        {
+            jbIPNamePersistence = new PersistenceControllerProperties();
+        } catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     /**

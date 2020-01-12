@@ -9,5 +9,7 @@ public final class ClientConstants
     public static final int REGISTRATION_FAILURE_ERROR_CODE = 400;
     public static final int NO_CURRENT_SONG_ERROR_CODE = 204;
 
+    public static final String RESOURCES_FOLDER_PATH = "src/main/resources/jukeboxes.properties";
+
     private ClientConstants() {};
 }

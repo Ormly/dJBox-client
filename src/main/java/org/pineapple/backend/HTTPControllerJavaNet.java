@@ -1,5 +1,9 @@
 package org.pineapple.backend;
 
+import org.pineapple.backend.exceptions.AuthenticationFailedException;
+import org.pineapple.backend.exceptions.GeneralServerIssueException;
+import org.pineapple.backend.exceptions.NoCurrentSongException;
+import org.pineapple.backend.exceptions.SongNotFoundException;
 import org.pineapple.backend.interfaces.HTTPControllerService;
 
 import java.io.IOException;

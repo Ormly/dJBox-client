@@ -1,4 +1,4 @@
-package org.pineapple.backend;
+package org.pineapple.backend.exceptions;
 
 /**
  * Custom exception signifying that an unspecific error occured on the server-side.

@@ -2,6 +2,9 @@ package org.pineapple.backend;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.pineapple.backend.exceptions.AuthenticationFailedException;
+import org.pineapple.backend.exceptions.GeneralServerIssueException;
+import org.pineapple.backend.exceptions.SongNotFoundException;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.backend.interfaces.HTTPControllerService;
 import org.pineapple.core.Song;

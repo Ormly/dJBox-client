@@ -1,4 +1,4 @@
-package org.pineapple.backend;
+package org.pineapple.backend.exceptions;
 
 /**
  * Custom exception signifying that the server could not retrieve the requested Song.

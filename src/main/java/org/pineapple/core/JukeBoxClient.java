@@ -1,6 +1,10 @@
 package org.pineapple.core;
 
 import org.pineapple.backend.*;
+import org.pineapple.backend.exceptions.AuthenticationFailedException;
+import org.pineapple.backend.exceptions.GeneralServerIssueException;
+import org.pineapple.backend.exceptions.NoCurrentSongException;
+import org.pineapple.backend.exceptions.SongNotFoundException;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
 

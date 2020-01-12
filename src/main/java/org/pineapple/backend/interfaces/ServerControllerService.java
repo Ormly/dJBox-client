@@ -1,6 +1,6 @@
 package org.pineapple.backend.interfaces;
 
-import org.pineapple.backend.AuthenticationFailedException;
+import org.pineapple.backend.exceptions.AuthenticationFailedException;
 import org.pineapple.core.Song;
 
 import java.io.IOException;

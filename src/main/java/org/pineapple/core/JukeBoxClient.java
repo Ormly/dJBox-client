@@ -40,10 +40,10 @@ public class JukeBoxClient
 
         try
         {
-            jbIPNamePersistence = new PersistenceControllerProperties();
+            jbIPNamePersistence = new PersistenceControllerProperties(ClientConstants.RESOURCES_FOLDER_PATH);
         } catch(IOException e)
         {
-            e.printStackTrace();
+            //...
         }
     }
 
@@ -412,6 +412,21 @@ public class JukeBoxClient
     public void editIPOfPair(String name, String newIP)
     {
         jbIPNamePersistence.editEntryIP(name, newIP);
+    }
+
+    public List<JukeBoxIPNamePair> fetchAllJukeBoxIPNamePairs()
+    {
+        return jbIPNamePersistence.readAllEntriesFromPersistence();
+    }
+
+    public JukeBoxIPNamePair fetchJukeBoxIPNamePair(String key)
+    {
+        return jbIPNamePersistence.readEntryFromPersistence(key);
+    }
+
+    public void storePersistenceToFile()
+    {
+        jbIPNamePersistence.storeToFile();
     }
 }
 

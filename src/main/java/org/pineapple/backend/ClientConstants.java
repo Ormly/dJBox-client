@@ -1,5 +1,7 @@
 package org.pineapple.backend;
 
+import java.io.File;
+
 public final class ClientConstants
 {
     public static final int GENERAL_ERROR_CODE = 500;
@@ -11,5 +13,8 @@ public final class ClientConstants
 
     public static final String RESOURCES_FOLDER_PATH = "src/main/resources/jukeboxes.properties";
 
-    private ClientConstants() {};
+    private ClientConstants()
+    {
+
+    };
 }

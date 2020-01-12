@@ -5,20 +5,24 @@ import org.pineapple.backend.interfaces.PersistenceControllerService;
 import org.pineapple.core.JukeBoxIPNamePair;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
-public class PersistenceControllerProperties extends PersistenceControllerService
+public class PersistenceControllerProperties implements PersistenceControllerService
 {
-    private Properties properties;
-    private String rootPath;
+    private final Properties properties;
+    private final String rootPath;
+    private final List<JukeBoxIPNamePair> jukeBoxIPNamePairs;
 
-    public PersistenceControllerProperties()
+
+    public PersistenceControllerProperties(String rootPath)
     throws IOException
     {
-        rootPath = ClientConstants.RESOURCES_FOLDER_PATH;
+        this.rootPath = rootPath;
         properties = new Properties();
         jukeBoxIPNamePairs = new ArrayList<>();
         properties.load(new FileReader(rootPath));
@@ -28,23 +32,28 @@ public class PersistenceControllerProperties extends PersistenceControllerServic
     public void writeEntryToPersistence(String key, String value)
     {
         properties.setProperty(key,value);
-        addNewPairToList(key,value);
     }
 
     @Override
     public List<JukeBoxIPNamePair> readAllEntriesFromPersistence()
     {
+        jukeBoxIPNamePairs.clear();
+
+        Set<String> keys = properties.stringPropertyNames();
+        for(String key : keys)
+            jukeBoxIPNamePairs.add(new JukeBoxIPNamePair(key, properties.getProperty(key)));
+
         return jukeBoxIPNamePairs;
     }
 
     @Override
     public JukeBoxIPNamePair readEntryFromPersistence(String key)
     {
-        for(JukeBoxIPNamePair pair : jukeBoxIPNamePairs)
-            if(pair.getJukeBoxName().equals(key))
-                return pair;
-
-        throw new JukeBoxIPNamePairNotFoundException("Requested pair not in persistence file.");
+        String name = properties.getProperty(key);
+        if(name == null)
+            throw new JukeBoxIPNamePairNotFoundException("Requested pair not in persistence file.");
+        else
+            return new JukeBoxIPNamePair(key,name);
     }
 
     @Override
@@ -58,7 +67,6 @@ public class PersistenceControllerProperties extends PersistenceControllerServic
     public void deleteEntryFromPersistence(String key)
     {
         properties.remove(key);
-        deleteEntryFromList(key);
     }
 
     @Override
@@ -72,21 +80,20 @@ public class PersistenceControllerProperties extends PersistenceControllerServic
     @Override
     public void editEntryIP(String key, String newIP)
     {
-        properties.setProperty(key,newIP);
-        deleteEntryFromList(key);
-        addNewPairToList(key,newIP);
+        writeEntryToPersistence(key,newIP);
     }
 
-    private void deleteEntryFromList(String key)
+    public void storeToFile()
     {
-        for(JukeBoxIPNamePair pair : jukeBoxIPNamePairs)
-            if(pair.getJukeBoxName().equals(key))
-                jukeBoxIPNamePairs.remove(pair);
-    }
+        try
+        {
+            FileWriter fileWriter = new FileWriter(rootPath);
+            properties.store(fileWriter,"Storing PersistenceControllerProperties to File.");
+        }
+        catch(IOException ex)
+        {
+            //...
+        }
 
-    private void addNewPairToList(String key, String value)
-    {
-        JukeBoxIPNamePair newPair = new JukeBoxIPNamePair(key,value);
-        jukeBoxIPNamePairs.add(newPair);
     }
 }

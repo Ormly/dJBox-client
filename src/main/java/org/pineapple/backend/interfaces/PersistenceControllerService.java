@@ -5,21 +5,21 @@ import org.pineapple.core.JukeBoxIPNamePair;
 import java.io.IOException;
 import java.util.List;
 
-public abstract class PersistenceControllerService
+public interface PersistenceControllerService
 {
-    protected List<JukeBoxIPNamePair> jukeBoxIPNamePairs;
+    void writeEntryToPersistence(String key, String value);
 
-    public abstract void writeEntryToPersistence(String key, String value);
+    List<JukeBoxIPNamePair> readAllEntriesFromPersistence();
 
-    public abstract List<JukeBoxIPNamePair> readAllEntriesFromPersistence();
+    JukeBoxIPNamePair readEntryFromPersistence(String key);
 
-    public abstract JukeBoxIPNamePair readEntryFromPersistence(String key);
+    void deleteAllEntriesFromPersistence();
 
-    public abstract void deleteAllEntriesFromPersistence();
+    void deleteEntryFromPersistence(String key);
 
-    public abstract void deleteEntryFromPersistence(String key);
+    void editEntryName(String oldName, String newName);
 
-    public abstract void editEntryName(String oldName, String newName);
+    void editEntryIP(String key, String newIP);
 
-    public abstract void editEntryIP(String key, String newIP);
+    void storeToFile();
 }

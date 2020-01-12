@@ -30,6 +30,7 @@ public class Main extends Application
     public void stop()
     {
         JukeBoxClient jukeBoxClient = JukeBoxClient.getJukeBoxClientInstance();
+        jukeBoxClient.storePersistenceToFile();
         ResponseState responseState = jukeBoxClient.doLogout();
         switch(responseState)
         {

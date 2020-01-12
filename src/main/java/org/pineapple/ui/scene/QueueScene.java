@@ -278,8 +278,18 @@ public class QueueScene extends SceneMaker {
 
     public void timeline1Second()
     {
-        if(currentlyPlayingSong != null && elapsedTime < currentlyPlayingSong.getDuration())
+        if(currentlyPlayingSong != null)
+        {
+            if(elapsedTime < currentlyPlayingSong.getDuration())
+            {
                 timeElapsedLabel.setText(getTimeInMMSS(++elapsedTime));
+                songProgressBar.setProgress(elapsedTime/currentlyPlayingSong.getDuration());
+            }
+            else
+            {
+                updateSongObservableList(controller.getQueueList());
+            }
+        }
     }
 
     public String getTimeInMMSS(double duration)

@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -23,7 +24,8 @@ import java.util.List;
 
 public class QueueScene extends SceneMaker {
 
-    private  Timeline timeline;
+    private Timeline queueTimeline;
+    private Timeline songPlayingTimeline;
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
     private Label currentTitleLabel;
     private Label currentArtistLabel;
@@ -35,6 +37,8 @@ public class QueueScene extends SceneMaker {
     private ImageView nextAlbumImageView;
     private ImageView rightArrowImageView;
     private Image placeHolderImage;
+    private Label timeElapsedLabel;
+    private Label songDurationLabel;
 
     /**
      * Creates Queue scene
@@ -61,10 +65,11 @@ public class QueueScene extends SceneMaker {
         tableView.getColumns().add(artistColumn);
         tableView.getColumns().add(albumColumn);
         tableView.setPlaceholder(new Label("No songs are in the queue please add a song"));
-        timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
+        queueTimeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
             updateSongObservableList(controller.getQueueList());
+            System.out.println(controller.getCurrentSongElapsed() + " " + controller.getCurrentSong().getDuration());
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        queueTimeline.setCycleCount(Timeline.INDEFINITE);
 
         // Wrap observableList in FilteredList (Showing all data initially)
         FilteredList<Song> filteredList = new FilteredList<>(songObservableList, p -> true);
@@ -148,20 +153,36 @@ public class QueueScene extends SceneMaker {
         nextArtistLabel = new Label();
         nextAlbumLabel = new Label();
 
+        // Song duration labels
+        timeElapsedLabel = new Label("00:00");
+        songDurationLabel = new Label("00:00");
+
+        // Song Progress Bar
+        ProgressBar songProgressBar = new ProgressBar(0);
+        songPlayingTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+                System.out.println(controller.getCurrentSongElapsed());
+        }));
+//        songPlayingTimeline.play();
+        songPlayingTimeline.setCycleCount(Timeline.INDEFINITE);
+
         // Stacks album art on top of song information for next song
-        VBox nextSongVBox = new VBox(10);
+        VBox nextSongVBox = new VBox(10,nextAlbumImageView,nextTitleLabel,nextArtistLabel,nextAlbumLabel);
         nextSongVBox.setAlignment(Pos.CENTER);
-        nextSongVBox.getChildren().addAll(nextAlbumImageView,nextTitleLabel,nextArtistLabel,nextAlbumLabel);
 
         // from left to right currently playing song, right arrow, next song
-        HBox songQueueHBox = new HBox(50);
+        HBox songQueueHBox = new HBox(50,currentSongVBox,rightArrowImageView,nextSongVBox);
         songQueueHBox.setAlignment(Pos.CENTER);
-        songQueueHBox.getChildren().addAll(currentSongVBox,rightArrowImageView,nextSongVBox);
+
+        HBox songProgressHBox = new HBox(10,timeElapsedLabel,songProgressBar,songDurationLabel);
+        songProgressHBox.setAlignment(Pos.CENTER);
+
+        VBox songsProgressVBox = new VBox(50,songQueueHBox,songProgressHBox);
+        songsProgressVBox.setAlignment(Pos.CENTER);
 
         // Top is for menu options, center is for song information
         BorderPane rightBorderPane = new BorderPane();
         rightBorderPane.setTop(rightTopBorderHBox);
-        rightBorderPane.setCenter(songQueueHBox);
+        rightBorderPane.setCenter(songsProgressVBox);
 
         // Main element search bar on top of song list on left, menu options and song information on right
         HBox root = new HBox(leftVBox,rightBorderPane);
@@ -176,8 +197,8 @@ public class QueueScene extends SceneMaker {
     }
 
     // Controller for refreshing queue
-    public void playTimeLine() { timeline.play(); }
-    public void stopTimeLine() { timeline.stop(); }
+    public void playQueueTimeLine() { queueTimeline.play(); }
+    public void stopQueueTimeLine() { queueTimeline.stop(); }
 
     /**
      * Updates the list and updates current and next song
@@ -207,6 +228,7 @@ public class QueueScene extends SceneMaker {
             currentTitleLabel.setText(currentSong.getTitle());
             currentArtistLabel.setText(currentSong.getArtist());
             currentAlbumLabel.setText(currentSong.getAlbum());
+//            updatePlayingSongInfo(currentSong);
             try
             {
                 currentAlbumImageView.setImage(new Image(currentSong.getCoverArtURL()));
@@ -249,5 +271,19 @@ public class QueueScene extends SceneMaker {
             nextAlbumImageView.setVisible(false);
             rightArrowImageView.setVisible(false);
         }
+    }
+
+    public String getTimeInMMSS(double duration)
+    {
+        int minutes = (int)duration / 60;
+        int seconds = (int)duration % 60;
+
+        return String.format("%02d:%02d",minutes,seconds);
+    }
+
+    public void updatePlayingSongInfo(Song song)
+    {
+        songDurationLabel.setText(getTimeInMMSS(song.getDuration()));
+        timeElapsedLabel.setText(getTimeInMMSS(controller.getCurrentSongElapsed()));
     }
 }

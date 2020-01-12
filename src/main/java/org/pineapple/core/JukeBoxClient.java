@@ -388,6 +388,31 @@ public class JukeBoxClient
 
         return ResponseState.SUCCESS;
     }
+
+    public void addIPNamePair(String name, String ip)
+    {
+        jbIPNamePersistence.writeEntryToPersistence(name,ip);
+    }
+
+    public void deleteIPNamePair(String name)
+    {
+        jbIPNamePersistence.deleteEntryFromPersistence(name);
+    }
+
+    public void deleteAllIPNamePairs()
+    {
+        jbIPNamePersistence.deleteAllEntriesFromPersistence();
+    }
+
+    public void editNameOfPair(String oldName, String newName)
+    {
+        jbIPNamePersistence.editEntryName(oldName, newName);
+    }
+
+    public void editIPOfPair(String name, String newIP)
+    {
+        jbIPNamePersistence.editEntryIP(name, newIP);
+    }
 }
 
 

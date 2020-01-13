@@ -13,6 +13,9 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.pineapple.ui.controller.Controller;
 
+/**
+ * Represents a scene to login a user.
+ */
 public class UserLoginScene extends SceneMaker {
 
     /**

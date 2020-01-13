@@ -20,8 +20,6 @@ public interface HTTPControllerService
     HttpHeaders sendPostRequest(String requestURI, String requestBody)
     throws InterruptedException, IOException;
 
-    String sendHeadRequest(String requestURI);
-
     /**
      * Sends a get request containing the given token in the header to the given URI.
      *

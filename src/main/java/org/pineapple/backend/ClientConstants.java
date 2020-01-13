@@ -1,7 +1,9 @@
 package org.pineapple.backend;
 
-import java.io.File;
-
+/**
+ * Static helper class, providing useful constants to the project.
+ *
+ */
 public final class ClientConstants
 {
     public static final int GENERAL_ERROR_CODE = 500;

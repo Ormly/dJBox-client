@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Controls and creates scenes
+ * Controls and creates scenes.
  */
 public class Controller {
 
@@ -256,6 +256,11 @@ public class Controller {
         }
     }
 
+    /**
+     * Fetches all jukebox name-ip pairs from JukeBoxClient.
+     *
+     * @return
+     */
     public List<JukeBoxIPNamePair> getIPNamePairs()
     {
         return jukeBoxClient.fetchAllJukeBoxIPNamePairs();

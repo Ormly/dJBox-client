@@ -1,9 +1,9 @@
 package org.pineapple.core;
 
 /**
- * Feedback enum for methods called by the GUI.
+ * Feedback states for methods called by the GUI.
  */
 public enum ResponseState
 {
-    SUCCESS,AUTHFAIL,SONGNOTFOUND,CANTREACH,GENERALFAIL,INVALIDIP,NOCURRENTSONG,PERSISTENCEFAIL
+    SUCCESS,AUTHFAIL,SONGNOTFOUND,CANTREACH,GENERALFAIL,INVALIDIP,NOCURRENTSONG
 }

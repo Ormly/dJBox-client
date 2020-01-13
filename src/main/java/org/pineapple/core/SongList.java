@@ -11,8 +11,6 @@ import java.util.Optional;
  */
 public class SongList implements IMediaList<Song>
 {
-    //TODO: implement Library constructor
-
     List<Song> songList;
 
     public SongList()

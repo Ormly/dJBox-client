@@ -1,5 +1,8 @@
 package org.pineapple.core;
 
+/**
+ * Represents a Jukebox name-ip pair, which is curated by persistent storage.
+ */
 public class JukeBoxIPNamePair
 {
     private String jukeBoxName;

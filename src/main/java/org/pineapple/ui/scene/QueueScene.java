@@ -21,6 +21,9 @@ import org.pineapple.ui.controller.Controller;
 
 import java.util.List;
 
+/**
+ * Represents a queue scene, displaying songs in queue from the server to the user.
+ */
 public class QueueScene extends SceneMaker {
 
     private Timeline queueTimeline;

@@ -388,31 +388,62 @@ public class JukeBoxClient
         return ResponseState.SUCCESS;
     }
 
+    /**
+     * Exposes functionality to add name-ip pair to persistence to GUI.
+     *
+     * @param name
+     * @param ip
+     */
     public void addIPNamePair(String name, String ip)
     {
         jbIPNamePersistence.writeEntryToPersistence(name,ip);
     }
 
+    /**
+     * Exposes functionality to delete name-ip pair from persistence to GUI.
+     *
+     * @param name
+     */
     public void deleteIPNamePair(String name)
     {
         jbIPNamePersistence.deleteEntryFromPersistence(name);
     }
 
+    /**
+     * Exposes functionality to delete all name-ip pairs in persistence to GUI.
+     */
     public void deleteAllIPNamePairs()
     {
         jbIPNamePersistence.deleteAllEntriesFromPersistence();
     }
 
+    /**
+     * Exposes functionality to edit name of name-ip pair in persistence to GUI.
+     *
+     * @param oldName
+     * @param newName
+     */
     public void editNameOfPair(String oldName, String newName)
     {
         jbIPNamePersistence.editEntryName(oldName, newName);
     }
 
+    /**
+     * Exposes functionality to edit ip of name-ip pair in persistence to GUI.
+     *
+     * @param name
+     * @param newIP
+     */
     public void editIPOfPair(String name, String newIP)
     {
         jbIPNamePersistence.editEntryIP(name, newIP);
     }
 
+    /**
+     * Exposes functionality to fetch all name-ip pairs in persistence to GUI.
+     *
+     * @return
+     */
     public List<JukeBoxIPNamePair> fetchAllJukeBoxIPNamePairs()
     {
         List<JukeBoxIPNamePair> pairList = jbIPNamePersistence.readAllEntriesFromPersistence();
@@ -420,6 +451,12 @@ public class JukeBoxClient
         return pairList;
     }
 
+    /**
+     * Exposes functionality to fetch name-ip pair specified by key in persistence to GUI.
+     *
+     * @param key
+     * @return
+     */
     public JukeBoxIPNamePair fetchJukeBoxIPNamePair(String key)
     {
         JukeBoxIPNamePair pair;
@@ -435,11 +472,14 @@ public class JukeBoxClient
         return pair;
     }
 
+    /**
+     * Writes changes made to member PersistenceControllerProperties object member to file for file-based-persistence.
+     */
     public void storePersistenceToFile()
     {
         try
         {
-            jbIPNamePersistence.storeToFile();
+            jbIPNamePersistence.makePersistent();
         }
         catch(PersistenceStoreException ex)
         {
@@ -447,6 +487,11 @@ public class JukeBoxClient
         }
     }
 
+    /**
+     * Checks whether client user is currently logged in on the server.
+     *
+     * @return
+     */
     public boolean userLoggedIn()
     {
         return userData.isLoggedIn();

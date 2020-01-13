@@ -16,6 +16,9 @@ import org.pineapple.core.Song;
 import org.pineapple.ui.controller.Controller;
 import java.util.List;
 
+/**
+ * Represents a library scene, displaying songs from the server to the user.
+ */
 public class LibraryScene extends SceneMaker
 {
 
@@ -26,6 +29,7 @@ public class LibraryScene extends SceneMaker
     private Label albumLabel;
     private Image placeHolderImage = new Image("PlaceHolder.png");
     private ImageView albumImageView = new ImageView(placeHolderImage);
+
     /**
      * Creates library scene
      * @param stage window
@@ -104,6 +108,7 @@ public class LibraryScene extends SceneMaker
 
         this.setRoot(root);
     }
+
     public void updateSongObservableList(List<Song> songList)
     {
         songObservableList.clear();

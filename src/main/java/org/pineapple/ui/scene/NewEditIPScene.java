@@ -9,6 +9,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.pineapple.ui.controller.Controller;
 
+/**
+ * Represents scenes for both creating a new entry into the Jukebox IP selection scene, as well as editing an entry.
+ */
 public class NewEditIPScene extends SceneMaker
 {
     private TextField nameTextField;

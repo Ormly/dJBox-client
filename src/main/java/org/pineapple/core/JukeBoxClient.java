@@ -437,7 +437,14 @@ public class JukeBoxClient
 
     public void storePersistenceToFile()
     {
-        jbIPNamePersistence.storeToFile();
+        try
+        {
+            jbIPNamePersistence.storeToFile();
+        }
+        catch(PersistenceStoreException ex)
+        {
+            //...
+        }
     }
 
     public boolean userLoggedIn()

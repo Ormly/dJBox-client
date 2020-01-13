@@ -1,6 +1,7 @@
 package org.pineapple.backend;
 
 import org.pineapple.backend.exceptions.JukeBoxIPNamePairNotFoundException;
+import org.pineapple.backend.exceptions.PersistenceStoreException;
 import org.pineapple.backend.interfaces.PersistenceControllerService;
 import org.pineapple.core.JukeBoxIPNamePair;
 
@@ -92,7 +93,7 @@ public class PersistenceControllerProperties implements PersistenceControllerSer
         }
         catch(IOException ex)
         {
-            //...
+            throw new PersistenceStoreException(ex.getMessage());
         }
 
     }

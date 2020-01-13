@@ -78,6 +78,7 @@ public class Controller {
                 stage.setScene(userLoginScene);
                 stage.setTitle("dJBox - Login");
                 queueScene.stopQueueTimeLine();
+                queueScene.stopSongPlayingTimeline();
                 break;
             case AUTHFAIL:
                 break;

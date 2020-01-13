@@ -1,10 +1,7 @@
 package org.pineapple.core;
 
 import org.pineapple.backend.*;
-import org.pineapple.backend.exceptions.AuthenticationFailedException;
-import org.pineapple.backend.exceptions.GeneralServerIssueException;
-import org.pineapple.backend.exceptions.NoCurrentSongException;
-import org.pineapple.backend.exceptions.SongNotFoundException;
+import org.pineapple.backend.exceptions.*;
 import org.pineapple.backend.interfaces.PersistenceControllerService;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.core.interfaces.IMediaList;
@@ -418,12 +415,24 @@ public class JukeBoxClient
 
     public List<JukeBoxIPNamePair> fetchAllJukeBoxIPNamePairs()
     {
-        return jbIPNamePersistence.readAllEntriesFromPersistence();
+        List<JukeBoxIPNamePair> pairList = jbIPNamePersistence.readAllEntriesFromPersistence();
+
+        return pairList;
     }
 
     public JukeBoxIPNamePair fetchJukeBoxIPNamePair(String key)
     {
-        return jbIPNamePersistence.readEntryFromPersistence(key);
+        JukeBoxIPNamePair pair;
+        try
+        {
+            pair = jbIPNamePersistence.readEntryFromPersistence(key);
+        }
+        catch(JukeBoxIPNamePairNotFoundException ex)
+        {
+            return null;
+        }
+
+        return pair;
     }
 
     public void storePersistenceToFile()

@@ -22,7 +22,7 @@ public class RegistrationScene extends SceneMaker
     private Label responseLabel;
 
     /**
-     * Parent class of scenes
+     * Parent class of scenes.
      *
      * @param stage      window
      * @param controller controls scene commands
@@ -64,7 +64,7 @@ public class RegistrationScene extends SceneMaker
     }
 
     /**
-     * Clears all input fields
+     * Clears all input fields.
      */
     public void clearFields()
     {

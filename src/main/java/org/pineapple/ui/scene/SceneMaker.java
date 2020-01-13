@@ -11,7 +11,7 @@ public abstract class SceneMaker extends Scene {
     protected Controller controller;
 
     /**
-     * Parent class of scenes
+     * Parent class of scenes.
      * @param stage window
      * @param controller controls scene commands
      * @param sizeX window width

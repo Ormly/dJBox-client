@@ -20,6 +20,11 @@ public class NewEditIPScene extends SceneMaker
     // true adding, false editing
     private boolean status;
 
+    /**
+     * Creates a new IP scene.
+     * @param stage
+     * @param controller
+     */
     public NewEditIPScene(Stage stage, Controller controller)
     {
         super(stage, controller, 300,300);
@@ -58,15 +63,28 @@ public class NewEditIPScene extends SceneMaker
         this.setRoot(root);
     }
 
+    /**
+     * Sets the name text field.
+     * @param text
+     */
     public void setNameTextField(String text)
     {
         nameTextField.setText(text);
     }
+
+    /**
+     * Sets the IP text field.
+     * @param text
+     */
     public void setIpTextField(String text)
     {
         ipTextField.setText(text);
     }
 
+    /**
+     * Sets the status of the Button on the scene.
+     * @param status
+     */
     public void setStatus(boolean status) {
         this.status = status;
         if(status)

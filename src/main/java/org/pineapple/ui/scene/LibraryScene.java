@@ -109,6 +109,10 @@ public class LibraryScene extends SceneMaker
         this.setRoot(root);
     }
 
+    /**
+     * Updates the song list that can be displayed on scene with all received values.
+     * @param songList
+     */
     public void updateSongObservableList(List<Song> songList)
     {
         songObservableList.clear();
@@ -116,6 +120,10 @@ public class LibraryScene extends SceneMaker
         songTableView.getSelectionModel().selectFirst();
     }
 
+    /**
+     * Returns an id of the song if contained in the list, otherwise returns -1.
+     * @return int
+     */
     public int getSongObservableList()
     {
         if(songTableView.getSelectionModel().getSelectedItem() != null)
@@ -124,6 +132,10 @@ public class LibraryScene extends SceneMaker
             return -1;
     }
 
+    /**
+     * Updates all song object labels.
+     * @param song
+     */
     public void updateSongInfo(Song song)
     {
         if(song != null)

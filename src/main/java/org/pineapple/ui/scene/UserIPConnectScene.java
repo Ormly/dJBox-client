@@ -17,6 +17,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a scene to connect to a certain jukebox on IP address.
+ */
 public class UserIPConnectScene extends SceneMaker
 {
     private Map<String, String> jukeBoxHashMap;
@@ -24,7 +27,7 @@ public class UserIPConnectScene extends SceneMaker
     private ObservableList<Map.Entry<String, String>> jukeBoxObservableList;
 
     /**
-     * Creates User IP Connect scene
+     * Creates User IP Connect scene.
      * @param stage window
      * @param controller controls scene commands
      */
@@ -83,19 +86,19 @@ public class UserIPConnectScene extends SceneMaker
     }
 
     /**
-     * Returns selected key from table selection
+     * Returns selected key from table selection.
      * @return key
      */
     public String getKeyFromTableSelection() { return jukeBoxTableView.getSelectionModel().getSelectedItem().getKey(); }
 
     /**
-     * Returns selected ip from table selection
+     * Returns selected ip from table selection.
      * @return ip
      */
     public String getIPFromTableSelection() { return jukeBoxTableView.getSelectionModel().getSelectedItem().getValue(); }
 
     /**
-     * Updates table list by clearing and adding hashmap
+     * Updates table list by clearing and adding hashmap.
      */
     public void updateObservableList()
     {
@@ -104,14 +107,14 @@ public class UserIPConnectScene extends SceneMaker
     }
 
     /**
-     * Puts name and ip into hashmap
+     * Puts name and ip into hashmap.
      * @param name
      * @param ip
      */
     public void putHashMap(String name, String ip) { jukeBoxHashMap.put(name, ip); }
 
     /**
-     * Removes key from hashmap
+     * Removes key from hashmap.
      * @param key
      */
     public void removeHashMap(String key) { jukeBoxHashMap.remove(key); }

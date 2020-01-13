@@ -88,6 +88,7 @@ public class JukeBoxClient
             Thread.currentThread().interrupt();
         }
 
+        userData.setLoggedIn(true);
         return ResponseState.SUCCESS;
     }
 
@@ -226,6 +227,7 @@ public class JukeBoxClient
             Thread.currentThread().interrupt();
         }
 
+        userData.setLoggedIn(false);
         return ResponseState.SUCCESS;
     }
 
@@ -427,6 +429,11 @@ public class JukeBoxClient
     public void storePersistenceToFile()
     {
         jbIPNamePersistence.storeToFile();
+    }
+
+    public boolean userLoggedIn()
+    {
+        return userData.isLoggedIn();
     }
 }
 

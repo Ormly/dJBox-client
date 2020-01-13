@@ -31,15 +31,18 @@ public class Main extends Application
     {
         JukeBoxClient jukeBoxClient = JukeBoxClient.getJukeBoxClientInstance();
         jukeBoxClient.storePersistenceToFile();
-        ResponseState responseState = jukeBoxClient.doLogout();
-        switch(responseState)
+        if(jukeBoxClient.userLoggedIn())
         {
-            case SUCCESS:
-                break;
-            case AUTHFAIL:
-                break;
-            case CANTREACH:
-                break;
+            ResponseState responseState = jukeBoxClient.doLogout();
+            switch(responseState)
+            {
+                case SUCCESS:
+                    break;
+                case AUTHFAIL:
+                    break;
+                case CANTREACH:
+                    break;
+            }
         }
     }
 }

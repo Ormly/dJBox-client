@@ -7,6 +7,12 @@ public class UserData
 {
     private String emailAddress;
     private String securityToken;
+    private boolean isLoggedIn;
+
+    public UserData()
+    {
+        isLoggedIn = false;
+    }
 
     public void setEmailAddress(String emailAddress)
     {
@@ -40,5 +46,16 @@ public class UserData
     {
         emailAddress = null;
         securityToken = null;
+        isLoggedIn = false;
+    }
+
+    public boolean isLoggedIn()
+    {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean value)
+    {
+        isLoggedIn = value;
     }
 }

@@ -21,6 +21,9 @@ import org.pineapple.ui.controller.Controller;
 
 import java.util.List;
 
+/**
+ * Represents a queue scene, displaying songs in queue from the server to the user.
+ */
 public class QueueScene extends SceneMaker {
 
     private Timeline queueTimeline;
@@ -45,7 +48,7 @@ public class QueueScene extends SceneMaker {
 
 
     /**
-     * Creates Queue scene
+     * Creates Queue scene.
      * @param stage window
      * @param controller controls scene commands
      */
@@ -194,20 +197,39 @@ public class QueueScene extends SceneMaker {
 
         this.setRoot(root);
     }
-
-    // Play and stop for timelines
+    
+    /**
+     * Plays queue timeline.
+     */
     public void playQueueTimeLine() { queueTimeline.play(); }
+
+    /**
+     * Stops queue timeline.
+     */
     public void stopQueueTimeLine() { queueTimeline.stop(); }
+
+    /**
+     * Plays local song timeline.
+     */
     public void playSongPlayingTimeline() { songPlayingTimeline.play(); }
+
+    /**
+     * Stops local song timeline.
+     */
     public void stopSongPlayingTimeline() { songPlayingTimeline.stop(); }
 
+    /**
+     * Setter for sonPlaying member.
+     *
+     * @param songPlaying new value.
+     */
     public void setSongPlaying(boolean songPlaying)
     {
         this.songPlaying = songPlaying;
     }
 
     /**
-     * Updates the list and updates current and next song
+     * Updates the list and updates current and next song.
      * @param songList
      */
     public void updateSongObservableList(List<Song> songList)
@@ -223,7 +245,7 @@ public class QueueScene extends SceneMaker {
     }
 
     /**
-     * Updates current and next song information
+     * Updates current and next song information.
      * @param currentSong
      * @param nextSong
      */

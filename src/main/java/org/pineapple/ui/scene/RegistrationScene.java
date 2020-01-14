@@ -11,14 +11,18 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.pineapple.ui.controller.Controller;
 
+/**
+ * Represents a scene for registering a new user.
+ */
 public class RegistrationScene extends SceneMaker
 {
     private TextField emailTextField;
     private PasswordField passwordField;
     private PasswordField confirmPasswordField;
     private Label responseLabel;
+
     /**
-     * Parent class of scenes
+     * Parent class of scenes.
      *
      * @param stage      window
      * @param controller controls scene commands
@@ -60,7 +64,7 @@ public class RegistrationScene extends SceneMaker
     }
 
     /**
-     * Clears all input fields
+     * Clears all input fields.
      */
     public void clearFields()
     {

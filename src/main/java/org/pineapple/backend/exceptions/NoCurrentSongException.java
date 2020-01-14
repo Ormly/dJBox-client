@@ -1,4 +1,4 @@
-package org.pineapple.backend;
+package org.pineapple.backend.exceptions;
 
 /**
  * Custom exception signifying that the server is not currently playing any song.

@@ -9,11 +9,19 @@ import org.pineapple.core.JukeBoxClient;
 
 public class Main extends Application
 {
+    /**
+     * Launches the main scene.
+     * @param args
+     */
      public static void main(String[] args)
     {
         launch();
     }
 
+    /**
+     * Sets up the start up stage of the application.
+     * @param stage
+     */
     public void start(Stage stage)
     {
         JukeBoxClient jukeBoxClient = JukeBoxClient.getJukeBoxClientInstance();
@@ -27,18 +35,25 @@ public class Main extends Application
         stage.show();
     }
 
+    /**
+     * Stops the stage. If user is logged in, logs out the user.
+     */
     public void stop()
     {
         JukeBoxClient jukeBoxClient = JukeBoxClient.getJukeBoxClientInstance();
-        ResponseState responseState = jukeBoxClient.doLogout();
-        switch(responseState)
+        jukeBoxClient.storePersistenceToFile();
+        if(jukeBoxClient.userLoggedIn())
         {
-            case SUCCESS:
-                break;
-            case AUTHFAIL:
-                break;
-            case CANTREACH:
-                break;
+            ResponseState responseState = jukeBoxClient.doLogout();
+            switch(responseState)
+            {
+                case SUCCESS:
+                    break;
+                case AUTHFAIL:
+                    break;
+                case CANTREACH:
+                    break;
+            }
         }
     }
 }

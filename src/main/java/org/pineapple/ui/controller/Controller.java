@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.pineapple.core.JukeBoxClient;
+import org.pineapple.core.JukeBoxIPNamePair;
 import org.pineapple.core.ResponseState;
 import org.pineapple.core.Song;
 import org.pineapple.ui.scene.*;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Controls and creates scenes
+ * Controls and creates scenes.
  */
 public class Controller {
 
@@ -31,7 +32,7 @@ public class Controller {
     private NewEditIPScene newEditIPScene;
 
     /**
-     * Constructor creates and puts scenes into Map container
+     * Constructor creates and puts scenes into Map container.
      * @param stage window
      * @param jukeBoxClient client
      */
@@ -48,13 +49,13 @@ public class Controller {
     }
 
     /**
-     * Returns the Initial Scene to connect to an IP
+     * Returns the Initial Scene to connect to an IP.
      * @return userIPScene
      */
     public UserIPConnectScene getInitialScene() { return userIPConnectScene; }
 
     /**
-     * Adds song to queue
+     * Adds song to queue.
      */
     public void addToQueueButtonLibrary()
     {
@@ -68,7 +69,7 @@ public class Controller {
     }
 
     /**
-     * Logs user out and changes scene to login
+     * Logs user out and changes scene to login.
      */
     public void logoutButtonQueue()
     {
@@ -89,8 +90,8 @@ public class Controller {
     }
 
     /**
-     * Opens up a new window containing song library
-     * Main window can't be used until library is closed
+     * Opens up a new window containing song library.
+     * Main window can't be used until library is closed.
      */
     public void libraryButtonQueue()
     {
@@ -117,7 +118,7 @@ public class Controller {
     }
 
     /**
-     * Returns List of songs in the queue if it is able to otherwise an empty list
+     * Returns List of songs in the queue if it is able to otherwise an empty list.
      * @return songList
      */
     public List<Song> getQueueList()
@@ -137,7 +138,7 @@ public class Controller {
     }
 
     /**
-     * Creates popup to enter new IP address
+     * Creates popup to enter new IP address.
      */
     public void newIPButtonUserIPConnect()
     {
@@ -152,7 +153,7 @@ public class Controller {
     }
 
     /**
-     * Creates popup to edit IP address
+     * Creates popup to edit IP address.
      */
     public void editIPButtonUserIPConnect()
     {
@@ -178,7 +179,8 @@ public class Controller {
     }
 
     /**
-     * Adds ip to hashmap and displays
+     * Adds ip to hashmap and displays.
+     *
      * @param name obtained from textfield
      * @param ip obtained from textfield
      */
@@ -186,11 +188,13 @@ public class Controller {
     {
         userIPConnectScene.putHashMap(name, ip);
         userIPConnectScene.updateObservableList();
+        jukeBoxClient.addIPNamePair(name, ip);
         dialog.close();
     }
 
     /**
-     * Deletes currently selected ip and adds new ip
+     * Deletes currently selected ip and adds new ip.
+     *
      * @param name obtained from textfield
      * @param ip obtained from textfield
      */
@@ -198,13 +202,15 @@ public class Controller {
     {
         String key = userIPConnectScene.getKeyFromTableSelection();
         userIPConnectScene.removeHashMap(key);
+        jukeBoxClient.deleteIPNamePair(key);
         userIPConnectScene.putHashMap(name, ip);
+        jukeBoxClient.addIPNamePair(name, ip);
         userIPConnectScene.updateObservableList();
         dialog.close();
     }
 
     /**
-     * Removes currently selected ip from table and hashmap
+     * Removes currently selected ip from table and hashmap.
      */
     public void deleteIPButtonUserIPConnect()
     {
@@ -212,6 +218,7 @@ public class Controller {
         {
             String key = userIPConnectScene.getKeyFromTableSelection();
             userIPConnectScene.removeHashMap(key);
+            jukeBoxClient.deleteIPNamePair(key);
             userIPConnectScene.updateObservableList();
         }
         catch(NullPointerException npe)
@@ -221,7 +228,7 @@ public class Controller {
     }
 
     /**
-     * Connects to the server and changes scene to login
+     * Connects to the server and changes scene to login.
      */
     public void connectButtonUserIPConnect()
     {
@@ -252,7 +259,18 @@ public class Controller {
     }
 
     /**
-     * Logs user in if able to, otherwise displays an error message
+     * Fetches all jukebox name-ip pairs from JukeBoxClient.
+     *
+     * @return
+     */
+    public List<JukeBoxIPNamePair> getIPNamePairs()
+    {
+        return jukeBoxClient.fetchAllJukeBoxIPNamePairs();
+    }
+
+    /**
+     * Logs user in if able to, otherwise displays an error message.
+     *
      * @param user username/email
      * @param password password
      * @param response error message
@@ -282,9 +300,9 @@ public class Controller {
     }
 
     /**
-     * Opens new popup for registration
-     * clears registration fields
-     * main scene is inactive until popup is closed
+     * Opens new popup for registration,
+     * clears registration fields,
+     * main scene is inactive until popup is closed.
      */
     public void registerButtonUserLogin()
     {
@@ -299,7 +317,7 @@ public class Controller {
     }
 
     /**
-     * Disconnects from server
+     * Disconnects from server.
      * TODO: requires JukBoxClient method to complete disconnect
      */
     public void disconnectButtonUserLogin()
@@ -308,7 +326,8 @@ public class Controller {
     }
 
     /**
-     * Signs up user from input checking for password confirmation match, empty fields and response state
+     * Signs up user from input checking for password confirmation match, empty fields and response state.
+     *
      * @param emailTextField email
      * @param passwordField password
      * @param confirmPasswordField repeated password
@@ -366,8 +385,9 @@ public class Controller {
     }
 
     /**
-     * Gets current song
-     * Tests response state before returning a song if successful or null if unsuccessful
+     * Gets current song.
+     * Tests response state before returning a song if successful or null if unsuccessful.
+     *
      * @return current playing song
      */
     public Song getCurrentSong() {

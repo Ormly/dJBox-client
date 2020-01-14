@@ -13,10 +13,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import org.pineapple.ui.controller.Controller;
 
+/**
+ * Represents a scene to login a user.
+ */
 public class UserLoginScene extends SceneMaker {
 
     /**
-     * Creates User Login scene
+     * Creates User Login scene.
      * @param stage window
      * @param controller controls scene commands
      */
@@ -50,7 +53,6 @@ public class UserLoginScene extends SceneMaker {
         TextField usernameTextField = new TextField();
         PasswordField passwordPasswordField = new PasswordField();
 
-        // TODO: Remove
         // Initial details for testing
         usernameTextField.setText("testperson@gmail.com");
         passwordPasswordField.setText("password");

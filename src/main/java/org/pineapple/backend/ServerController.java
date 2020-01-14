@@ -2,6 +2,9 @@ package org.pineapple.backend;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.pineapple.backend.exceptions.AuthenticationFailedException;
+import org.pineapple.backend.exceptions.GeneralServerIssueException;
+import org.pineapple.backend.exceptions.SongNotFoundException;
 import org.pineapple.backend.interfaces.ServerControllerService;
 import org.pineapple.backend.interfaces.HTTPControllerService;
 import org.pineapple.core.Song;
@@ -12,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Exposes methods fetching server data to JukeBoxClient.
+ * Exposes functionality for fetching server data via server API to JukeBoxClient.
  */
 public class ServerController extends ServerControllerService
 {
@@ -23,6 +26,18 @@ public class ServerController extends ServerControllerService
         this.httpController = httpController;
     }
 
+    /**
+     * Requests a song with a given ID to be added to the server queue.
+     * Constructs a requestURI and calls on HTTPControllerService to submit the request.
+     *
+     * @param songID        ID uniquely identifying song.
+     * @param securityToken needs to be passed to identify the user.
+     * @throws AuthenticationFailedException if the token is invalid.
+     * @throws GeneralServerIssueException if the server has unspecified problems.
+     * @throws SongNotFoundException if the requested song ID cannot be  found server-side.
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
+     */
     public void addSongToServerQueue(int songID, String securityToken)
     throws AuthenticationFailedException, GeneralServerIssueException, SongNotFoundException, IOException, InterruptedException
     {
@@ -37,8 +52,8 @@ public class ServerController extends ServerControllerService
      *
      * @param securityToken needs to be passed to identify the user.
      * @return A list of songs representing the current queue state.
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
      * @throws AuthenticationFailedException if the token is invalid.
      */
     @Override
@@ -63,8 +78,8 @@ public class ServerController extends ServerControllerService
      *
      * @param securityToken needs to be passed to identify the user.
      * @return A list of songs representing the current library state.
-     * @throws IOException
-     * @throws InterruptedException
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
      * @throws AuthenticationFailedException if the token is invalid.
      */
     @Override
@@ -84,6 +99,18 @@ public class ServerController extends ServerControllerService
         return library;
     }
 
+    /**
+     * Authenticates a user with a given email and password.
+     * Constructs appropriate URI according to server API and sends request via member HTTPController.
+     *
+     * @param userEmail
+     * @param userPassword
+     * @return The security token of the current user.
+     * @throws AuthenticationFailedException if the token is invalid.
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
+     * @throws GeneralServerIssueException if the server has unspecified problems.
+     */
     @Override
     public String authenticateUser(String userEmail, String userPassword)
     throws AuthenticationFailedException, GeneralServerIssueException, IOException, InterruptedException
@@ -101,6 +128,16 @@ public class ServerController extends ServerControllerService
         return authResponse.substring(1, authResponse.length() - 1);
     }
 
+    /**
+     * Requests a user to be registered with the server using passed email and password.
+     * Constructs a requestURI and calls on HTTPControllerService to submit the request.
+     *
+     * @param userEmail
+     * @param userPassword
+     * @throws AuthenticationFailedException if the token is invalid.
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
+     */
     @Override
     public void registerUser(String userEmail, String userPassword)
     throws AuthenticationFailedException, IOException, InterruptedException
@@ -114,6 +151,16 @@ public class ServerController extends ServerControllerService
     }
 
 
+    /**
+     * Requests user to be logged out server-side.
+     * Constructs a requestURI and calls on HTTPControllerService to submit the request.
+     *
+     * @param securityToken needs to be passed to identify the user.
+     * @throws AuthenticationFailedException if the token is invalid.
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
+     * @throws GeneralServerIssueException if the server has unspecified problems.
+     */
     @Override
     public void logoutUser(String securityToken)
     throws AuthenticationFailedException, GeneralServerIssueException, IOException, InterruptedException
@@ -123,6 +170,17 @@ public class ServerController extends ServerControllerService
         httpController.sendGetRequestWithToken(request, securityToken);
     }
 
+    /**
+     * Requests the currently playing song from the server.
+     * Constructs a requestURI and calls on HTTPControllerService to submit the request.
+     * JSON-formatted response from HTTPController gets converted into Song object via Jackson.
+     *
+     * @param securityToken
+     * @return Song object representing the currently playing song on the server.
+     * @throws AuthenticationFailedException if the token is invalid.
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
+     */
     @Override
     public Song getCurrentSong(String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
@@ -138,6 +196,17 @@ public class ServerController extends ServerControllerService
         return currentSong;
     }
 
+    /**
+     * Requests the elapsed time in seconds of the currently playing song on the server.
+     * Constructs a requestURI and calls on HTTPControllerService to submit the request.
+     * Response is parsed into a double value and returned.
+     *
+     * @param securityToken
+     * @return elapsed time of currently playing song on the server in seconds.
+     * @throws AuthenticationFailedException if the token is invalid.
+     * @throws IOException if there are IO issues.
+     * @throws InterruptedException if there are thread issues.
+     */
     @Override
     public double getCurrentSongElapsed(String securityToken)
     throws AuthenticationFailedException, IOException, InterruptedException
@@ -154,14 +223,20 @@ public class ServerController extends ServerControllerService
         return elapsed;
     }
 
-    //TODO: change this it's horrible
+    /**
+     * requestURI setter.
+     *
+     * @param requestURI
+     */
     @Override
     public void setRequestURI(String requestURI)
     {
         this.requestURI = requestURI;
     }
 
-    //TODO: change this it's horrible
+    /**
+     * clears requestURI.
+     */
     @Override
     public void clearRequestURI()
     {

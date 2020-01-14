@@ -1,4 +1,4 @@
-package org.pineapple.backend;
+package org.pineapple.backend.exceptions;
 
 /**
  * Custom exception signifying that authentication with server has not succeeded.

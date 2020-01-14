@@ -1,7 +1,7 @@
 package org.pineapple.core;
 
 /**
- * Feedback enum for methods called by the GUI.
+ * Feedback states for methods called by the GUI.
  */
 public enum ResponseState
 {

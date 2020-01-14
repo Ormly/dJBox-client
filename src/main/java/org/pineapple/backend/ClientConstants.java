@@ -1,5 +1,9 @@
 package org.pineapple.backend;
 
+/**
+ * Static helper class, providing useful constants to the project.
+ *
+ */
 public final class ClientConstants
 {
     public static final int GENERAL_ERROR_CODE = 500;
@@ -9,5 +13,10 @@ public final class ClientConstants
     public static final int REGISTRATION_FAILURE_ERROR_CODE = 400;
     public static final int NO_CURRENT_SONG_ERROR_CODE = 204;
 
-    private ClientConstants() {};
+    public static final String RESOURCES_FOLDER_PATH = "src/main/resources/jukeboxes.properties";
+
+    private ClientConstants()
+    {
+
+    };
 }

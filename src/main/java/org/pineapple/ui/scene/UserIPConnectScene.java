@@ -10,11 +10,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.pineapple.core.JukeBoxIPNamePair;
 import org.pineapple.ui.controller.Controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents a scene to connect to a certain jukebox on IP address.
+ */
 public class UserIPConnectScene extends SceneMaker
 {
     private Map<String, String> jukeBoxHashMap;
@@ -22,7 +27,7 @@ public class UserIPConnectScene extends SceneMaker
     private ObservableList<Map.Entry<String, String>> jukeBoxObservableList;
 
     /**
-     * Creates User IP Connect scene
+     * Creates User IP Connect scene.
      * @param stage window
      * @param controller controls scene commands
      */
@@ -55,7 +60,10 @@ public class UserIPConnectScene extends SceneMaker
         jukeBoxTableView.getColumns().add(ipAddressColumn);
         jukeBoxTableView.setMaxSize(300,300);
         jukeBoxHashMap = new HashMap<>();
-        jukeBoxHashMap.put("localhost","localhost");
+        List<JukeBoxIPNamePair> ipNamePairs = controller.getIPNamePairs();
+        for(int i = 0; i < ipNamePairs.size(); i++)
+            jukeBoxHashMap.put(ipNamePairs.get(i).getJukeBoxName(),ipNamePairs.get(i).getJukeBoxIP());
+        // jukeBoxHashMap.put("localhost","localhost");
         jukeBoxObservableList = FXCollections.observableArrayList(jukeBoxHashMap.entrySet());
         jukeBoxTableView.setItems(jukeBoxObservableList);
 
@@ -78,19 +86,19 @@ public class UserIPConnectScene extends SceneMaker
     }
 
     /**
-     * Returns selected key from table selection
+     * Returns selected key from table selection.
      * @return key
      */
     public String getKeyFromTableSelection() { return jukeBoxTableView.getSelectionModel().getSelectedItem().getKey(); }
 
     /**
-     * Returns selected ip from table selection
+     * Returns selected ip from table selection.
      * @return ip
      */
     public String getIPFromTableSelection() { return jukeBoxTableView.getSelectionModel().getSelectedItem().getValue(); }
 
     /**
-     * Updates table list by clearing and adding hashmap
+     * Updates table list by clearing and adding hashmap.
      */
     public void updateObservableList()
     {
@@ -99,14 +107,14 @@ public class UserIPConnectScene extends SceneMaker
     }
 
     /**
-     * Puts name and ip into hashmap
+     * Puts name and ip into hashmap.
      * @param name
      * @param ip
      */
     public void putHashMap(String name, String ip) { jukeBoxHashMap.put(name, ip); }
 
     /**
-     * Removes key from hashmap
+     * Removes key from hashmap.
      * @param key
      */
     public void removeHashMap(String key) { jukeBoxHashMap.remove(key); }

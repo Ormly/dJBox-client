@@ -1,5 +1,9 @@
 package org.pineapple.backend;
 
+import org.pineapple.backend.exceptions.AuthenticationFailedException;
+import org.pineapple.backend.exceptions.GeneralServerIssueException;
+import org.pineapple.backend.exceptions.NoCurrentSongException;
+import org.pineapple.backend.exceptions.SongNotFoundException;
 import org.pineapple.backend.interfaces.HTTPControllerService;
 
 import java.io.IOException;
@@ -13,7 +17,7 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.time.Duration;
 
 /**
- * Offers HTTP connectivity to ServerController.
+ * Exposes functionality for HTTP connectivity to ServerControllerService.
  */
 public class HTTPControllerJavaNet implements HTTPControllerService
 {
@@ -85,12 +89,5 @@ public class HTTPControllerJavaNet implements HTTPControllerService
             throw new NoCurrentSongException(String.valueOf(responseStatusCode));
 
         return response.body();
-    }
-
-    @Override
-    public String sendHeadRequest(String requestURI)
-    {
-        //TODO: implement this if needed by server-side
-        return "";
     }
 }

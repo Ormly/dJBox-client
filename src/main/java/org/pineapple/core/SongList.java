@@ -11,8 +11,6 @@ import java.util.Optional;
  */
 public class SongList implements IMediaList<Song>
 {
-    //TODO: implement Library constructor
-
     List<Song> songList;
 
     public SongList()
@@ -20,12 +18,22 @@ public class SongList implements IMediaList<Song>
         songList = new ArrayList<>();
     }
 
+    /**
+     * Returns all the media in the song list
+     * @return List of songs
+     */
     @Override
     public List<Song> getAllMedia()
     {
         return songList;
     }
 
+    /**
+     * Returns the song that corresponds to the id passed.
+     * Returns null if data could not be extracted.
+     * @param mediaID
+     * @return Song
+     */
     @Override
     public Optional<Song> getMedia(int mediaID)
     {
@@ -35,6 +43,10 @@ public class SongList implements IMediaList<Song>
         return Optional.empty();
     }
 
+    /**
+     * Generates a new song list from the list passed.
+     * @param list
+     */
     @Override
     public void setSongList(List<Song> list)
     {

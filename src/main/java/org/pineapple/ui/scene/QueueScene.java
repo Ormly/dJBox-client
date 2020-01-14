@@ -39,8 +39,9 @@ public class QueueScene extends SceneMaker {
     private Label timeElapsedLabel;
     private Label songDurationLabel;
     private Song currentlyPlayingSong;
-    private double elapsedTime;
+    private double timeElapsed;
     private ProgressBar songProgressBar;
+    private boolean songPlaying = false;
 
 
     /**
@@ -200,6 +201,11 @@ public class QueueScene extends SceneMaker {
     public void playSongPlayingTimeline() { songPlayingTimeline.play(); }
     public void stopSongPlayingTimeline() { songPlayingTimeline.stop(); }
 
+    public void setSongPlaying(boolean songPlaying)
+    {
+        this.songPlaying = songPlaying;
+    }
+
     /**
      * Updates the list and updates current and next song
      * @param songList
@@ -223,12 +229,12 @@ public class QueueScene extends SceneMaker {
      */
     public void updateSongInfo(Song currentSong, Song nextSong)
     {
-        if(currentSong != null && elapsedTime < currentSong.getDuration())
+        updatePlayingSongInfo(currentSong);
+        if(songPlaying)
         {
             currentTitleLabel.setText(currentSong.getTitle());
             currentArtistLabel.setText(currentSong.getArtist());
             currentAlbumLabel.setText(currentSong.getAlbum());
-            updatePlayingSongInfo(currentSong);
             try
             {
                 currentAlbumImageView.setImage(new Image(currentSong.getCoverArtURL()));
@@ -281,22 +287,30 @@ public class QueueScene extends SceneMaker {
 
     public void timeline10Seconds()
     {
+        System.out.println("10 second timeline");
         currentlyPlayingSong = controller.getCurrentSong();
         updateSongObservableList(controller.getQueueList());
+        if(timeElapsed < currentlyPlayingSong.getDuration())
+            songPlaying = true;
     }
 
     public void timeline1Second()
     {
-        if(currentlyPlayingSong != null)
+        System.out.println(songPlaying + " " + timeElapsed + " " + currentlyPlayingSong.getDuration());
+
+        if(songPlaying)
         {
-            if(elapsedTime < currentlyPlayingSong.getDuration())
+            if(timeElapsed < 1)
+                timeline10Seconds();
+
+            if(timeElapsed < currentlyPlayingSong.getDuration())
             {
-                timeElapsedLabel.setText(getTimeInMMSS(++elapsedTime));
-                songProgressBar.setProgress(elapsedTime/currentlyPlayingSong.getDuration());
+                timeElapsedLabel.setText(getTimeInMMSS(++timeElapsed));
+                songProgressBar.setProgress(timeElapsed / currentlyPlayingSong.getDuration());
             }
             else
             {
-                updateSongObservableList(controller.getQueueList());
+                songPlaying = false;
             }
         }
     }
@@ -311,9 +325,9 @@ public class QueueScene extends SceneMaker {
 
     public void updatePlayingSongInfo(Song song)
     {
-        elapsedTime = controller.getCurrentSongElapsed();
+        timeElapsed = controller.getCurrentSongElapsed();
         songDurationLabel.setText(getTimeInMMSS(song.getDuration()));
-        timeElapsedLabel.setText(getTimeInMMSS(elapsedTime));
-        songProgressBar.setProgress(elapsedTime/song.getDuration());
+        timeElapsedLabel.setText(getTimeInMMSS(timeElapsed));
+        songProgressBar.setProgress(timeElapsed / song.getDuration());
     }
 }

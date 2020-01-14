@@ -63,7 +63,7 @@ public class Controller {
         {
             jukeBoxClient.addSongToQueue(id);
             queueScene.updateSongObservableList(getQueueList());
-            queueScene.playSongPlayingTimeline();
+            queueScene.setSongPlaying(true);
         }
     }
 
@@ -383,7 +383,8 @@ public class Controller {
             case GENERALFAIL:
             case CANTREACH:
         }
-        return null;
+        Song s = new Song();
+        return s;
     }
 
     public double getCurrentSongElapsed()

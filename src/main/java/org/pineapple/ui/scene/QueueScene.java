@@ -287,7 +287,6 @@ public class QueueScene extends SceneMaker {
 
     public void timeline10Seconds()
     {
-        System.out.println("10 second timeline");
         currentlyPlayingSong = controller.getCurrentSong();
         updateSongObservableList(controller.getQueueList());
         if(timeElapsed < currentlyPlayingSong.getDuration())
@@ -296,8 +295,6 @@ public class QueueScene extends SceneMaker {
 
     public void timeline1Second()
     {
-        System.out.println(songPlaying + " " + timeElapsed + " " + currentlyPlayingSong.getDuration());
-
         if(songPlaying)
         {
             if(timeElapsed < 1)
@@ -311,6 +308,13 @@ public class QueueScene extends SceneMaker {
             else
             {
                 songPlaying = false;
+                timeElapsedLabel.setVisible(false);
+                songDurationLabel.setVisible(false);
+                songProgressBar.setVisible(false);
+                currentAlbumImageView.setVisible(false);
+                currentAlbumLabel.setVisible(false);
+                currentArtistLabel.setVisible(false);
+                currentTitleLabel.setVisible(false);
             }
         }
     }

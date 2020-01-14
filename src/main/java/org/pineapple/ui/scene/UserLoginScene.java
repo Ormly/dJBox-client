@@ -24,7 +24,7 @@ public class UserLoginScene extends SceneMaker {
         super(stage, controller,800,600);
 
         Tooltip disConnectTooltip = new Tooltip("Disconnect");
-        Image disconnectImage = new Image("server-remove.png");
+        Image disconnectImage = new Image("Disconnect.png");
         ImageView disconnectImageView = new ImageView(disconnectImage);
         disconnectImageView.setFitHeight(25);
         disconnectImageView.setFitWidth(25);
@@ -37,7 +37,7 @@ public class UserLoginScene extends SceneMaker {
         topHBox.setAlignment(Pos.CENTER_RIGHT);
 
         // dJBox logo
-        Image logoImage = new Image("ananas_color.png");
+        Image logoImage = new Image("Pineapple_logo.png");
         ImageView logoImageView = new ImageView(logoImage);
         logoImageView.setFitHeight(100);
         logoImageView.setPreserveRatio(true);

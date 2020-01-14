@@ -20,7 +20,7 @@ public class Main extends Application
         Controller controller = new Controller(stage, jukeBoxClient);
 
         // Initial scene is Connect IP
-        stage.getIcons().add(new Image("ananas_color.png"));
+        stage.getIcons().add(new Image("Pineapple_logo.png"));
         stage.setScene(controller.getInitialScene());
         stage.setTitle("dJBox - IP connect");
         stage.centerOnScreen();

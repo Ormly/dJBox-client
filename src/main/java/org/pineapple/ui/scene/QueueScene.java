@@ -23,7 +23,8 @@ import java.util.List;
 
 public class QueueScene extends SceneMaker {
 
-    private  Timeline timeline;
+    private Timeline queueTimeline;
+    private Timeline songPlayingTimeline;
     private ObservableList<Song> songObservableList = FXCollections.observableArrayList();
     private Label currentTitleLabel;
     private Label currentArtistLabel;
@@ -35,6 +36,13 @@ public class QueueScene extends SceneMaker {
     private ImageView nextAlbumImageView;
     private ImageView rightArrowImageView;
     private Image placeHolderImage;
+    private Label timeElapsedLabel;
+    private Label songDurationLabel;
+    private Song currentlyPlayingSong;
+    private double timeElapsed;
+    private ProgressBar songProgressBar;
+    private boolean songPlaying = false;
+
 
     /**
      * Creates Queue scene
@@ -60,11 +68,8 @@ public class QueueScene extends SceneMaker {
         tableView.getColumns().add(titleColumn);
         tableView.getColumns().add(artistColumn);
         tableView.getColumns().add(albumColumn);
-        tableView.setPlaceholder(new Label("No songs are in the queue please add a song"));
-        timeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> {
-            updateSongObservableList(controller.getQueueList());
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        queueTimeline = new Timeline(new KeyFrame(Duration.seconds(10), e -> timeline10Seconds()));
+        queueTimeline.setCycleCount(Timeline.INDEFINITE);
 
         // Wrap observableList in FilteredList (Showing all data initially)
         FilteredList<Song> filteredList = new FilteredList<>(songObservableList, p -> true);
@@ -93,7 +98,7 @@ public class QueueScene extends SceneMaker {
 
         // Menu options in top right Library and logout
         Tooltip libraryTooltip = new Tooltip("Library");
-        Image libraryImage = new Image("book-music.png");
+        Image libraryImage = new Image("Library.png");
         ImageView libraryImageView = new ImageView(libraryImage);
         libraryImageView.setFitWidth(25);
         libraryImageView.setFitHeight(25);
@@ -103,7 +108,7 @@ public class QueueScene extends SceneMaker {
 
         // Logout button
         Tooltip logoutTooltip = new Tooltip("Log out");
-        Image logoutImage = new Image("logout.png");
+        Image logoutImage = new Image("Logout.png");
         ImageView logoutImageView = new ImageView(logoutImage);
         logoutImageView.setFitWidth(25);
         logoutImageView.setFitHeight(25);
@@ -112,8 +117,7 @@ public class QueueScene extends SceneMaker {
         logoutImageView.setOnMouseClicked(e -> controller.logoutButtonQueue());
 
         // Menu options are next to each other
-        HBox rightTopBorderHBox = new HBox(20);
-        rightTopBorderHBox.getChildren().addAll(libraryImageView,logoutImageView);
+        HBox rightTopBorderHBox = new HBox(10,libraryImageView,logoutImageView);
         rightTopBorderHBox.setAlignment(Pos.CENTER_RIGHT);
 
         //Album art of currently playing song
@@ -128,15 +132,14 @@ public class QueueScene extends SceneMaker {
         currentAlbumLabel = new Label();
 
         // Album art, on top of song information
-        VBox currentSongVBox = new VBox(10);
+        VBox currentSongVBox = new VBox(10,currentAlbumImageView,currentTitleLabel,currentArtistLabel,currentAlbumLabel);
         currentSongVBox.setAlignment(Pos.CENTER);
-        currentSongVBox.getChildren().addAll(currentAlbumImageView,currentTitleLabel,currentArtistLabel,currentAlbumLabel);
 
         // Right arrow
-        Image rightArrowImage = new Image("right_arrow.png");
+        Image rightArrowImage = new Image("Right_arrow.png");
         rightArrowImageView = new ImageView(rightArrowImage);
-        rightArrowImageView.setFitWidth(25);
-        rightArrowImageView.setFitHeight(25);
+        rightArrowImageView.setFitWidth(50);
+        rightArrowImageView.setFitHeight(50);
 
         // Album art for next song
         nextAlbumImageView = new ImageView(placeHolderImage);
@@ -148,20 +151,37 @@ public class QueueScene extends SceneMaker {
         nextArtistLabel = new Label();
         nextAlbumLabel = new Label();
 
+        // Song duration labels
+        timeElapsedLabel = new Label("00:00");
+        timeElapsedLabel.setVisible(false);
+        songDurationLabel = new Label("00:00");
+        songDurationLabel.setVisible(false);
+
+        // Song Progress Bar
+        songProgressBar = new ProgressBar(0);
+        songProgressBar.setPrefWidth(250.0);
+        songProgressBar.setVisible(false);
+        songPlayingTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> timeline1Second()));
+        songPlayingTimeline.setCycleCount(Timeline.INDEFINITE);
+
         // Stacks album art on top of song information for next song
-        VBox nextSongVBox = new VBox(10);
+        VBox nextSongVBox = new VBox(10,nextAlbumImageView,nextTitleLabel,nextArtistLabel,nextAlbumLabel);
         nextSongVBox.setAlignment(Pos.CENTER);
-        nextSongVBox.getChildren().addAll(nextAlbumImageView,nextTitleLabel,nextArtistLabel,nextAlbumLabel);
 
         // from left to right currently playing song, right arrow, next song
-        HBox songQueueHBox = new HBox(50);
+        HBox songQueueHBox = new HBox(10,currentSongVBox,rightArrowImageView,nextSongVBox);
         songQueueHBox.setAlignment(Pos.CENTER);
-        songQueueHBox.getChildren().addAll(currentSongVBox,rightArrowImageView,nextSongVBox);
+
+        HBox songProgressHBox = new HBox(10,timeElapsedLabel,songProgressBar,songDurationLabel);
+        songProgressHBox.setAlignment(Pos.CENTER);
+
+        VBox songsProgressVBox = new VBox(10,songQueueHBox,songProgressHBox);
+        songsProgressVBox.setAlignment(Pos.CENTER);
 
         // Top is for menu options, center is for song information
         BorderPane rightBorderPane = new BorderPane();
         rightBorderPane.setTop(rightTopBorderHBox);
-        rightBorderPane.setCenter(songQueueHBox);
+        rightBorderPane.setCenter(songsProgressVBox);
 
         // Main element search bar on top of song list on left, menu options and song information on right
         HBox root = new HBox(leftVBox,rightBorderPane);
@@ -175,9 +195,16 @@ public class QueueScene extends SceneMaker {
         this.setRoot(root);
     }
 
-    // Controller for refreshing queue
-    public void playTimeLine() { timeline.play(); }
-    public void stopTimeLine() { timeline.stop(); }
+    // Play and stop for timelines
+    public void playQueueTimeLine() { queueTimeline.play(); }
+    public void stopQueueTimeLine() { queueTimeline.stop(); }
+    public void playSongPlayingTimeline() { songPlayingTimeline.play(); }
+    public void stopSongPlayingTimeline() { songPlayingTimeline.stop(); }
+
+    public void setSongPlaying(boolean songPlaying)
+    {
+        this.songPlaying = songPlaying;
+    }
 
     /**
      * Updates the list and updates current and next song
@@ -202,7 +229,8 @@ public class QueueScene extends SceneMaker {
      */
     public void updateSongInfo(Song currentSong, Song nextSong)
     {
-        if(currentSong != null)
+        updatePlayingSongInfo(currentSong);
+        if(songPlaying)
         {
             currentTitleLabel.setText(currentSong.getTitle());
             currentArtistLabel.setText(currentSong.getArtist());
@@ -216,6 +244,9 @@ public class QueueScene extends SceneMaker {
                 currentAlbumImageView.setImage(placeHolderImage);
             }
             currentAlbumImageView.setVisible(true);
+            songProgressBar.setVisible(true);
+            songDurationLabel.setVisible(true);
+            timeElapsedLabel.setVisible(true);
         }
         else
         {
@@ -223,6 +254,9 @@ public class QueueScene extends SceneMaker {
             currentArtistLabel.setText("");
             currentAlbumLabel.setText("");
             currentAlbumImageView.setVisible(false);
+            songProgressBar.setVisible(false);
+            songDurationLabel.setVisible(false);
+            timeElapsedLabel.setVisible(false);
         }
 
         if(nextSong != null)
@@ -249,5 +283,55 @@ public class QueueScene extends SceneMaker {
             nextAlbumImageView.setVisible(false);
             rightArrowImageView.setVisible(false);
         }
+    }
+
+    public void timeline10Seconds()
+    {
+        currentlyPlayingSong = controller.getCurrentSong();
+        updateSongObservableList(controller.getQueueList());
+        if(timeElapsed < currentlyPlayingSong.getDuration())
+            songPlaying = true;
+    }
+
+    public void timeline1Second()
+    {
+        if(songPlaying)
+        {
+            if(timeElapsed < 1)
+                timeline10Seconds();
+
+            if(timeElapsed < currentlyPlayingSong.getDuration())
+            {
+                timeElapsedLabel.setText(getTimeInMMSS(++timeElapsed));
+                songProgressBar.setProgress(timeElapsed / currentlyPlayingSong.getDuration());
+            }
+            else
+            {
+                songPlaying = false;
+                timeElapsedLabel.setVisible(false);
+                songDurationLabel.setVisible(false);
+                songProgressBar.setVisible(false);
+                currentAlbumImageView.setVisible(false);
+                currentAlbumLabel.setVisible(false);
+                currentArtistLabel.setVisible(false);
+                currentTitleLabel.setVisible(false);
+            }
+        }
+    }
+
+    public String getTimeInMMSS(double duration)
+    {
+        int minutes = (int)duration / 60;
+        int seconds = (int)duration % 60;
+
+        return String.format("%02d:%02d",minutes,seconds);
+    }
+
+    public void updatePlayingSongInfo(Song song)
+    {
+        timeElapsed = controller.getCurrentSongElapsed();
+        songDurationLabel.setText(getTimeInMMSS(song.getDuration()));
+        timeElapsedLabel.setText(getTimeInMMSS(timeElapsed));
+        songProgressBar.setProgress(timeElapsed / song.getDuration());
     }
 }

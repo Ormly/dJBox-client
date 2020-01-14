@@ -219,7 +219,7 @@ public class QueueScene extends SceneMaker {
     public void stopSongPlayingTimeline() { songPlayingTimeline.stop(); }
 
     /**
-     * Setter for sonPlaying member.
+     * Setter for songPlaying member.
      *
      * @param songPlaying new value.
      */
@@ -307,6 +307,12 @@ public class QueueScene extends SceneMaker {
         }
     }
 
+    /**
+     * Performs every 10 seconds
+     * updates the currently playing song
+     * updates the list
+     * sets songPlaying true if it is
+     */
     public void timeline10Seconds()
     {
         currentlyPlayingSong = controller.getCurrentSong();
@@ -315,6 +321,12 @@ public class QueueScene extends SceneMaker {
             songPlaying = true;
     }
 
+    /**
+     * Performs every 1 second
+     * If a song is playing adds 1 second to time elapsed and increases progress bar
+     * If song has just started playing it will call the timeline10seconds to get up to date information
+     * If song has finished playing sets songPlaying to false and calls the timeline10seconds to get up to date information
+     */
     public void timeline1Second()
     {
         if(songPlaying)
@@ -335,6 +347,11 @@ public class QueueScene extends SceneMaker {
         }
     }
 
+    /**
+     * Gets the time in MM:SS format
+     * @param duration in total seconds
+     * @return MM:SS
+     */
     public String getTimeInMMSS(double duration)
     {
         int minutes = (int)duration / 60;
@@ -343,6 +360,10 @@ public class QueueScene extends SceneMaker {
         return String.format("%02d:%02d",minutes,seconds);
     }
 
+    /**
+     * Updates the labels for the currently playing song
+     * @param song currently playing
+     */
     public void updatePlayingSongInfo(Song song)
     {
         timeElapsed = controller.getCurrentSongElapsed();

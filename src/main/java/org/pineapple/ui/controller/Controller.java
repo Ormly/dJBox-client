@@ -318,7 +318,6 @@ public class Controller {
 
     /**
      * Disconnects from server.
-     * TODO: requires JukBoxClient method to complete disconnect
      */
     public void disconnectButtonUserLogin()
     {
@@ -407,6 +406,10 @@ public class Controller {
         return s;
     }
 
+    /**
+     * Gets the time elapsed of the current song
+     * @return elapsed time if successful or 0.0 if not successful
+     */
     public double getCurrentSongElapsed()
     {
         ResponseState responseState = jukeBoxClient.updateCurrentSongElapsed();

@@ -22,7 +22,7 @@ public class RegistrationScene extends SceneMaker
     private Label responseLabel;
 
     /**
-     * Parent class of scenes.
+     * Constructor for registration scene
      *
      * @param stage      window
      * @param controller controls scene commands

@@ -308,13 +308,7 @@ public class QueueScene extends SceneMaker {
             else
             {
                 songPlaying = false;
-                timeElapsedLabel.setVisible(false);
-                songDurationLabel.setVisible(false);
-                songProgressBar.setVisible(false);
-                currentAlbumImageView.setVisible(false);
-                currentAlbumLabel.setVisible(false);
-                currentArtistLabel.setVisible(false);
-                currentTitleLabel.setVisible(false);
+                timeline10Seconds();
             }
         }
     }

@@ -152,11 +152,14 @@ public class QueueScene extends SceneMaker {
 
         // Song duration labels
         timeElapsedLabel = new Label("00:00");
+        timeElapsedLabel.setVisible(false);
         songDurationLabel = new Label("00:00");
+        songDurationLabel.setVisible(false);
 
         // Song Progress Bar
         songProgressBar = new ProgressBar(0);
         songProgressBar.setPrefWidth(250.0);
+        songProgressBar.setVisible(false);
         songPlayingTimeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> timeline1Second()));
         songPlayingTimeline.setCycleCount(Timeline.INDEFINITE);
 
@@ -220,7 +223,7 @@ public class QueueScene extends SceneMaker {
      */
     public void updateSongInfo(Song currentSong, Song nextSong)
     {
-        if(currentSong != null)
+        if(currentSong != null && elapsedTime < currentSong.getDuration())
         {
             currentTitleLabel.setText(currentSong.getTitle());
             currentArtistLabel.setText(currentSong.getArtist());
@@ -235,6 +238,9 @@ public class QueueScene extends SceneMaker {
                 currentAlbumImageView.setImage(placeHolderImage);
             }
             currentAlbumImageView.setVisible(true);
+            songProgressBar.setVisible(true);
+            songDurationLabel.setVisible(true);
+            timeElapsedLabel.setVisible(true);
         }
         else
         {
@@ -242,6 +248,9 @@ public class QueueScene extends SceneMaker {
             currentArtistLabel.setText("");
             currentAlbumLabel.setText("");
             currentAlbumImageView.setVisible(false);
+            songProgressBar.setVisible(false);
+            songDurationLabel.setVisible(false);
+            timeElapsedLabel.setVisible(false);
         }
 
         if(nextSong != null)

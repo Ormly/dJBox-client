@@ -63,6 +63,7 @@ public class Controller {
         {
             jukeBoxClient.addSongToQueue(id);
             queueScene.updateSongObservableList(getQueueList());
+            queueScene.playSongPlayingTimeline();
         }
     }
 
